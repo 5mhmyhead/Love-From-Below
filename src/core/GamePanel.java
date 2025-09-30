@@ -9,15 +9,15 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
-    private final int originalTileSize = 16; // 16 x 16 per tile
-    private final int scale = 3;
+    private final static int originalTileSize = 16; // 16 x 16 per tile
+    private final static int scale = 3;
 
-    public final int tileSize = originalTileSize * scale; // 48 x 48 per tile
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public final static int tileSize = originalTileSize * scale; // 48 x 48 per tile
+    public final static int maxScreenCol = 16;
+    public final static int maxScreenRow = 12;
 
-    public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
-    public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+    public final static int screenWidth = tileSize * maxScreenCol; // 768 pixels
+    public final static int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
     // THREAD SETTINGS
     private Thread gameThread;
@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // HANDLERS AND MANAGERS
     private final KeyHandler keyHandler = new KeyHandler();
-    Player player = new Player(this, keyHandler);
+    Player player = new Player(keyHandler);
 
     // FPS SETTINGS
     public static final double FPS = 60.0;
