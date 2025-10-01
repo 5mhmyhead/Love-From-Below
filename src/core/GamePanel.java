@@ -1,40 +1,43 @@
 package core;
 
-import controller.KeyHandler;
-import entities.Player;
+import state.StateManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     // SCREEN SETTINGS
-    private final static int originalTileSize = 16; // 16 x 16 per tile
-    private final static int scale = 3;
+    private final static int ORIGINAL_TILE_SIZE = 16; // 16 x 16 per tile
+    private final static int SCALE = 3;
 
-    public final static int tileSize = originalTileSize * scale; // 48 x 48 per tile
-    public final static int maxScreenCol = 16;
-    public final static int maxScreenRow = 12;
+    public final static int MAX_SCREEN_COL = 16;
+    public final static int MAX_SCREEN_ROW = 12;
 
-    public final static int screenWidth = tileSize * maxScreenCol; // 768 pixels
-    public final static int screenHeight = tileSize * maxScreenRow; // 576 pixels
+    public final static int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48 x 48 per tile
+    public final static int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
+    public final static int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
 
     // THREAD SETTINGS
     private Thread gameThread;
     private boolean running;
 
-    // HANDLERS AND MANAGERS
-    private final KeyHandler keyHandler = new KeyHandler();
-    Player player = new Player(keyHandler);
+    // GRAPHICS
+    private BufferedImage image;
+    private Graphics2D g2d;
+
+    // STATE MANAGER
+    private StateManager stateManager;
 
     // FPS SETTINGS
     public static final double FPS = 60.0;
 
-    // DEFAULT CONSTRUCTOR
+    // CONSTRUCTOR
     public GamePanel() {
 
-        super();
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
     }
@@ -46,7 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
         if(gameThread == null) {
 
             gameThread = new Thread(this);
-            this.addKeyListener(keyHandler);
+            this.addKeyListener(this);
             gameThread.start();
         }
     }
@@ -54,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void init() {
 
         running = true;
+        stateManager = new StateManager();
     }
 
     @Override
@@ -83,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update();
+        stateManager.update();
     }
 
     public void paintComponent(Graphics g) {
@@ -91,8 +95,21 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        player.draw(g2);
+        stateManager.draw(g2);
 
         g2.dispose();
     }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e != null) stateManager.keyPressed(e.getKeyCode());
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e != null) stateManager.keyReleased(e.getKeyCode());
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
 }

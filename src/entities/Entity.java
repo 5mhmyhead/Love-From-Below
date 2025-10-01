@@ -1,9 +1,5 @@
 package entities;
 
-import utilities.Spritesheet;
-
-import java.awt.image.BufferedImage;
-
 public class Entity {
 
     protected int x;
@@ -12,10 +8,7 @@ public class Entity {
     protected int width;
     protected int height;
 
-    protected String direction;
-    protected int speed;
+    protected int moveSpeed;
 
-    // TEMPORARY
-    public Spritesheet spritesheet;
-    public BufferedImage sprite;
+    protected String state;
 }

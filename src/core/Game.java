@@ -2,11 +2,10 @@ package core;
 
 import javax.swing.*;
 
-public class GameLauncher {
+public class Game {
 
     public static void main(String[] args) {
-
-        new GameLauncher().startGame();
+        new Game().startGame();
     }
 
     public void startGame() {

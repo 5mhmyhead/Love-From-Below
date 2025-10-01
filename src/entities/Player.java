@@ -1,122 +1,83 @@
 package entities;
 
 import core.GamePanel;
-import controller.KeyHandler;
-import controller.PlayerController;
-import utilities.Spritesheet;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
-import java.util.Objects;
+import java.awt.event.KeyEvent;
 
 public class Player extends Entity {
 
-    PlayerController controller;
+    // PLAYER INPUTS
+    private boolean inputLeft, inputUp, inputRight,
+                    inputDown;
 
-    // TEMPORARY VARIABLES
-    int spriteCounter = 0;
-    int spriteNumber = 1;
+    // CONSTRUCTOR
+    public Player() {
 
-    public Player(KeyHandler keyHandler) {
-
-        controller = new PlayerController(keyHandler);
         setDefaultValues();
-        getPlayerSpritesheet();
     }
 
-    public void setDefaultValues() {
+    private void setDefaultValues() {
 
         x = 200;
         y = 200;
-        speed = 4;
-        direction = "down";
+        moveSpeed = 3;
+
+        state = "IDLE";
     }
 
-    public void getPlayerSpritesheet() {
+    // UPDATE THE PLAYER STATE VARIABLE
+    private void updatePlayerState() {
 
-        try {
-            sprite = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/sprites/player.png")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if(inputUp) state = "UP";
+        if(inputDown) state = "DOWN";
+        if(inputLeft) state = "LEFT";
+        if(inputRight) state = "RIGHT";
 
-        spritesheet = new Spritesheet(sprite);
+        if(!(inputUp || inputDown || inputLeft || inputRight))
+            state = "IDLE";
     }
 
+    // UPDATES PLAYER INPUT VARIABLES
+    public void setInput(int key, boolean bool) {
+
+        if(key == KeyEvent.VK_D) inputRight = bool;
+        if(key == KeyEvent.VK_A) inputLeft = bool;
+        if(key == KeyEvent.VK_W) inputUp = bool;
+        if(key == KeyEvent.VK_S) inputDown = bool;
+    }
+
+    // UPDATES PLAYER POSITION, ANIMATION, ETC
     public void update() {
 
-        int frameInterval = 12;
+        switch(state) {
+            case "IDLE":
+                updatePlayerState();
+                break;
 
-        if(controller.isRequestingUp()
-                || controller.isRequestingDown()
-                || controller.isRequestingLeft()
-                || controller.isRequestingRight()) {
+            case "UP":
+                y -= moveSpeed;
+                updatePlayerState();
+                break;
 
-            if(controller.isRequestingUp()) { direction = "up"; y -= speed; }
-            if(controller.isRequestingDown()) { direction = "down"; y += speed; }
-            if(controller.isRequestingLeft()) { direction = "left"; x -= speed; }
-            if(controller.isRequestingRight()) { direction = "right"; x += speed; }
+            case "DOWN":
+                y += moveSpeed;
+                updatePlayerState();
+                break;
 
-            spriteCounter++;
-            if(spriteCounter > frameInterval) {
+            case "LEFT":
+                x -= moveSpeed;
+                updatePlayerState();
+                break;
 
-                if(spriteNumber < 4) {
-                    spriteNumber++;
-                } else {
-                    spriteNumber = 1;
-                }
-
-                spriteCounter = 0;
-            }
-        } else {
-            direction = "down";
-            spriteNumber = 1;
+            case "RIGHT":
+                x += moveSpeed;
+                updatePlayerState();
+                break;
         }
     }
 
     public void draw(Graphics2D g2) {
-
-        sprite = null;
-
-        switch(direction) {
-            case "down":
-                switch(spriteNumber) {
-                    case 1: sprite = spritesheet.grabImage(1, 13, 48, 48); break;
-                    case 2: sprite = spritesheet.grabImage(1, 14, 48, 48); break;
-                    case 3: sprite = spritesheet.grabImage(1, 15, 48, 48); break;
-                    case 4: sprite = spritesheet.grabImage(1, 16, 48, 48); break;
-                }
-                break;
-
-            case "up":
-                switch(spriteNumber) {
-                    case 1: sprite = spritesheet.grabImage(1, 9, 48, 48); break;
-                    case 2: sprite = spritesheet.grabImage(1, 10, 48, 48); break;
-                    case 3: sprite = spritesheet.grabImage(1, 11, 48, 48); break;
-                    case 4: sprite = spritesheet.grabImage(1, 12, 48, 48); break;
-                }
-                break;
-
-            case "left":
-                switch(spriteNumber) {
-                    case 1: sprite = spritesheet.grabImage(1, 5, 48, 48); break;
-                    case 2: sprite = spritesheet.grabImage(1, 6, 48, 48); break;
-                    case 3: sprite = spritesheet.grabImage(1, 7, 48, 48); break;
-                    case 4: sprite = spritesheet.grabImage(1, 8, 48, 48); break;
-                }
-                break;
-
-            case "right":
-                switch(spriteNumber) {
-                    case 1: sprite = spritesheet.grabImage(1, 1, 48, 48); break;
-                    case 2: sprite = spritesheet.grabImage(1, 2, 48, 48); break;
-                    case 3: sprite = spritesheet.grabImage(1, 3, 48, 48); break;
-                    case 4: sprite = spritesheet.grabImage(1, 4, 48, 48); break;
-                }
-                break;
-        }
-
-        g2.drawImage(sprite, x, y, GamePanel.tileSize, GamePanel.tileSize, null);
+        g2.fillRect(x, y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
     }
 }
