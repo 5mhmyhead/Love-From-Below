@@ -21,7 +21,7 @@ public class StateManager {
     public StateManager() {
 
         states = new State[NUMBER_OF_STATES];
-        currentState = GAME_STATE;
+        currentState = TITLE_STATE;
         loadState(currentState);
     }
 
@@ -55,19 +55,13 @@ public class StateManager {
     }
 
     // LOADS STATE DEPENDING ON INDEX
-    private void loadState(int state)
-    {
+    private void loadState(int state) {
+
         if(state == TITLE_STATE) states[state] = new TitleState(this);
         if(state == GAME_STATE) states[state] = new GameState(this);
     }
 
     // SENDS THE KEY PRESS TO THE CURRENT STATE
-    public void keyPressed(int key)
-    {
-        states[currentState].keyPressed(key);
-    }
-    public void keyReleased(int key)
-    {
-        states[currentState].keyReleased(key);
-    }
+    public void keyPressed(int key) { states[currentState].keyPressed(key); }
+    public void keyReleased(int key) { states[currentState].keyReleased(key); }
 }

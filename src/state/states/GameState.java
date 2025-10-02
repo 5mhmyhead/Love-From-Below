@@ -34,14 +34,12 @@ public class GameState extends State {
 
     @Override
     public void keyPressed(int key) {
-
         // TELLS THE PLAYER WHICH KEYS ARE PRESSED
         player.setInput(key, true);
     }
 
     @Override
     public void keyReleased(int key) {
-
         // TELLS THE PLAYER WHICH KEYS ARE RELEASED
         player.setInput(key, false);
     }

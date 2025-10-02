@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
+        init();
     }
 
     public void addNotify() {
@@ -56,14 +57,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     public void init() {
 
-        running = true;
         stateManager = new StateManager();
+        running = true;
     }
 
     @Override
     public void run() {
-
-        init();
 
         double drawInterval = (double) 1_000_000_000 / FPS;
         double delta = 0;

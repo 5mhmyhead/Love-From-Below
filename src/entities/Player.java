@@ -13,7 +13,6 @@ public class Player extends Entity {
 
     // CONSTRUCTOR
     public Player() {
-
         setDefaultValues();
     }
 
