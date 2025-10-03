@@ -21,7 +21,7 @@ public class StateManager {
     public StateManager() {
 
         states = new State[NUMBER_OF_STATES];
-        currentState = TITLE_STATE;
+        currentState = GAME_STATE;
         loadState(currentState);
     }
 

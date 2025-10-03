@@ -1,14 +1,20 @@
 package state.states;
 
-import entities.Player;
+import components.entity.Player;
+import components.world.World;
+import core.GamePanel;
 import state.State;
 import state.StateManager;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 public class GameState extends State {
 
     private Player player;
+    private World world;
+
+    private String state;                // CHECK THE DIFFERENT STATES: GAME, MENU, OR TRANSITION
 
     // CONSTRUCTOR
     public GameState(StateManager stateManager) {
@@ -19,17 +25,39 @@ public class GameState extends State {
 
     @Override
     public void init() {
-        player = new Player();
+
+        state = "GAME";
+
+        // STARTING ROOM REFERS TO THE ROOM ID
+        // THE ID IS REPRESENTED BY TWO NUMBERS, THE FIRST FOR COLUMN AND SECOND FOR ROW
+        // STARTING ROOM 11 REFERS TO THE ROOM AT THE VERY TOP LEFT
+        world = new World(11, "/tileMaps/testworld.txt", null, 32, 24);
+        player = world.getPlayer();
     }
 
     @Override
     public void update() {
-        player.update();
+
+        switch(state) {
+
+            case "GAME":
+                world.update();
+                break;
+
+            case "TRANSITION":
+                if(!world.isTransitioning()) state = "GAME";
+                break;
+
+            default: break;
+        }
     }
 
     @Override
     public void draw(Graphics2D g2) {
-        player.draw(g2);
+        AffineTransform transform = g2.getTransform();
+
+        // DRAWS THE WORLD
+        world.draw(g2);
     }
 
     @Override
