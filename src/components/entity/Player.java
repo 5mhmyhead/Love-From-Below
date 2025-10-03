@@ -1,7 +1,6 @@
 package components.entity;
 
 import components.world.World;
-import core.Game;
 import core.GamePanel;
 
 import java.awt.*;

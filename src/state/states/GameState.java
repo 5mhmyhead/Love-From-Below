@@ -2,12 +2,10 @@ package state.states;
 
 import components.entity.Player;
 import components.world.World;
-import core.GamePanel;
 import state.State;
 import state.StateManager;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 public class GameState extends State {
 
