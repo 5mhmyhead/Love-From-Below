@@ -6,9 +6,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.Objects;
 import java.util.StringTokenizer;
 
 // CLASS THAT HANDLE TILE, ENEMIES, AND SWITCHING MAPS
+// THIS CLASS IS INSTANTIATED BY THE WORLD CLASS FOR LOADING TILES AND RETURNING THEM TO THE WORLD
 public class MapHandler {
 
     private final World world;
@@ -21,10 +23,11 @@ public class MapHandler {
         loadTiles(tileMapFilePath);
     }
 
-    private void loadTiles(String filePath)
-    {
+    private void loadTiles(String filePath) {
+        // BUFFERED READER TO READ TILEMAPS
         try(BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(getClass().getResourceAsStream(filePath), Charset.defaultCharset()))
+                new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(filePath))
+                        , Charset.defaultCharset()))
         ) {
 
             String line;
@@ -34,6 +37,7 @@ public class MapHandler {
 
                 StringTokenizer tokenizer = new StringTokenizer(line);
                 int characterCount = 0;
+
                 while(tokenizer.hasMoreElements()) {
 
                     String token = tokenizer.nextToken();
@@ -43,8 +47,7 @@ public class MapHandler {
 
                 lineCount++;
             }
-        }
-        catch(IOException e) {
+        } catch(IOException e) {
             e.printStackTrace();
         }
     }

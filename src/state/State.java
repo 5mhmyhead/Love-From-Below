@@ -2,6 +2,7 @@ package state;
 
 import java.awt.*;
 
+// ABSTRACT CLASS THAT THE DIFFERENT STATES WILL EXTEND FROM
 public abstract class State {
 
     protected StateManager stateManager;

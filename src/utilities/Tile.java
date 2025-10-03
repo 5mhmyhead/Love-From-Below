@@ -2,6 +2,7 @@ package utilities;
 
 import java.awt.image.BufferedImage;
 
+// ENUM THAT HOUSES ALL TILE DATA OF THE GAME
 public enum Tile {
 
     EMPTY,
@@ -71,6 +72,4 @@ public enum Tile {
             default -> false;
         };
     }
-
-
 }

@@ -5,6 +5,7 @@ import state.states.TitleState;
 
 import java.awt.*;
 
+// HANDLES SWITCHING BETWEEN AND MOVING THROUGH DIFFERENT STATES DURING GAMEPLAY
 public class StateManager {
 
     // GAME STATES
@@ -14,14 +15,14 @@ public class StateManager {
     public static final int GAME_STATE = 1;
     public static final int PAUSE_STATE = 2;
 
-    private final State[] states; // array holding the different states
-    private int currentState;
+    private final State[] states;           // ARRAY HOLDING THE STATES
+    private int currentState;               // ID REPRESENTING THE CURRENT STATE
 
     // CONSTRUCTOR
     public StateManager() {
 
         states = new State[NUMBER_OF_STATES];
-        currentState = GAME_STATE;
+        currentState = GAME_STATE;          // FIXME CURRENT STATE SHOULD BE TITLE STATE AFTER TESTING
         loadState(currentState);
     }
 

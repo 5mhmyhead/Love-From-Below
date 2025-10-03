@@ -39,16 +39,16 @@ public class TitleState extends State {
 
     @Override
     public void update() {
-
+        // IF THE PLAYER PRESSED ENTER, THEN FADE INTO NEXT STATE
         if(pressedEnter) {
+
             timer++;
 
             if(fade < 255) fade += 4;
             // IF THE PLAYER PRESSED ENTER AFTER 2 SECONDS, SWITCH STATE
             else if(timer >= (2 * GamePanel.FPS)) {
-                stateManager.setState(StateManager.GAME_STATE);
+                stateManager.setState(StateManager.GAME_STATE); // FIXME INTRO SHOULD BE SET HERE AFTER TESTING
             }
-
             // CONSTRAIN FADE
             if(fade < 0) fade = 0;
             if(fade > 255) fade = 255;
@@ -59,10 +59,10 @@ public class TitleState extends State {
 
     @Override
     public void draw(Graphics2D g2) {
-        // DRAW ANIMATIONS
+
         titleScreenAnimation.draw(g2, 0, 0, GamePanel.SCREEN_WIDTH, GamePanel.SCREEN_HEIGHT);
 
-        // DRAW FADE INTO GAME
+        // DRAW FADE INTO GAME WHEN ENTER IS PRESSED
         g2.setColor(new Color(0, 0, 0, fade));
         g2.fillRect(0, 0, GamePanel.SCREEN_WIDTH, GamePanel.SCREEN_HEIGHT);
     }

@@ -17,20 +17,14 @@ public class World {
     private WorldRoom currentRoom;              // ROOM THAT PLAYER IS IN
     private WorldRoom loadingRoom;              // ROOM THAT PLAYER IS ENTERING
 
-    private ArrayList<WorldRoom> roomBuffer;    // STORES THE STATE OF THE LAST 5 ROOMS
-
-    private final int widthOfTile;              // STORES DIMENSIONS OF TILE
-    private final int heightOfTile;
+    private final ArrayList<WorldRoom> roomBuffer;    // STORES THE STATE OF THE LAST 5 ROOMS
 
     private final MapHandler mapHandler;        // MAP HELPER TO CONSTRUCT WORLD
 
-    // TODO CREATE METADATA FOR THE WORLD
+    // TODO CREATE METADATA FOR THE WORLD, XML
     public World(int startingRoom, String tileMapFilePath, String metadataFilePath, int columns, int rows) {
 
         player = new Player(this);
-
-        widthOfTile = GamePanel.TILE_SIZE;
-        heightOfTile = GamePanel.TILE_SIZE;
 
         mapHandler = new MapHandler(this, tileMapFilePath, columns, rows);
 

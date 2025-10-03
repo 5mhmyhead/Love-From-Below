@@ -1,6 +1,7 @@
 package components.entity;
 
 import components.world.World;
+import core.Game;
 import core.GamePanel;
 
 import java.awt.*;
@@ -29,8 +30,7 @@ public class Player extends Entity {
 
     private void setDefaultValues() {
 
-        x = 384;
-        y = 288;
+        setCoordinates(408, 312);
 
         drawX = (int) Math.round(x);
         drawY = (int) Math.round(y);
@@ -46,7 +46,7 @@ public class Player extends Entity {
 
     // UPDATES PLAYER POSITION, ANIMATION, ETC
     public void update() {
-
+        // SETS UP THE CURRENT ROOM
         this.room = world.getCurrentRoom();
 
         switch(state) {
@@ -158,7 +158,7 @@ public class Player extends Entity {
         drawX = (int) Math.round(x) - width / 2;
         drawY = (int) Math.round(y) - height / 2;
 
-        g2.setColor(Color.white);
+        g2.setColor(Color.black);
         g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
     }
 

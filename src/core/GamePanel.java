@@ -5,11 +5,10 @@ import state.StateManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
-    // SCREEN SETTINGS
+    // GLOBAL SCREEN SETTINGS
     private final static int ORIGINAL_TILE_SIZE = 16; // 16 x 16 per tile
     private final static int SCALE = 3;
 
@@ -20,19 +19,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public final static int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
     public final static int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
 
-    // THREAD SETTINGS
+    // THREAD AND FPS SETTINGS
     private Thread gameThread;
     private boolean running;
 
-    // GRAPHICS
-    private BufferedImage image;
-    private Graphics2D g2d;
-
-    // STATE MANAGER
-    private StateManager stateManager;
-
-    // FPS SETTINGS
     public static final double FPS = 60.0;
+
+    // CLASS THAT HANDLES THE CHANGING OF STATES IN THE GAME
+    private StateManager stateManager;
 
     // CONSTRUCTOR
     public GamePanel() {
@@ -95,7 +89,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         Graphics2D g2 = (Graphics2D) g;
         stateManager.draw(g2);
-
         g2.dispose();
     }
 

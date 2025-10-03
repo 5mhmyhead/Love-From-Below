@@ -33,7 +33,7 @@ public class Animation {
         this.repeat = repeat;
 
         images = new BufferedImage[spritesheet.getWidth() / spriteWidth];
-
+        // LOOP THAT CUTS APART THE SPRITESHEET
         for(int i = 0; i < images.length; i++) {
             images[i] = spritesheet.getSubimage(i * spriteWidth, 0, spriteWidth, spriteHeight);
         }
@@ -46,6 +46,7 @@ public class Animation {
     public void update() {
 
         timer++;
+
         if(timer > delay) {
 
             timer = 0;

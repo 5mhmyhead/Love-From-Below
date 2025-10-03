@@ -49,8 +49,8 @@ public class WorldRoom implements Room {
         this.roomWidth = GamePanel.SCREEN_WIDTH;
         this.roomHeight = GamePanel.SCREEN_HEIGHT;
 
-        tiles = new Tile[numOfColumns][numOfRows];
         this.mapHandler = mapHandler;
+        tiles = new Tile[numOfColumns][numOfRows];
 
         player = world.getPlayer();
 
@@ -61,8 +61,8 @@ public class WorldRoom implements Room {
     // THEN GETS SECTION THAT BELONGS TO THIS ROOM
     private void loadTiles() {
         // THE ID HAS TWO DIGITS, THE FIRST FOR THE COLUMN AND THE SECOND FOR ROW
-        int screenColumn = (int) Math.floor((double) id / 10);
-        int screenRow = id % 10;
+        int screenColumn = (int) Math.floor((double) id / 10);  // RETURNS THE TENTHS DIGIT: COLUMN
+        int screenRow = id % 10;                                // RETURNS THE ONES DIGIT: ROW
 
         for(int column = (screenColumn - 1) * numOfColumns; column < screenColumn * numOfColumns; column++) {
 

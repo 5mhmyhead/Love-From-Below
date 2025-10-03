@@ -28,9 +28,10 @@ public class GameState extends State {
 
         state = "GAME";
 
-        // STARTING ROOM REFERS TO THE ROOM ID
-        // THE ID IS REPRESENTED BY TWO NUMBERS, THE FIRST FOR COLUMN AND SECOND FOR ROW
-        // STARTING ROOM 11 REFERS TO THE ROOM AT THE VERY TOP LEFT
+        /* STARTING ROOM REFERS TO THE ROOM ID
+         * THE ID IS REPRESENTED BY TWO NUMBERS, THE FIRST FOR COLUMN AND SECOND FOR ROW
+         * STARTING ROOM 11 REFERS TO THE ROOM AT THE VERY TOP LEFT
+         */
         world = new World(11, "/tileMaps/testworld.txt", null, 32, 24);
         player = world.getPlayer();
     }
@@ -54,9 +55,8 @@ public class GameState extends State {
 
     @Override
     public void draw(Graphics2D g2) {
-        AffineTransform transform = g2.getTransform();
-
         // DRAWS THE WORLD
+        g2.getTransform();
         world.draw(g2);
     }
 

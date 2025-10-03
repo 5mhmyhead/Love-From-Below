@@ -2,7 +2,9 @@ package components.entity;
 
 import components.rooms.Room;
 
-public class Entity {
+import java.awt.*;
+
+public abstract class Entity {
 
     protected Room room;
 
@@ -22,6 +24,10 @@ public class Entity {
 
     protected Direction direction;
     protected String state;
+
+    // UPDATE AND DRAW FUNCTIONS FOR ENTITY
+    public abstract void update();
+    public abstract void draw(Graphics2D g2d);
 
     // RETURNS A VALUE THAT IS ALIGNED TO THE NEAREST PROVIDED INT
     // value   - VALUE TO BE ALIGNED
