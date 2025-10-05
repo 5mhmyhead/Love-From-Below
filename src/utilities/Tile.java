@@ -63,7 +63,7 @@ public enum Tile {
         };
     }
 
-    public boolean isPassable() {
+    public boolean hasCollision() {
 
         return switch(this) {
 

@@ -61,8 +61,6 @@ public class Player extends Entity {
                 velY = -moveSpeed;
                 direction = Direction.UP;
 
-                y += velY;
-
                 updatePlayerState();
                 break;
 
@@ -70,8 +68,6 @@ public class Player extends Entity {
                 velX = alignToGrid(x, 8);
                 velY = moveSpeed;
                 direction = Direction.DOWN;
-
-                y += velY;
 
                 updatePlayerState();
                 break;
@@ -81,8 +77,6 @@ public class Player extends Entity {
                 velY = alignToGrid(y, 8);
                 direction = Direction.LEFT;
 
-                x += velX;
-
                 updatePlayerState();
                 break;
 
@@ -90,8 +84,6 @@ public class Player extends Entity {
                 velX = moveSpeed;
                 velY = alignToGrid(y, 8);
                 direction = Direction.RIGHT;
-
-                x += velX;
 
                 updatePlayerState();
                 break;
@@ -126,6 +118,11 @@ public class Player extends Entity {
             default:
                 System.out.println(state);
                 break;
+        }
+
+        // CHECK COLLISIONS WITH PLAYER AND TILEMAP
+        if(!state.equals("TRANSITION")) {
+            handleTileCollisions();
         }
     }
 
