@@ -29,12 +29,12 @@ public class Player extends Entity {
 
     private void setDefaultValues() {
 
-        setCoordinates(408, 312);
+        setCoordinates(200, 280);
 
-        drawX = (int) Math.round(x);
-        drawY = (int) Math.round(y);
+        drawX = x;
+        drawY = y;
 
-        moveSpeed = 3;
+        moveSpeed = 5;
 
         width = GamePanel.TILE_SIZE;
         height = GamePanel.TILE_SIZE;
@@ -156,6 +156,9 @@ public class Player extends Entity {
 
         g2.setColor(Color.black);
         g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+
+        // FIXME REMOVE DEBUG WHEN NECESSARY
+        drawDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {

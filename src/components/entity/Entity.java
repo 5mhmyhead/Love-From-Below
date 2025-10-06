@@ -9,19 +9,19 @@ public abstract class Entity {
 
     protected Room room;
 
-    protected double x;
-    protected double y;
+    protected int x;
+    protected int y;
 
-    protected double velX;
-    protected double velY;
-
-    protected double moveSpeed;
+    protected int velX;
+    protected int velY;
 
     protected int drawX;
     protected int drawY;
 
     protected int width;
     protected int height;
+
+    protected int moveSpeed;
 
     protected Direction direction;
     protected String state;
@@ -42,9 +42,7 @@ public abstract class Entity {
 
     // RETURN COLLISION BOX FOR THE ENTITY
     public Rectangle getRectangle() {
-
-        return new Rectangle((int) Math.round(x - width / 2),
-                (int) Math.round(y - width / 2), width, height);
+        return new Rectangle(x - width / 2, y - width / 2, width, height);
     }
 
     // HANDLES COLLISION WITH TILE
@@ -67,7 +65,7 @@ public abstract class Entity {
 
         if(collisionX) {
 
-            x = (double) ((int) Math.round(x) / 8) * 8;
+            x = (x / 8) * 8;
             if(sign(velX) == -1) x += 8;   // CORRECT ROUNDING
 
             velX = 0;
@@ -76,7 +74,7 @@ public abstract class Entity {
 
         if(collisionY) {
 
-            y = (double) ((int) Math.round(y) / 8) * 8;
+            y = (y / 8) * 8;
             if(sign(velY) == -1) y += 8;   // CORRECT ROUNDING
 
             velX = 0;
@@ -157,5 +155,16 @@ public abstract class Entity {
         if(number > 0) return 1;
         else if(number < 0) return -1;
         else return 0;
+    }
+
+    // DEBUG TO DRAW COLLISIONS OF ENTITIES
+    void drawDebug(Graphics2D g2)
+    {
+        g2.setColor(new Color(255, 0, 0, 100));
+
+        g2.fillRect((int) Math.round(x - width / 2),
+                (int) Math.round(y - width / 2), width, height);
+
+        g2.setColor(new Color(0, 0, 255, 100));
     }
 }

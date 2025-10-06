@@ -13,7 +13,6 @@ public class StateManager {
 
     public static final int TITLE_STATE = 0;
     public static final int GAME_STATE = 1;
-    public static final int PAUSE_STATE = 2;
 
     private final State[] states;           // ARRAY HOLDING THE STATES
     private int currentState;               // ID REPRESENTING THE CURRENT STATE

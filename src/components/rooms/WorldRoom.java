@@ -98,6 +98,8 @@ public class WorldRoom implements Room {
         }
 
         g2.setTransform(transform);
+
+        drawDebug(g2);
     }
 
     // UPDATES DRAW POSITION OF ROOM
@@ -144,4 +146,25 @@ public class WorldRoom implements Room {
     public Tile getTile(int column, int row) { return tiles[column][row]; }
 
     public Player getPlayer() { return player; }
+
+    // DEBUG TO DRAW COLLISIONS OF TILES
+    private void drawDebug(Graphics2D g2) {
+
+        for(int i = 0; i < numOfColumns; i++) {
+
+            for(int j = 0; j < numOfRows; j++) {
+
+                if(tiles[i][j].hasCollision()) {
+
+                    g2.setColor(new Color(0, 255, 0, 100));
+
+                    Rectangle tileRectangle = new Rectangle(i * this.getWidthOfTile(),
+                            j * this.getWidthOfTile(), this.getWidthOfTile(),
+                            this.getHeightOfTile() / 2);
+
+                    g2.fill(tileRectangle);
+                }
+            }
+        }
+    }
 }
