@@ -154,8 +154,10 @@ public class World {
             loadingRoom.setRoomMetadata(roomMetadata);
         } else {
             // IF THERE IS, THEN SET IT AS THE LOADING SCREEN
+            roomMetadata = metadataBuffer.get(roomFoundIndex);
+
             loadingRoom = roomBuffer.get(roomFoundIndex);
-            //loadingRoom.setRoomMetadata(metadataBuffer.get(roomFoundIndex));
+            loadingRoom.setRoomMetadata(roomMetadata);
         }
 
         // SET THE COORDINATES FOR THE ROOM TO MOVE
