@@ -33,7 +33,7 @@ public class GameState extends State {
          * THE ID IS REPRESENTED BY TWO NUMBERS, THE FIRST FOR COLUMN AND SECOND FOR ROW
          * STARTING ROOM 11 REFERS TO THE ROOM AT THE VERY TOP LEFT
          */
-        world = new World(13, "/tileMaps/Caves.txt", null, 48, 36);
+        world = new World(13, "/tileMaps/Caves.txt", "/tileMaps/Metadata.xml", 48, 36);
 
         menu = new GameMenu(world);
         player = world.getPlayer();

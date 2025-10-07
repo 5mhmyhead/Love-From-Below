@@ -76,14 +76,8 @@ public class Animation {
     public void reset() { index = 0; }                               // RESET ANIMATION
     public boolean hasEnded() { return index == -1; }                // CHECKS IF ANIMATION HAS ENDED
 
-    public int getWidth()
-    {
-        return images[index].getWidth();
-    }
-    public int getHeight()
-    {
-        return images[index].getHeight();
-    }
+    public int getWidth() { return images[index].getWidth(); }
+    public int getHeight() { return images[index].getHeight(); }
 
     public void setDelay(int delay) {
 

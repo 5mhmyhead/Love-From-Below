@@ -1,6 +1,7 @@
 package components.rooms;
 
 import components.entity.Player;
+import components.objects.WorldObject;
 import components.world.World;
 import core.GamePanel;
 import utilities.MapHandler;
@@ -8,6 +9,7 @@ import utilities.Tile;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 public class WorldRoom implements Room {
 
@@ -24,9 +26,13 @@ public class WorldRoom implements Room {
     // ENTITY VARIABLES
     private final Player player;
 
+    private final ArrayList<WorldObject> worldObjects;
+
     // HELPER CLASSES
     private final MapHandler mapHandler;
+    private RoomMetadata roomMetadata;
 
+    // ROOM TILES
     private final Tile[][] tiles;
 
     // CONSTRUCTOR
@@ -53,6 +59,7 @@ public class WorldRoom implements Room {
         tiles = new Tile[numOfColumns][numOfRows];
 
         player = world.getPlayer();
+        worldObjects = new ArrayList<>();
 
         loadTiles();
     }
@@ -72,9 +79,16 @@ public class WorldRoom implements Room {
                 // THEN PARSES IT TO INT
                 tiles[column - ((screenColumn - 1) * numOfColumns)]
                         [row - (screenRow - 1) * numOfRows] =
-                        Tile.parseID(Integer.parseInt(tile));
+                        Tile.parseTileID(Integer.parseInt(tile));
             }
         }
+    }
+
+    // SET THE ROOM METADATA
+    public void setRoomMetadata(RoomMetadata roomMetadata) {
+
+        this.roomMetadata = roomMetadata;
+        this.worldObjects.addAll(roomMetadata.getWorldObjects());
     }
 
     // UPDATE OBJECTS IN THE ROOM
@@ -92,14 +106,19 @@ public class WorldRoom implements Room {
 
             for(int row = 0; row < numOfRows; row++) {
 
-                g2.drawImage(Tile.getSprite(tiles[col][row]), widthOfTile * col, heightOfTile * row,
+                g2.drawImage(Tile.getTileSprite(tiles[col][row]), widthOfTile * col, heightOfTile * row,
                         widthOfTile, heightOfTile, null);
             }
         }
 
-        g2.setTransform(transform);
+        for(WorldObject object : worldObjects) {
+            object.draw(g2);
+        }
 
-        drawDebug(g2);
+        g2.setTransform(transform);
+        // FIXME REMOVE DEBUG WHEN FINISHED
+        drawTileDebug(g2);
+        drawObjectDebug(g2);
     }
 
     // UPDATES DRAW POSITION OF ROOM
@@ -148,13 +167,13 @@ public class WorldRoom implements Room {
     public Player getPlayer() { return player; }
 
     // DEBUG TO DRAW COLLISIONS OF TILES
-    private void drawDebug(Graphics2D g2) {
+    private void drawTileDebug(Graphics2D g2) {
 
         for(int i = 0; i < numOfColumns; i++) {
 
             for(int j = 0; j < numOfRows; j++) {
 
-                if(tiles[i][j].hasCollision()) {
+                if(tiles[i][j].hasTileCollision()) {
 
                     g2.setColor(new Color(0, 255, 0, 100));
 
@@ -165,6 +184,21 @@ public class WorldRoom implements Room {
                     g2.fill(tileRectangle);
                 }
             }
+        }
+    }
+
+    private void drawObjectDebug(Graphics2D g2) {
+
+        ArrayList<WorldObject> worldObjects = roomMetadata.getWorldObjects();
+
+        for(WorldObject object : worldObjects) {
+
+            g2.setColor(new Color(0, 0, 255, 100));
+
+            Rectangle tileRectangle = new Rectangle(object.getX(),
+                    object.getY(), object.getWidth(), object.getHeight());
+
+            g2.fill(tileRectangle);
         }
     }
 }

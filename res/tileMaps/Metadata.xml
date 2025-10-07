@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<METADATA>
+    <!-- HIDDEN TILESET ROOM -->
+    <ROOM id = "1-1">
+
+        <OBJECTS>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+
+    <ROOM id = "1-2">
+
+        <OBJECTS>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+    <!-- STARTING ROOM -->
+    <ROOM id = "1-3">
+
+        <OBJECTS>
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>4</COL>
+                <ROW>5</ROW>
+            </OBJECT>
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>4</COL>
+                <ROW>4</ROW>
+            </OBJECT>
+
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>4</COL>
+                <ROW>6</ROW>
+            </OBJECT>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+
+    <ROOM id = "2-1">
+
+        <OBJECTS>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+
+    <ROOM id = "2-2">
+
+        <OBJECTS>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+
+    <ROOM id = "2-3">
+
+        <OBJECTS>
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>4</COL>
+                <ROW>4</ROW>
+            </OBJECT>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+
+    <ROOM id = "3-1">
+
+        <OBJECTS>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+
+    <ROOM id = "3-2">
+
+        <OBJECTS>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+
+    <ROOM id = "3-3">
+
+        <OBJECTS>
+        </OBJECTS>
+
+        <ROOM-TYPE>NORMAL</ROOM-TYPE>
+        <MUSIC>CAVES</MUSIC>
+    </ROOM>
+</METADATA>

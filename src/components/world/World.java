@@ -2,36 +2,66 @@ package components.world;
 
 import components.entity.Direction;
 import components.entity.Player;
+import components.rooms.RoomMetadata;
 import components.rooms.WorldRoom;
 import core.GamePanel;
+import org.w3c.dom.Document;
 import utilities.MapHandler;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class World {
 
-    private final Player player;                // PLAYER OBJECT
+    private final Player player;                            // PLAYER OBJECT
 
-    private WorldRoom currentRoom;              // ROOM THAT PLAYER IS IN
-    private WorldRoom loadingRoom;              // ROOM THAT PLAYER IS ENTERING
+    private WorldRoom currentRoom;                          // ROOM THAT PLAYER IS IN
+    private WorldRoom loadingRoom;                          // ROOM THAT PLAYER IS ENTERING
 
-    private final ArrayList<WorldRoom> roomBuffer;    // STORES THE STATE OF THE LAST 5 ROOMS
+    private final ArrayList<WorldRoom> roomBuffer;          // STORES THE STATE OF THE LAST 5 ROOMS
+    private final ArrayList<RoomMetadata> metadataBuffer;   // STORES THE METADATA OF THE LAST 5 ROOMS
 
-    private final MapHandler mapHandler;        // MAP HELPER TO CONSTRUCT WORLD
+    private final MapHandler mapHandler;                    // MAP HELPER TO CONSTRUCT WORLD
 
-    // TODO CREATE METADATA FOR THE WORLD, XML
+    private RoomMetadata roomMetadata;                      // THE ACTUAL METADATA OF THE ROOM
+    private Document metadata;                              // XML DOCUMENT STORING ROOM INFO
+
+    // CONSTRUCTOR
     public World(int startingRoom, String tileMapFilePath, String metadataFilePath, int columns, int rows) {
 
-        player = new Player(this);
-
         mapHandler = new MapHandler(this, tileMapFilePath, columns, rows);
+        loadMetadata(metadataFilePath);
+
+        roomMetadata = new RoomMetadata(startingRoom, this);
 
         currentRoom = new WorldRoom(startingRoom, this, mapHandler);
+        currentRoom.setRoomMetadata(roomMetadata);
+
         loadingRoom = null;
 
+        player = new Player(this, roomMetadata);
+
         roomBuffer = new ArrayList<>(Arrays.asList(new WorldRoom[5]));
+        metadataBuffer = new ArrayList<>(Arrays.asList(new RoomMetadata[5]));
+    }
+
+    // LOADS THE METADATA FROM PATH
+    private void loadMetadata(String filePath) {
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        try {
+
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            metadata = builder.parse(getClass().getResourceAsStream(filePath));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        metadata.getDocumentElement().normalize();
     }
 
     // UPDATE PLAYER AND ROOM DATA
@@ -117,9 +147,15 @@ public class World {
 
         // IF THERE IS NO ROOM FOUND
         if(roomFoundIndex == -1) {
+
+            roomMetadata = new RoomMetadata(loadingRoomID, this);
+
             loadingRoom = new WorldRoom(loadingRoomID, this, mapHandler);
-        } else { // IF THERE IS, THEN SET IT AS THE LOADING SCREEN
+            loadingRoom.setRoomMetadata(roomMetadata);
+        } else {
+            // IF THERE IS, THEN SET IT AS THE LOADING SCREEN
             loadingRoom = roomBuffer.get(roomFoundIndex);
+            //loadingRoom.setRoomMetadata(metadataBuffer.get(roomFoundIndex));
         }
 
         // SET THE COORDINATES FOR THE ROOM TO MOVE
@@ -149,22 +185,25 @@ public class World {
 
         roomBuffer.addFirst(currentRoom);
         if(roomBuffer.size() > 5) roomBuffer.remove(4);
+
+        metadataBuffer.addFirst(roomMetadata);
+        if(metadataBuffer.size() > 5) metadataBuffer.remove(4);
     }
 
     public WorldRoom getCurrentRoom()
     {
         return currentRoom;
     }
-    public WorldRoom getLoadingRoom()
-    {
-        return loadingRoom;
-    }
+    public WorldRoom getLoadingRoom()  {return loadingRoom; }
 
     public Player getPlayer() { return player; }
-    public MapHandler getMapHelper()
+    public MapHandler getMapHandler()
     {
         return mapHandler;
     }
+
+    public Document getMetadata() { return metadata; }
+    public RoomMetadata getRoomMetadata() { return roomMetadata; }
 
     // CHECK IF IN TRANSITION PHASE
     public boolean isTransitioning() {

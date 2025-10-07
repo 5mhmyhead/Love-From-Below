@@ -21,10 +21,10 @@ public enum Tile {
     CAVE_WALLS_26, CAVE_WALLS_27, CAVE_WALLS_28, CAVE_WALLS_29, CAVE_WALLS_30,
     CAVE_WALLS_31, CAVE_WALLS_32, CAVE_WALLS_33, CAVE_WALLS_34, CAVE_WALLS_35;
 
-    public static Tile parseID(int id) {
+    public static Tile parseTileID(int id) {
 
         return switch(id) {
-            
+
             case 10 -> SOLID_1;
             case 11 -> SOLID_2;
             case 12 -> SOLID_3;
@@ -118,7 +118,7 @@ public enum Tile {
         };
     }
 
-    public int toID() {
+    public int toTileID() {
 
         return switch(this) {
 
@@ -213,7 +213,7 @@ public enum Tile {
         };
     }
 
-    public static BufferedImage getSprite(Tile tile) {
+    public static BufferedImage getTileSprite(Tile tile) {
 
         return switch(tile) {
 
@@ -310,7 +310,7 @@ public enum Tile {
         };
     }
 
-    public boolean hasCollision() {
+    public boolean hasTileCollision() {
 
         return switch(this) {
             // ONLY THE SOLID BLACK TILE HAS COLLISION

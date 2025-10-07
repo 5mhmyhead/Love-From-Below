@@ -1,5 +1,6 @@
 package components.entity;
 
+import components.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
 
@@ -19,9 +20,10 @@ public class Player extends Entity {
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
 
     // CONSTRUCTOR
-    public Player(World world) {
+    public Player(World world, RoomMetadata metadata) {
 
         this.world = world;
+        this.roomMetadata = metadata;
         this.room = world.getCurrentRoom();
 
         setDefaultValues();
@@ -29,12 +31,12 @@ public class Player extends Entity {
 
     private void setDefaultValues() {
 
-        setCoordinates(200, 280);
+        setCoordinates(100, 280);
 
         drawX = x;
         drawY = y;
 
-        moveSpeed = 5;
+        moveSpeed = 6;
 
         width = GamePanel.TILE_SIZE;
         height = GamePanel.TILE_SIZE;
@@ -47,6 +49,7 @@ public class Player extends Entity {
     public void update() {
         // SETS UP THE CURRENT ROOM
         this.room = world.getCurrentRoom();
+        this.roomMetadata = world.getRoomMetadata();
 
         switch(state) {
             case "IDLE":
@@ -57,7 +60,7 @@ public class Player extends Entity {
                 break;
 
             case "UP":
-                velX = alignToGrid(x, 8);
+                velX = alignToGrid(x);
                 velY = -moveSpeed;
                 direction = Direction.UP;
 
@@ -65,7 +68,7 @@ public class Player extends Entity {
                 break;
 
             case "DOWN":
-                velX = alignToGrid(x, 8);
+                velX = alignToGrid(x);
                 velY = moveSpeed;
                 direction = Direction.DOWN;
 
@@ -74,7 +77,7 @@ public class Player extends Entity {
 
             case "LEFT":
                 velX = -moveSpeed;
-                velY = alignToGrid(y, 8);
+                velY = alignToGrid(y);
                 direction = Direction.LEFT;
 
                 updatePlayerState();
@@ -82,7 +85,7 @@ public class Player extends Entity {
 
             case "RIGHT":
                 velX = moveSpeed;
-                velY = alignToGrid(y, 8);
+                velY = alignToGrid(y);
                 direction = Direction.RIGHT;
 
                 updatePlayerState();
@@ -151,11 +154,11 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
         //Set integer forms of the current x/y for drawing
-        drawX = (int) Math.round(x) - width / 2;
-        drawY = (int) Math.round(y) - height / 2;
+        drawX = x - width / 2;
+        drawY = y - height / 2;
 
-        g2.setColor(Color.black);
-        g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+//        g2.setColor(Color.black);
+//        g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 
         // FIXME REMOVE DEBUG WHEN NECESSARY
         drawDebug(g2);

@@ -1,13 +1,17 @@
 package components.entity;
 
+import components.objects.WorldObject;
 import components.rooms.Room;
+import components.rooms.RoomMetadata;
 import utilities.Tile;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class Entity {
 
     protected Room room;
+    protected RoomMetadata roomMetadata;
 
     protected int x;
     protected int y;
@@ -51,11 +55,13 @@ public abstract class Entity {
         boolean collisionX = false;
         boolean collisionY = false;
 
-        if(checkCollisionWithTileMap(x + velX, y)) {
+        if(checkCollisionWithTileMap(x + velX, y) ||
+                checkCollisionWithObjects(x + velX, y)) {
             collisionX = true;
         }
 
-        if(checkCollisionWithTileMap(x, y + velY)) {
+        if(checkCollisionWithTileMap(x, y + velY) ||
+                checkCollisionWithObjects(x, y + velY)) {
             collisionY = true;
         }
 
@@ -84,14 +90,34 @@ public abstract class Entity {
         return collisionX || collisionY;
     }
 
-    protected boolean checkCollisionWithTileMap(double newX, double newY) {
+    protected boolean checkCollisionWithObjects(int newX, int newY) {
+
+        ArrayList<WorldObject> worldObjects = roomMetadata.getWorldObjects();
+
+        for(WorldObject object : worldObjects) {
+
+            Rectangle objectRectangle = new Rectangle(object.getX(), object.getY(),
+                    object.getWidth(), object.getHeight());
+
+            Rectangle thisRectangle = new Rectangle(newX - width / 2, newY - height / 2,
+                    width, height);
+
+            if(object.isCollidable() && thisRectangle.intersects(objectRectangle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean checkCollisionWithTileMap(int newX, int newY) {
 
         boolean collisionFlag = false;
 
-        int leftColumn = (int) Math.round(newX - width / 2) / room.getWidthOfTile();
-        int rightColumn = (int) Math.round(newX + width / 2) / room.getWidthOfTile();
-        int topRow = (int) Math.round(newY - height / 2) / room.getHeightOfTile();
-        int bottomRow = (int) Math.round(newY + height / 2) / room.getHeightOfTile();
+        int leftColumn = (newX - width / 2) / room.getWidthOfTile();
+        int rightColumn = (newX + width / 2) / room.getWidthOfTile();
+        int topRow = (newY - height / 2) / room.getHeightOfTile();
+        int bottomRow = (newY + height / 2) / room.getHeightOfTile();
 
         if(leftColumn < 0) leftColumn = 0;
         if(topRow < 0) topRow = 0;
@@ -111,10 +137,10 @@ public abstract class Entity {
                             j * room.getHeightOfTile(), room.getWidthOfTile(),
                             room.getHeightOfTile() / 2);
 
-                    Rectangle thisRectangle = new Rectangle((int) Math.round(newX) - width / 2,
-                            (int) Math.round(newY) - height / 2, width, height);
+                    Rectangle thisRectangle = new Rectangle(newX - width / 2, newY - height / 2,
+                            width, height);
 
-                    if(tile.hasCollision() && thisRectangle.intersects(tileRectangle)) {
+                    if(tile.hasTileCollision() && thisRectangle.intersects(tileRectangle)) {
                         collisionFlag = true;
                     }
                 }
@@ -127,18 +153,17 @@ public abstract class Entity {
     // RETURNS A VALUE THAT IS ALIGNED TO THE NEAREST PROVIDED INT
     // value   - VALUE TO BE ALIGNED
     // alignTo - DISTANCE FOR THE VALUE TO BE ALIGNED TO
-    protected int alignToGrid(double value, int alignTo) {
+    protected int alignToGrid(double value) {
         // CHECK HOW MUCH OF VALUE IS
-        int extra = (int) Math.round(value) % alignTo;
+        int extra = (int) Math.round(value) % 8;
         // FIND THE HALFWAY MARK OF THE OFFSET
-        int halfway = (alignTo - 1) / 2;
-
+        int halfway = (8 - 1) / 2;
         // EITHER PUSHES IT FORWARD TO THE NEXT MARK OR PREVIOUS MARK
-        return (extra > halfway) ? alignTo - extra : -extra;
+        return (extra > halfway) ? 8 - extra : -extra;
     }
 
-    public double getX() { return x; }
-    public double getY() { return y; }
+    public int getX() { return x; }
+    public int getY() { return y; }
 
     public void setCoordinates(int x, int y) {
 
@@ -158,13 +183,9 @@ public abstract class Entity {
     }
 
     // DEBUG TO DRAW COLLISIONS OF ENTITIES
-    void drawDebug(Graphics2D g2)
-    {
-        g2.setColor(new Color(255, 0, 0, 100));
+    void drawDebug(Graphics2D g2) {
 
-        g2.fillRect((int) Math.round(x - width / 2),
-                (int) Math.round(y - width / 2), width, height);
-
-        g2.setColor(new Color(0, 0, 255, 100));
+        g2.setColor(new Color(255, 0, 0));
+        g2.fillRect(x - width / 2, y - height / 2, width, height);
     }
 }

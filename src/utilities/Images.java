@@ -21,8 +21,14 @@ public class Images {
 
     // ALL ASSETS FOR TITLE SCREEN
     public static class TitleScreenAssets {
-
         public static final BufferedImage TITLE_SCREEN = loadSingleImage("/assets/titleScreen/titleScreen.png");
+    }
+
+    // ALL OBJECT ASSETS
+    public static class WorldObjects {
+
+        public static final BufferedImage NORMAL_CHEST_CLOSED = loadSingleImage("/assets/objects/nChestClosed.png");
+        public static final BufferedImage NORMAL_CHEST_OPENED = loadSingleImage("/assets/objects/nChestOpened.png");
     }
 
     // ALL TILE ASSETS
