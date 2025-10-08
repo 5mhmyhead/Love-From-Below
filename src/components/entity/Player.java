@@ -179,6 +179,8 @@ public class Player extends Entity {
 
         g2.setColor(Color.black);
         g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+
+        drawDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {

@@ -48,7 +48,18 @@ public abstract class Entity {
     public Rectangle getBounds() {
         return new Rectangle(x - width / 2, y - width / 2, width, height);
     }
-    public Rectangle getItemRange() { return new Rectangle((x - width / 2) - 5, (y - width / 2) - 5, width + 10, height + 10); }
+
+    // RETURN ITEM RANGE FOR THE ENTITY, DEPENDING ON THE DIRECTION OF THE PLAYER
+    public Rectangle getItemRange() {
+
+        return switch (direction) {
+
+            case UP -> new Rectangle(x - width / 2, y - height / 2 - height / 3, width, height / 3);
+            case DOWN -> new Rectangle(x - width / 2, y + height / 2, width, height / 3);
+            case LEFT -> new Rectangle(x - width / 2 - width / 3, y - height / 2, width / 3, height);
+            case RIGHT -> new Rectangle(x + width / 2, y - height / 2, width / 3, height);
+        };
+    }
 
     // HANDLES COLLISION WITH TILE
     protected boolean handleTileCollisions() {
@@ -188,8 +199,16 @@ public abstract class Entity {
         // DRAW ENTITY BODY
         g2.setColor(new Color(255, 0, 0));
         g2.fillRect(x - width / 2, y - height / 2, width, height);
+
         // DRAW ENTITY RANGE
         g2.setColor(new Color(255, 255, 0, 60));
-        g2.fillRect((x - width / 2) - 5, (y - width / 2) - 5, width + 10, height + 10);
+
+        switch(direction) {
+
+            case UP: g2.fillRect(x - width / 2, y - height / 2 - height / 3, width, height / 3); break;
+            case DOWN: g2.fillRect(x - width / 2, y + height / 2, width, height / 3); break;
+            case LEFT: g2.fillRect(x - width / 2 - width / 3, y - height / 2, width / 3, height); break;
+            case RIGHT: g2.fillRect(x + width / 2, y - height / 2, width / 3, height); break;
+        }
     }
 }

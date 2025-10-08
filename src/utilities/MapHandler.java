@@ -64,8 +64,8 @@ public class MapHandler {
     // BUILDS AND PUTS EVERY OBJECT IN THE WORLD
     public WorldObject buildObject(String id, int col, int row) {
         // FIND THE COORDINATES OF THE OBJECT
-        int x = col * GamePanel.TILE_SIZE + GamePanel.TILE_SIZE / 2;
-        int y = row * GamePanel.TILE_SIZE + GamePanel.TILE_SIZE / 2;
+        int x = col * GamePanel.TILE_SIZE;
+        int y = row * GamePanel.TILE_SIZE;
 
         // CHECK IF WE LOAD THE OBJECT IN THE CURRENT ROOM OR THE LOADING ROOM
         Room room = (world.getLoadingRoom() != null) ?

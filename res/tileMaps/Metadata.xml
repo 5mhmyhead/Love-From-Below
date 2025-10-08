@@ -52,8 +52,13 @@
         <OBJECTS>
             <OBJECT>
                 <TYPE>NORMAL_CHEST</TYPE>
-                <COL>6</COL>
+                <COL>9</COL>
                 <ROW>2</ROW>
+            </OBJECT>
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>14</COL>
+                <ROW>8</ROW>
             </OBJECT>
         </OBJECTS>
 
