@@ -1,11 +1,13 @@
 package components.entity;
 
+import components.objects.WorldObject;
 import components.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Player extends Entity {
 
@@ -14,7 +16,7 @@ public class Player extends Entity {
 
     // PLAYER INPUTS
     private boolean inputLeft, inputUp, inputRight,
-                    inputDown;
+                    inputDown, interact;
 
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
@@ -125,7 +127,9 @@ public class Player extends Entity {
 
         // CHECK COLLISIONS WITH PLAYER AND TILEMAP
         if(!state.equals("TRANSITION")) {
+
             handleTileCollisions();
+            handleObjectCollisions();
         }
     }
 
@@ -145,11 +149,27 @@ public class Player extends Entity {
 
     // UPDATES PLAYER INPUT VARIABLES
     public void setInput(int key, boolean bool) {
-
+        // MOVEMENT
         if(key == KeyEvent.VK_D) inputRight = bool;
         if(key == KeyEvent.VK_A) inputLeft = bool;
         if(key == KeyEvent.VK_W) inputUp = bool;
         if(key == KeyEvent.VK_S) inputDown = bool;
+        // INTERACT
+        if(key == KeyEvent.VK_E) interact = bool;
+
+    }
+
+    // HANDLE PLAYER COLLISIONS WITH OBJECTS IN THE ROOM
+    private void handleObjectCollisions() {
+
+        ArrayList<WorldObject> worldObjects = room.getWorldObjects();
+
+        for (WorldObject worldObject : worldObjects) {
+            // IF THE PLAYER GETS IN ITEM RANGE OF THE PLAYER AND PRESSES INTERACT, THEN THE WORLD OBJECT UPDATES
+            if (this.getItemRange().intersects(worldObject.getBounds()) && interact) {
+                worldObject.update();
+            }
+        }
     }
 
     public void draw(Graphics2D g2) {
@@ -157,11 +177,8 @@ public class Player extends Entity {
         drawX = x - width / 2;
         drawY = y - height / 2;
 
-//        g2.setColor(Color.black);
-//        g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-
-        // FIXME REMOVE DEBUG WHEN NECESSARY
-        drawDebug(g2);
+        g2.setColor(Color.black);
+        g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {

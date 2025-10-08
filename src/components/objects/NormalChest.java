@@ -9,9 +9,6 @@ import java.awt.image.BufferedImage;
 
 public class NormalChest extends WorldObject {
 
-    BufferedImage chestClosed = Images.WorldObjects.NORMAL_CHEST_CLOSED;
-    BufferedImage chestOpened = Images.WorldObjects.NORMAL_CHEST_OPENED;
-
     private String state;
 
     public NormalChest(int x, int y, Room room) {
@@ -25,17 +22,17 @@ public class NormalChest extends WorldObject {
         this.state = "CLOSED";
         this.hasCollision = true;
 
+        this.image = Images.WorldObjects.NORMAL_CHEST_CLOSED;
+
         this.room = room;
     }
 
     @Override
     public void update() {
 
-
         if(state.equals("CLOSED")) {
 
-
-
+            System.out.println("wow you got an item not");
             state = "OPENED";
         }
     }
@@ -44,9 +41,11 @@ public class NormalChest extends WorldObject {
     public void draw(Graphics2D g2) {
 
         if(state.equals("CLOSED")) {
-            g2.drawImage(chestClosed, x, y, width, height, null);
+            g2.drawImage(image, x, y, width, height, null);
         } else {
-            g2.drawImage(chestOpened, x, y, width, height, null);
+
+            image = Images.WorldObjects.NORMAL_CHEST_OPENED;
+            g2.drawImage(image, x, y, width, height, null);
         }
     }
 }

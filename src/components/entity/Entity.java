@@ -35,19 +35,20 @@ public abstract class Entity {
     public abstract void draw(Graphics2D g2d);
 
     // RETURNS IF THE ENTITY COLLIDES WITH ANOTHER ENTITY OR ANOTHER RECTANGLE
-    boolean checkCollisionWith(Entity other)
+    public boolean checkCollisionWith(Entity other)
     {
-        return getRectangle().intersects(other.getRectangle());
+        return getBounds().intersects(other.getBounds());
     }
-    boolean checkCollisionWith(Rectangle otherRectangle)
+    public boolean checkCollisionWith(Rectangle otherRectangle)
     {
-        return getRectangle().intersects(otherRectangle);
+        return getBounds().intersects(otherRectangle);
     }
 
     // RETURN COLLISION BOX FOR THE ENTITY
-    public Rectangle getRectangle() {
+    public Rectangle getBounds() {
         return new Rectangle(x - width / 2, y - width / 2, width, height);
     }
+    public Rectangle getItemRange() { return new Rectangle((x - width / 2) - 5, (y - width / 2) - 5, width + 10, height + 10); }
 
     // HANDLES COLLISION WITH TILE
     protected boolean handleTileCollisions() {
@@ -184,8 +185,11 @@ public abstract class Entity {
 
     // DEBUG TO DRAW COLLISIONS OF ENTITIES
     void drawDebug(Graphics2D g2) {
-
+        // DRAW ENTITY BODY
         g2.setColor(new Color(255, 0, 0));
         g2.fillRect(x - width / 2, y - height / 2, width, height);
+        // DRAW ENTITY RANGE
+        g2.setColor(new Color(255, 255, 0, 60));
+        g2.fillRect((x - width / 2) - 5, (y - width / 2) - 5, width + 10, height + 10);
     }
 }

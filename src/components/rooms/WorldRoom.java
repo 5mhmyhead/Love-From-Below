@@ -116,9 +116,6 @@ public class WorldRoom implements Room {
         }
 
         g2.setTransform(transform);
-        // FIXME REMOVE DEBUG WHEN FINISHED
-        drawTileDebug(g2);
-        drawObjectDebug(g2);
     }
 
     // UPDATES DRAW POSITION OF ROOM
@@ -165,6 +162,11 @@ public class WorldRoom implements Room {
     public Tile getTile(int column, int row) { return tiles[column][row]; }
 
     public Player getPlayer() { return player; }
+
+    public ArrayList<WorldObject> getWorldObjects()
+    {
+        return worldObjects;
+    }
 
     // DEBUG TO DRAW COLLISIONS OF TILES
     private void drawTileDebug(Graphics2D g2) {

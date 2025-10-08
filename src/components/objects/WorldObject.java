@@ -3,6 +3,7 @@ package components.objects;
 import components.rooms.Room;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public abstract class WorldObject {
 
@@ -14,6 +15,7 @@ public abstract class WorldObject {
     protected int width;
     protected int height;
 
+    protected BufferedImage image;
     protected boolean hasCollision;
 
     public abstract void update();
@@ -24,6 +26,11 @@ public abstract class WorldObject {
 
     public int getWidth() { return width; }
     public int getHeight() { return height; }
+
+    public Rectangle getBounds()
+    {
+        return new Rectangle(x, y, width, height);
+    }
 
     public boolean isCollidable() { return hasCollision; }
 }

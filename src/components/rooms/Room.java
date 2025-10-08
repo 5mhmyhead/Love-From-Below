@@ -1,7 +1,10 @@
 package components.rooms;
 
 import components.entity.Player;
+import components.objects.WorldObject;
 import utilities.Tile;
+
+import java.util.ArrayList;
 
 public interface Room {
 
@@ -22,6 +25,9 @@ public interface Room {
 
     // RETURNS A TILE IN THE ROOM
     Tile getTile(int column, int row);
+
+    // GETS ALL THE ITEMS IN THE ROOM
+    ArrayList<WorldObject> getWorldObjects();
 
     // RETURNS THE PLAYER IN THE ROOM
     Player getPlayer();
