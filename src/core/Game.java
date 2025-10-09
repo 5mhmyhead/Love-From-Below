@@ -3,7 +3,6 @@ package core;
 import utilities.Images;
 
 import javax.swing.*;
-import java.util.Objects;
 
 public class Game {
 
