@@ -1,15 +1,19 @@
 package components.entity;
 
+import components.objects.Boots;
+import components.objects.NormalChest;
 import components.objects.WorldObject;
 import components.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
 import utilities.Animation;
+import utilities.GameData;
 import utilities.Images;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Player extends Entity {
 
@@ -18,7 +22,7 @@ public class Player extends Entity {
 
     // PLAYER INPUTS
     private boolean inputLeft, inputUp, inputRight,
-                    inputDown, interact;
+                    inputDown, interact, sprint;
 
     // PLAYER ANIMATIONS
     private Animation walkUp, walkDown, walkLeft, walkRight,
@@ -26,6 +30,8 @@ public class Player extends Entity {
 
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
+
+    private int idleDelay = 0;                          // COUNT TO SMOOTHEN TRANSITION BETWEEN WALKING TO IDLE STATE
 
     // CONSTRUCTOR
     public Player(World world, RoomMetadata metadata) {
@@ -39,7 +45,7 @@ public class Player extends Entity {
 
     private void setDefaultValues() {
 
-        setCoordinates(100, 280);
+        setCoordinates(200, 280);
 
         drawX = x;
         drawY = y;
@@ -49,15 +55,16 @@ public class Player extends Entity {
         width = GamePanel.TILE_SIZE;
         height = GamePanel.TILE_SIZE;
 
-        walkUp = new Animation(10, true, Images.PlayerAssets.PLAYER_UP, width, height);
-        walkDown = new Animation(10, true, Images.PlayerAssets.PLAYER_DOWN, width, height);
-        walkLeft = new Animation(10, true, Images.PlayerAssets.PLAYER_WALK_LEFT, width, height);
-        walkRight = new Animation(10, true, Images.PlayerAssets.PLAYER_WALK_RIGHT, width, height);
+        // ALL OF THE PLAYERS ANIMATIONS
+        walkUp = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_UP), width, height);
+        walkDown = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_DOWN), width, height);
+        walkLeft = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_WALK_LEFT), width, height);
+        walkRight = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_WALK_RIGHT), width, height);
 
         runUp = new Animation(7, true, Images.PlayerAssets.PLAYER_UP, width, height);
         runDown = new Animation(7, true, Images.PlayerAssets.PLAYER_DOWN, width, height);
-        runLeft = new Animation(7, true, Images.PlayerAssets.PLAYER_RUN_LEFT, width, height);
-        runRight = new Animation(7, true, Images.PlayerAssets.PLAYER_RUN_RIGHT, width, height);
+        runLeft = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_LEFT), width, height);
+        runRight = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_RIGHT), width, height);
 
         direction = Direction.DOWN;
         state = "IDLE";
@@ -82,7 +89,9 @@ public class Player extends Entity {
                 velY = -moveSpeed;
                 direction = Direction.UP;
 
-                walkUp.update();
+                if(sprint) runUp.update();
+                else walkUp.update();
+
                 updatePlayerState();
                 break;
 
@@ -91,7 +100,9 @@ public class Player extends Entity {
                 velY = moveSpeed;
                 direction = Direction.DOWN;
 
-                walkDown.update();
+                if(sprint) runDown.update();
+                else walkDown.update();
+
                 updatePlayerState();
                 break;
 
@@ -100,7 +111,9 @@ public class Player extends Entity {
                 velY = alignToGrid(y);
                 direction = Direction.LEFT;
 
-                walkLeft.update();
+                if(sprint) runLeft.update();
+                else walkLeft.update();
+
                 updatePlayerState();
                 break;
 
@@ -109,7 +122,9 @@ public class Player extends Entity {
                 velY = alignToGrid(y);
                 direction = Direction.RIGHT;
 
-                walkRight.update();
+                if(sprint) runRight.update();
+                else walkRight.update();
+
                 updatePlayerState();
                 break;
 
@@ -161,6 +176,9 @@ public class Player extends Entity {
         if(inputLeft) state = "LEFT";
         if(inputRight) state = "RIGHT";
 
+        if(sprint) moveSpeed = 5;
+        else moveSpeed = 3;
+
         if(!(inputUp || inputDown || inputLeft || inputRight))
             state = "IDLE";
 
@@ -174,9 +192,10 @@ public class Player extends Entity {
         if(key == KeyEvent.VK_A) inputLeft = bool;
         if(key == KeyEvent.VK_W) inputUp = bool;
         if(key == KeyEvent.VK_S) inputDown = bool;
+        if(key == KeyEvent.VK_SHIFT && GameData.hasBoots) sprint = bool;
+
         // INTERACT
         if(key == KeyEvent.VK_E) interact = bool;
-
     }
 
     // HANDLE PLAYER COLLISIONS WITH OBJECTS IN THE ROOM
@@ -185,9 +204,19 @@ public class Player extends Entity {
         ArrayList<WorldObject> worldObjects = room.getWorldObjects();
 
         for (WorldObject worldObject : worldObjects) {
+            //TODO REFACTOR THIS, MAKE WORLD OBJECT INSTANCES BETTER
+
             // IF THE PLAYER GETS IN ITEM RANGE OF THE PLAYER AND PRESSES INTERACT, THEN THE WORLD OBJECT UPDATES
-            if (this.getItemRange().intersects(worldObject.getBounds()) && interact) {
-                worldObject.update();
+            if(worldObject instanceof NormalChest) {
+                if (this.getItemRange().intersects(worldObject.getBounds()) && interact) {
+                    worldObject.update();
+                }
+            }
+
+            if(worldObject instanceof Boots) {
+                if (this.getBounds().intersects(worldObject.getBounds())) {
+                    worldObject.update();
+                }
             }
         }
     }
@@ -201,21 +230,61 @@ public class Player extends Entity {
 
             case "IDLE", "TRANSITION":
 
-                switch (direction) {
+                idleDelay++;
 
-                    case UP: walkUp.draw(g2, drawX, drawY, width, height); break;
-                    case RIGHT: walkRight.draw(g2, drawX, drawY, width, height); break;
-                    case DOWN: walkDown.draw(g2, drawX, drawY, width, height); break;
-                    case LEFT: walkLeft.draw(g2, drawX, drawY, width, height); break;
-                    default: break;
+                if(idleDelay < 10) {
+
+                    switch (direction) {
+
+                        case UP: walkUp.draw(g2, drawX, drawY, width, height); break;
+                        case RIGHT: walkRight.draw(g2, drawX, drawY, width, height); break;
+                        case DOWN: walkDown.draw(g2, drawX, drawY, width, height); break;
+                        case LEFT: walkLeft.draw(g2, drawX, drawY, width, height); break;
+                        default: break;
+                    }
+
+                } else {
+
+                    switch (direction) {
+
+                        case UP: walkUp.drawFirst(g2, drawX, drawY, width, height); break;
+                        case RIGHT: walkRight.drawFirst(g2, drawX, drawY, width, height); break;
+                        case DOWN: walkDown.drawFirst(g2, drawX, drawY, width, height); break;
+                        case LEFT: walkLeft.drawFirst(g2, drawX, drawY, width, height); break;
+                        default: break;
+                    }
+
                 }
 
                 break;
 
-            case "UP": walkUp.draw(g2, drawX, drawY, width, height); break;
-            case "DOWN": walkDown.draw(g2, drawX, drawY, width, height); break;
-            case "RIGHT": walkRight.draw(g2, drawX, drawY, width, height); break;
-            case "LEFT": walkLeft.draw(g2, drawX, drawY, width, height); break;
+            case "UP":
+
+                idleDelay = 0;
+                if(sprint) runUp.draw(g2, drawX, drawY, width, height);
+                else walkUp.draw(g2, drawX, drawY, width, height);
+                break;
+
+            case "DOWN":
+
+                idleDelay = 0;
+                if(sprint) runDown.draw(g2, drawX, drawY, width, height);
+                else walkDown.draw(g2, drawX, drawY, width, height);
+                break;
+
+            case "RIGHT":
+
+                idleDelay = 0;
+                if(sprint) runRight.draw(g2, drawX, drawY, width, height);
+                else walkRight.draw(g2, drawX, drawY, width, height);
+                break;
+
+            case "LEFT":
+
+                idleDelay = 0;
+                if(sprint) runLeft.draw(g2, drawX, drawY, width, height);
+                else walkLeft.draw(g2, drawX, drawY, width, height);
+                break;
 
             default:
 

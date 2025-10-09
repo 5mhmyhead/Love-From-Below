@@ -73,6 +73,11 @@ public class Animation {
         if(index != -1) g2.drawImage(images[index], x, y, width, height, null);
     }
 
+    // DRAW FUNCTION THAT ONLY DRAWS THE FIRST FRAME
+    public void drawFirst(Graphics2D g2, int x, int y, int width, int height) {
+        g2.drawImage(images[0], x, y, width, height, null);
+    }
+
     public void reset() { index = 0; }                               // RESET ANIMATION
     public boolean hasEnded() { return index == -1; }                // CHECKS IF ANIMATION HAS ENDED
 

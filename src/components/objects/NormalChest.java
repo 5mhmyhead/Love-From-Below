@@ -5,7 +5,6 @@ import core.GamePanel;
 import utilities.Images;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class NormalChest extends WorldObject {
 

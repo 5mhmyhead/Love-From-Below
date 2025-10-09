@@ -54,10 +54,10 @@ public abstract class Entity {
 
         return switch (direction) {
 
-            case UP -> new Rectangle(x - width / 2, y - height / 2, width, height / 3);
-            case DOWN -> new Rectangle(x - width / 2, y + height / 2, width, height / 3);
-            case LEFT -> new Rectangle(x - width / 2 - width / 3, y - height / 2, width / 3, height);
-            case RIGHT -> new Rectangle(x + width / 2, y - height / 2, width / 3, height);
+            case UP -> new Rectangle(x - width / 2, y - height / 2, width, height / 4);
+            case DOWN -> new Rectangle(x - width / 2, y + height / 2, width, height / 4);
+            case LEFT -> new Rectangle(x - width / 2 - width / 3, y - height / 2, width / 4, height);
+            case RIGHT -> new Rectangle(x + width / 2, y - height / 2, width / 4, height);
         };
     }
 
@@ -205,10 +205,10 @@ public abstract class Entity {
 
         switch(direction) {
 
-            case UP: g2.fillRect(x - width / 2, y - height / 2, width, height / 3); break;
-            case DOWN: g2.fillRect(x - width / 2, y + height / 2, width, height / 3); break;
-            case LEFT: g2.fillRect(x - width / 2 - width / 3, y - height / 2, width / 3, height); break;
-            case RIGHT: g2.fillRect(x + width / 2, y - height / 2, width / 3, height); break;
+            case UP: g2.fillRect(x - width / 2, y - height / 2, width, height / 4); break;
+            case DOWN: g2.fillRect(x - width / 2, y + height / 2, width, height / 4); break;
+            case LEFT: g2.fillRect(x - width / 2 - width / 4, y - height / 2, width / 4, height); break;
+            case RIGHT: g2.fillRect(x + width / 2, y - height / 2, width / 4, height); break;
         }
     }
 }

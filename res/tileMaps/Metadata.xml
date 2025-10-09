@@ -14,6 +14,11 @@
     <ROOM id = "1-2">
 
         <OBJECTS>
+            <OBJECT>
+                <TYPE>BOOTS</TYPE>
+                <COL>3</COL>
+                <ROW>6</ROW>
+            </OBJECT>
         </OBJECTS>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
@@ -36,6 +41,16 @@
                 <TYPE>NORMAL_CHEST</TYPE>
                 <COL>5</COL>
                 <ROW>3</ROW>
+            </OBJECT>
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>7</COL>
+                <ROW>1</ROW>
+            </OBJECT>
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>8</COL>
+                <ROW>1</ROW>
             </OBJECT>
         </OBJECTS>
 

@@ -1,5 +1,6 @@
 package utilities;
 
+import components.objects.Boots;
 import components.objects.NormalChest;
 import components.objects.WorldObject;
 import components.rooms.Room;
@@ -75,6 +76,7 @@ public class MapHandler {
         return switch(id) {
 
             case "NORMAL_CHEST" -> new NormalChest(x, y, room);
+            case "BOOTS" -> new Boots(x, y, room);
 
             default -> null;
         };
