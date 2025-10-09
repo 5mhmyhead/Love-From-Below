@@ -1,6 +1,5 @@
 package utilities;
 
-import core.Game;
 import core.GamePanel;
 
 import javax.imageio.ImageIO;
@@ -9,9 +8,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Images {
-
-    private static final int TILE_WIDTH = GamePanel.TILE_SIZE;
-    private static final int TILE_HEIGHT = GamePanel.TILE_SIZE;
 
     // LOADS AN IMAGE FROM A PATH
     private static BufferedImage loadSingleImage(String path) {
