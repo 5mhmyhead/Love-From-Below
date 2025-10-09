@@ -4,6 +4,8 @@ import components.objects.WorldObject;
 import components.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
+import utilities.Animation;
+import utilities.Images;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,6 +19,10 @@ public class Player extends Entity {
     // PLAYER INPUTS
     private boolean inputLeft, inputUp, inputRight,
                     inputDown, interact;
+
+    // PLAYER ANIMATIONS
+    private Animation walkUp, walkDown, walkLeft, walkRight,
+                    runUp, runDown, runLeft, runRight;
 
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
@@ -38,10 +44,20 @@ public class Player extends Entity {
         drawX = x;
         drawY = y;
 
-        moveSpeed = 6;
+        moveSpeed = 3;
 
         width = GamePanel.TILE_SIZE;
         height = GamePanel.TILE_SIZE;
+
+        walkUp = new Animation(10, true, Images.PlayerAssets.PLAYER_UP, width, height);
+        walkDown = new Animation(10, true, Images.PlayerAssets.PLAYER_DOWN, width, height);
+        walkLeft = new Animation(10, true, Images.PlayerAssets.PLAYER_WALK_LEFT, width, height);
+        walkRight = new Animation(10, true, Images.PlayerAssets.PLAYER_WALK_RIGHT, width, height);
+
+        runUp = new Animation(7, true, Images.PlayerAssets.PLAYER_UP, width, height);
+        runDown = new Animation(7, true, Images.PlayerAssets.PLAYER_DOWN, width, height);
+        runLeft = new Animation(7, true, Images.PlayerAssets.PLAYER_RUN_LEFT, width, height);
+        runRight = new Animation(7, true, Images.PlayerAssets.PLAYER_RUN_RIGHT, width, height);
 
         direction = Direction.DOWN;
         state = "IDLE";
@@ -66,6 +82,7 @@ public class Player extends Entity {
                 velY = -moveSpeed;
                 direction = Direction.UP;
 
+                walkUp.update();
                 updatePlayerState();
                 break;
 
@@ -74,6 +91,7 @@ public class Player extends Entity {
                 velY = moveSpeed;
                 direction = Direction.DOWN;
 
+                walkDown.update();
                 updatePlayerState();
                 break;
 
@@ -82,6 +100,7 @@ public class Player extends Entity {
                 velY = alignToGrid(y);
                 direction = Direction.LEFT;
 
+                walkLeft.update();
                 updatePlayerState();
                 break;
 
@@ -90,6 +109,7 @@ public class Player extends Entity {
                 velY = alignToGrid(y);
                 direction = Direction.RIGHT;
 
+                walkRight.update();
                 updatePlayerState();
                 break;
 
@@ -177,10 +197,34 @@ public class Player extends Entity {
         drawX = x - width / 2;
         drawY = y - height / 2;
 
-        g2.setColor(Color.black);
-        g2.fillRect(drawX, drawY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+        switch(state) {
 
-        drawDebug(g2);
+            case "IDLE", "TRANSITION":
+
+                switch (direction) {
+
+                    case UP: walkUp.draw(g2, drawX, drawY, width, height); break;
+                    case RIGHT: walkRight.draw(g2, drawX, drawY, width, height); break;
+                    case DOWN: walkDown.draw(g2, drawX, drawY, width, height); break;
+                    case LEFT: walkLeft.draw(g2, drawX, drawY, width, height); break;
+                    default: break;
+                }
+
+                break;
+
+            case "UP": walkUp.draw(g2, drawX, drawY, width, height); break;
+            case "DOWN": walkDown.draw(g2, drawX, drawY, width, height); break;
+            case "RIGHT": walkRight.draw(g2, drawX, drawY, width, height); break;
+            case "LEFT": walkLeft.draw(g2, drawX, drawY, width, height); break;
+
+            default:
+
+                g2.setColor(Color.RED);
+                g2.drawRect(drawX, drawY, width, height);
+                break;
+        }
+
+        //drawDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {

@@ -32,6 +32,11 @@
     <ROOM id = "2-1">
 
         <OBJECTS>
+            <OBJECT>
+                <TYPE>NORMAL_CHEST</TYPE>
+                <COL>5</COL>
+                <ROW>3</ROW>
+            </OBJECT>
         </OBJECTS>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>

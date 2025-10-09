@@ -1,11 +1,17 @@
 package utilities;
 
+import core.Game;
+import core.GamePanel;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Images {
+
+    private static final int TILE_WIDTH = GamePanel.TILE_SIZE;
+    private static final int TILE_HEIGHT = GamePanel.TILE_SIZE;
 
     // LOADS AN IMAGE FROM A PATH
     private static BufferedImage loadSingleImage(String path) {
@@ -22,6 +28,21 @@ public class Images {
     // ALL ASSETS FOR TITLE SCREEN
     public static class TitleScreenAssets {
         public static final BufferedImage TITLE_SCREEN = loadSingleImage("/assets/titleScreen/titleScreen.png");
+    }
+
+    // ALL SPRITES FOR THE PLAYER
+    public static class PlayerAssets {
+        // MOVEMENT SPRITES
+        public static final BufferedImage PLAYER_MOVEMENT = loadSingleImage("/assets/entities/player/playerMovement.png");
+
+        public static final BufferedImage PLAYER_DOWN = loadSingleImage("/assets/entities/player/playerDown.png");
+        public static final BufferedImage PLAYER_UP = loadSingleImage("/assets/entities/player/playerUp.png");
+
+        public static final BufferedImage PLAYER_WALK_LEFT = loadSingleImage("/assets/entities/player/playerWalkLeft.png");
+        public static final BufferedImage PLAYER_WALK_RIGHT = loadSingleImage("/assets/entities/player/playerWalkRight.png");
+
+        public static final BufferedImage PLAYER_RUN_LEFT = loadSingleImage("/assets/entities/player/playerRunLeft.png");
+        public static final BufferedImage PLAYER_RUN_RIGHT = loadSingleImage("/assets/entities/player/playerRunRight.png");
     }
 
     // ALL OBJECT ASSETS
