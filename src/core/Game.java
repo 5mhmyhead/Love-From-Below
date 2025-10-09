@@ -1,6 +1,9 @@
 package core;
 
+import utilities.Images;
+
 import javax.swing.*;
+import java.util.Objects;
 
 public class Game {
 
@@ -13,6 +16,7 @@ public class Game {
         JFrame window = new JFrame("LOVE FROM BELOW");
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setIconImage(Images.Misc.ICON);
         window.setResizable(false);
 
         window.add(new GamePanel());

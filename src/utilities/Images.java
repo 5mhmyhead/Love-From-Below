@@ -159,6 +159,11 @@ public class Images {
             public static final BufferedImage SOLID_4 = loadSingleImage("/assets/tiles/solid/solid4.png");
         }
     }
+
+    // MISCELLANEOUS IMAGES
+    public static class Misc {
+        public static final BufferedImage ICON = loadSingleImage("/assets/misc/icon.png");
+    }
 }
 
 
