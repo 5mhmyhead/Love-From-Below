@@ -41,6 +41,15 @@ public class Images {
         public static final BufferedImage PLAYER_RUN_RIGHT = loadSingleImage("/assets/entities/player/playerRunRight.png");
     }
 
+    public static class npcAssets {
+        // SLEEPING GUARD FLERP
+        public static final BufferedImage FLERP_IDLE_SLEEP = loadSingleImage("/assets/entities/npcs/flerpIdleSleep.png");
+        public static final BufferedImage FLERP_IDLE = loadSingleImage("/assets/entities/npcs/flerpIdle.png");
+
+        public static final BufferedImage FLERP_WAKE_UP = loadSingleImage("/assets/entities/npcs/flerpWakeUp.png");
+        public static final BufferedImage FLERP_FALL_ASLEEP = loadSingleImage("/assets/entities/npcs/flerpFallAsleep.png");
+    }
+
     // ALL OBJECT ASSETS
     public static class WorldObjects {
 

@@ -55,7 +55,7 @@ public class Player extends Entity {
         width = GamePanel.TILE_SIZE;
         height = GamePanel.TILE_SIZE;
 
-        // ALL OF THE PLAYERS ANIMATIONS
+        // PLAYER ANIMATIONS
         walkUp = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_UP), width, height);
         walkDown = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_DOWN), width, height);
         walkLeft = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_WALK_LEFT), width, height);

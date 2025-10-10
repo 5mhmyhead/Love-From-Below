@@ -1,5 +1,6 @@
 package components.rooms;
 
+import components.entity.Entity;
 import components.entity.Player;
 import components.objects.WorldObject;
 import components.world.World;
@@ -27,6 +28,7 @@ public class WorldRoom implements Room {
     private final Player player;
 
     private final ArrayList<WorldObject> worldObjects;
+    private final ArrayList<Entity> worldNPCS;
 
     // HELPER CLASSES
     private final MapHandler mapHandler;
@@ -60,6 +62,7 @@ public class WorldRoom implements Room {
 
         player = world.getPlayer();
         worldObjects = new ArrayList<>();
+        worldNPCS = new ArrayList<>();
 
         loadTiles();
     }
@@ -88,7 +91,9 @@ public class WorldRoom implements Room {
     public void setRoomMetadata(RoomMetadata roomMetadata) {
 
         this.roomMetadata = roomMetadata;
+
         this.worldObjects.addAll(roomMetadata.getWorldObjects());
+        this.worldNPCS.addAll(roomMetadata.getWorldNPCS());
     }
 
     // UPDATE OBJECTS IN THE ROOM
@@ -111,9 +116,8 @@ public class WorldRoom implements Room {
             }
         }
 
-        for(WorldObject object : worldObjects) {
-            object.draw(g2);
-        }
+        for(WorldObject object : worldObjects) { object.draw(g2); }
+        for(Entity npc : worldNPCS) { npc.draw(g2); }
 
         g2.setTransform(transform);
     }

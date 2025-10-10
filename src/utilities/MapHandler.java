@@ -1,5 +1,7 @@
 package utilities;
 
+import components.entity.Entity;
+import components.entity.npcs.Flerp;
 import components.objects.Boots;
 import components.objects.NormalChest;
 import components.objects.WorldObject;
@@ -77,6 +79,24 @@ public class MapHandler {
 
             case "NORMAL_CHEST" -> new NormalChest(x, y, room);
             case "BOOTS" -> new Boots(x, y, room);
+
+            default -> null;
+        };
+    }
+
+    public Entity buildNPC(String id, int col, int row) {
+        // FIND THE COORDINATES OF THE OBJECT
+        int x = col * GamePanel.TILE_SIZE;
+        int y = row * GamePanel.TILE_SIZE;
+
+        // CHECK IF WE LOAD THE OBJECT IN THE CURRENT ROOM OR THE LOADING ROOM
+        Room room = (world.getLoadingRoom() != null) ?
+                world.getLoadingRoom() : world.getCurrentRoom();
+
+        // CREATE THE VARIOUS OBJECT
+        return switch(id) {
+
+            case "FLERP" -> new Flerp(x, y, room);
 
             default -> null;
         };

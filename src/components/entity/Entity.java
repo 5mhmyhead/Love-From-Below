@@ -32,7 +32,7 @@ public abstract class Entity {
 
     // UPDATE AND DRAW FUNCTIONS FOR ENTITY
     public abstract void update();
-    public abstract void draw(Graphics2D g2d);
+    public abstract void draw(Graphics2D g2);
 
     // RETURNS IF THE ENTITY COLLIDES WITH ANOTHER ENTITY OR ANOTHER RECTANGLE
     public boolean checkCollisionWith(Entity other)

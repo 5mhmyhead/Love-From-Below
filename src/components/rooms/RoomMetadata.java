@@ -1,5 +1,6 @@
 package components.rooms;
 
+import components.entity.Entity;
 import components.objects.WorldObject;
 import components.world.World;
 import org.w3c.dom.Document;
@@ -14,6 +15,7 @@ public class RoomMetadata {
     private final int id;
 
     private ArrayList<WorldObject> worldObjects;
+    private ArrayList<Entity> worldNPCS;
 
     private String roomType;
     private String music;
@@ -54,8 +56,9 @@ public class RoomMetadata {
             music = thisRoom.getElementsByTagName("MUSIC").item(0).getTextContent();
 
             worldObjects = new ArrayList<>();
+            worldNPCS = new ArrayList<>();
 
-            // GOES THROUGH ALL OBJECTS W/ MAP HANDLER
+            // GOES THROUGH ALL OBJECTS
             Element objectsElement = (Element) thisRoom.getElementsByTagName("OBJECTS").item(0);
             NodeList objectsList = objectsElement.getElementsByTagName("OBJECT");
 
@@ -66,11 +69,27 @@ public class RoomMetadata {
 
                 int col = Integer.parseInt(object.getElementsByTagName("COL").item(0).getTextContent());
                 int row = Integer.parseInt(object.getElementsByTagName("ROW").item(0).getTextContent());
-                System.out.println("OBJECT " + objectIndex + "INITIALIZED");
+
                 worldObjects.add(world.getMapHandler().buildObject(type, col, row));
+            }
+
+            // GOES THROUGH ALL NPCS
+            Element npcElement = (Element) thisRoom.getElementsByTagName("NPCS").item(0);
+            NodeList npcList = npcElement.getElementsByTagName("NPC");
+
+            for(int npcIndex = 0; npcIndex < npcList.getLength(); npcIndex++) {
+
+                Element npc = (Element) npcList.item(npcIndex);
+                String name = npc.getElementsByTagName("NAME").item(0).getTextContent();
+
+                int col = Integer.parseInt(npc.getElementsByTagName("COL").item(0).getTextContent());
+                int row = Integer.parseInt(npc.getElementsByTagName("ROW").item(0).getTextContent());
+
+                worldNPCS.add(world.getMapHandler().buildNPC(name, col, row));
             }
         }
     }
 
     public ArrayList<WorldObject> getWorldObjects() { return worldObjects; }
+    public ArrayList<Entity> getWorldNPCS() { return worldNPCS; }
 }

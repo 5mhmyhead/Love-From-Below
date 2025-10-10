@@ -7,6 +7,9 @@
         <OBJECTS>
         </OBJECTS>
 
+        <NPCS>
+        </NPCS>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -21,6 +24,9 @@
             </OBJECT>
         </OBJECTS>
 
+        <NPCS>
+        </NPCS>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -29,6 +35,14 @@
 
         <OBJECTS>
         </OBJECTS>
+
+        <NPCS>
+            <NPC>
+                <NAME>FLERP</NAME>
+                <COL>6</COL>
+                <ROW>4</ROW>
+            </NPC>
+        </NPCS>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
@@ -54,6 +68,9 @@
             </OBJECT>
         </OBJECTS>
 
+        <NPCS>
+        </NPCS>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -62,6 +79,9 @@
 
         <OBJECTS>
         </OBJECTS>
+
+        <NPCS>
+        </NPCS>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
@@ -82,6 +102,9 @@
             </OBJECT>
         </OBJECTS>
 
+        <NPCS>
+        </NPCS>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -90,6 +113,9 @@
 
         <OBJECTS>
         </OBJECTS>
+
+        <NPCS>
+        </NPCS>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
@@ -100,6 +126,9 @@
         <OBJECTS>
         </OBJECTS>
 
+        <NPCS>
+        </NPCS>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -108,6 +137,9 @@
 
         <OBJECTS>
         </OBJECTS>
+
+        <NPCS>
+        </NPCS>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
