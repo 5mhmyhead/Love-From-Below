@@ -3,6 +3,7 @@ package components.entity;
 import components.objects.WorldObject;
 import components.rooms.Room;
 import components.rooms.RoomMetadata;
+import core.GamePanel;
 import utilities.Tile;
 
 import java.awt.*;
@@ -13,8 +14,11 @@ public abstract class Entity {
     protected Room room;
     protected RoomMetadata roomMetadata;
 
-    protected int x;
-    protected int y;
+    protected int x = 0;
+    protected int y = 0;
+
+    protected int width = GamePanel.TILE_SIZE;
+    protected int height = GamePanel.TILE_SIZE;
 
     protected int velX;
     protected int velY;
@@ -22,11 +26,9 @@ public abstract class Entity {
     protected int drawX;
     protected int drawY;
 
-    protected int width;
-    protected int height;
-
     protected int moveSpeed;
 
+    protected Rectangle hitbox;
     protected Direction direction;
     protected String state;
 
@@ -35,19 +37,11 @@ public abstract class Entity {
     public abstract void draw(Graphics2D g2);
 
     // RETURNS IF THE ENTITY COLLIDES WITH ANOTHER ENTITY OR ANOTHER RECTANGLE
-    public boolean checkCollisionWith(Entity other)
-    {
-        return getBounds().intersects(other.getBounds());
-    }
-    public boolean checkCollisionWith(Rectangle otherRectangle)
-    {
-        return getBounds().intersects(otherRectangle);
-    }
+    public boolean checkCollisionWith(Entity other) { return getBounds().intersects(other.getBounds()); }
+    public boolean checkCollisionWith(Rectangle otherRectangle) { return getBounds().intersects(otherRectangle); }
 
     // RETURN COLLISION BOX FOR THE ENTITY
-    public Rectangle getBounds() {
-        return new Rectangle(x - width / 2, y - width / 2, width, height);
-    }
+    public Rectangle getBounds() { return hitbox; }
 
     // RETURN ITEM RANGE FOR THE ENTITY, DEPENDING ON THE DIRECTION OF THE PLAYER
     public Rectangle getItemRange() {
@@ -102,9 +96,11 @@ public abstract class Entity {
         return collisionX || collisionY;
     }
 
+    // OBJECTS PRESENT IN THE WORLD
     protected boolean checkCollisionWithObjects(int newX, int newY) {
 
         ArrayList<WorldObject> worldObjects = roomMetadata.getWorldObjects();
+        ArrayList<Entity> worldNPCS = roomMetadata.getWorldNPCS();
 
         for(WorldObject object : worldObjects) {
 
@@ -117,6 +113,17 @@ public abstract class Entity {
             if(object.isCollidable() && thisRectangle.intersects(objectRectangle)) {
                 return true;
             }
+        }
+
+        for(Entity npc : worldNPCS) {
+
+            Rectangle objectRectangle = new Rectangle(npc.getX(), npc.getY(),
+                    npc.getWidth(), npc.getHeight() / 2);
+
+            Rectangle thisRectangle = new Rectangle(newX - width / 2, newY - height / 2,
+                    width, height);
+
+            return thisRectangle.intersects(objectRectangle);
         }
 
         return false;
@@ -177,6 +184,9 @@ public abstract class Entity {
     public int getX() { return x; }
     public int getY() { return y; }
 
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+
     public void setCoordinates(int x, int y) {
 
         this.x = x;
@@ -195,7 +205,7 @@ public abstract class Entity {
     }
 
     // DEBUG TO DRAW COLLISIONS OF ENTITIES
-    void drawDebug(Graphics2D g2) {
+    public void drawDebug(Graphics2D g2) {
         // DRAW ENTITY BODY
         g2.setColor(new Color(255, 0, 0));
         g2.fillRect(x - width / 2, y - height / 2, width, height);

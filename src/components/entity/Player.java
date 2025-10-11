@@ -5,7 +5,6 @@ import components.objects.NormalChest;
 import components.objects.WorldObject;
 import components.rooms.RoomMetadata;
 import components.world.World;
-import core.GamePanel;
 import utilities.Animation;
 import utilities.GameData;
 import utilities.Images;
@@ -31,7 +30,9 @@ public class Player extends Entity {
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
 
+    // MISCELLANEOUS VARIABLES FOR KEYDOWN VALUES AND ANIMATION DELAY
     private int idleDelay = 0;                          // COUNT TO SMOOTHEN TRANSITION BETWEEN WALKING TO IDLE STATE
+    private boolean interactPrevPressed = false;        // BOOLEAN FOR INTERACT KEY TO REGISTER ONLY ONCE
 
     // CONSTRUCTOR
     public Player(World world, RoomMetadata metadata) {
@@ -51,9 +52,7 @@ public class Player extends Entity {
         drawY = y;
 
         moveSpeed = 3;
-
-        width = GamePanel.TILE_SIZE;
-        height = GamePanel.TILE_SIZE;
+        hitbox = new Rectangle(x - width / 2, y - width / 2, width, height);
 
         // PLAYER ANIMATIONS
         walkUp = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_UP), width, height);
@@ -82,6 +81,13 @@ public class Player extends Entity {
                 velY = 0;
 
                 updatePlayerState();
+                break;
+
+            case "DIALOGUE":
+                velX = 0;
+                velY = 0;
+
+                //TODO CREATE DIALOGUE TREE
                 break;
 
             case "UP":
@@ -164,7 +170,15 @@ public class Player extends Entity {
         if(!state.equals("TRANSITION")) {
 
             handleTileCollisions();
-            handleObjectCollisions();
+
+            if(!interactPrevPressed && !interact) {
+
+                interactPrevPressed = true;
+                handleEntityCollisions();
+                handleObjectCollisions();
+            }
+
+            if(interactPrevPressed && interact) interactPrevPressed = false;
         }
     }
 
@@ -179,9 +193,7 @@ public class Player extends Entity {
         if(sprint) moveSpeed = 5;
         else moveSpeed = 3;
 
-        if(!(inputUp || inputDown || inputLeft || inputRight))
-            state = "IDLE";
-
+        if(!(inputUp || inputDown || inputLeft || inputRight)) state = "IDLE";
         if(transitionVelX != 0 || transitionVelY != 0) 	state = "TRANSITION";
     }
 
@@ -213,10 +225,25 @@ public class Player extends Entity {
                 }
             }
 
+            // OTHER OBJECTS THAT ARE COLLECTIBLE WITHOUT USING THE INTERACT KEY
             if(worldObject instanceof Boots) {
                 if (this.getBounds().intersects(worldObject.getBounds())) {
                     worldObject.update();
                 }
+            }
+        }
+    }
+
+    private void handleEntityCollisions() {
+
+        ArrayList<Entity> worldNPCS = room.getWorldNPCS();
+
+        for(Entity npc : worldNPCS) {
+
+            if(this.getItemRange().intersects(npc.getBounds())) {
+
+                npc.update();
+                if(npc.getState().equals("READY_FOR_DIALOGUE")) { state = "DIALOGUE"; }
             }
         }
     }
@@ -228,7 +255,7 @@ public class Player extends Entity {
 
         switch(state) {
 
-            case "IDLE", "TRANSITION":
+            case "IDLE", "TRANSITION", "DIALOGUE":
 
                 idleDelay++;
 
@@ -292,8 +319,6 @@ public class Player extends Entity {
                 g2.drawRect(drawX, drawY, width, height);
                 break;
         }
-
-        //drawDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {
@@ -302,7 +327,5 @@ public class Player extends Entity {
         this.transitionVelY = transitionVelY;
     }
 
-    public boolean isTransitioning() {
-        return state.equals("TRANSITION") || world.isTransitioning();
-    }
+    public boolean isTransitioning() { return state.equals("TRANSITION") || world.isTransitioning(); }
 }

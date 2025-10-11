@@ -41,6 +41,12 @@
                 <NAME>FLERP</NAME>
                 <COL>6</COL>
                 <ROW>4</ROW>
+
+                <DIALOGUE>
+                    Oh, damn, look at ya!;
+                    how are you boy?;
+                    this is a test
+                </DIALOGUE>
             </NPC>
         </NPCS>
 

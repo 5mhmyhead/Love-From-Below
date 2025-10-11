@@ -1,5 +1,6 @@
 package components.rooms;
 
+import components.entity.Entity;
 import components.entity.Player;
 import components.objects.WorldObject;
 import utilities.Tile;
@@ -26,8 +27,9 @@ public interface Room {
     // RETURNS A TILE IN THE ROOM
     Tile getTile(int column, int row);
 
-    // GETS ALL THE ITEMS IN THE ROOM
+    // GETS ENTITIES/ENEMIES/OBJECTS IN THE ROOM
     ArrayList<WorldObject> getWorldObjects();
+    ArrayList<Entity> getWorldNPCS();
 
     // RETURNS THE PLAYER IN THE ROOM
     Player getPlayer();

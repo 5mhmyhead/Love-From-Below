@@ -1,6 +1,8 @@
 package components.objects;
 
 import components.rooms.Room;
+import components.ui.GameMenu;
+import core.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,11 +11,11 @@ public abstract class WorldObject {
 
     protected Room room;
 
-    protected int x;
-    protected int y;
+    protected int x = 0;
+    protected int y = 0;
 
-    protected int width;
-    protected int height;
+    protected int width = GamePanel.TILE_SIZE;
+    protected int height = GamePanel.TILE_SIZE;
 
     protected BufferedImage image;
     protected boolean hasCollision;

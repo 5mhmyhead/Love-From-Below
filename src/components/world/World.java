@@ -30,10 +30,10 @@ public class World {
     private Document metadata;                              // XML DOCUMENT STORING ROOM INFO
 
     // CONSTRUCTOR
-    public World(int startingRoom, String tileMapFilePath, String metadataFilePath, int columns, int rows) {
+    public World(int startingRoom, String tileMapFilePath, String RoomMetadataFilePath, int columns, int rows) {
 
         mapHandler = new MapHandler(this, tileMapFilePath, columns, rows);
-        loadMetadata(metadataFilePath);
+        loadRoomMetadata(RoomMetadataFilePath);
 
         roomMetadata = new RoomMetadata(startingRoom, this);
 
@@ -49,7 +49,7 @@ public class World {
     }
 
     // LOADS THE METADATA FROM PATH
-    private void loadMetadata(String filePath) {
+    private void loadRoomMetadata(String filePath) {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 

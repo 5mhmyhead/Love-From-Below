@@ -8,6 +8,7 @@ import java.awt.*;
 public class GameMenu {
 
     private final World world;
+
     private final int width;
     private final int height;
 

@@ -84,7 +84,7 @@ public class MapHandler {
         };
     }
 
-    public Entity buildNPC(String id, int col, int row) {
+    public Entity buildNPC(String id, String[] text, int col, int row) {
         // FIND THE COORDINATES OF THE OBJECT
         int x = col * GamePanel.TILE_SIZE;
         int y = row * GamePanel.TILE_SIZE;
@@ -96,7 +96,7 @@ public class MapHandler {
         // CREATE THE VARIOUS OBJECT
         return switch(id) {
 
-            case "FLERP" -> new Flerp(x, y, room);
+            case "FLERP" -> new Flerp(x, y, text, room);
 
             default -> null;
         };

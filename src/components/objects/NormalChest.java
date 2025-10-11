@@ -15,14 +15,10 @@ public class NormalChest extends WorldObject {
         this.x = x;
         this.y = y;
 
-        this.width = GamePanel.TILE_SIZE;
-        this.height = GamePanel.TILE_SIZE;
-
         this.state = "CLOSED";
         this.hasCollision = true;
 
         this.image = Images.WorldObjects.NORMAL_CHEST_CLOSED;
-
         this.room = room;
     }
 

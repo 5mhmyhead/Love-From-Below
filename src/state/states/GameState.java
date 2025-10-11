@@ -1,6 +1,7 @@
 package state.states;
 
 import components.entity.Player;
+import components.ui.GameDialogue;
 import components.ui.GameMenu;
 import components.world.World;
 import state.State;
@@ -15,7 +16,7 @@ public class GameState extends State {
     private World world;
     private GameMenu menu;
 
-    private String state;                // CHECK THE DIFFERENT STATES: GAME, INVENTORY, OR TRANSITION
+    private String state;                // CHECK THE DIFFERENT STATES: GAME, INVENTORY, MENU OR TRANSITION
 
     // CONSTRUCTOR
     public GameState(StateManager stateManager) {
@@ -33,7 +34,7 @@ public class GameState extends State {
          * THE ID IS REPRESENTED BY TWO NUMBERS, THE FIRST FOR COLUMN AND SECOND FOR ROW
          * STARTING ROOM 11 REFERS TO THE ROOM AT THE VERY TOP LEFT
          */
-        world = new World(13, "/tileMaps/Caves.txt", "/tileMaps/Metadata.xml", 48, 36);
+        world = new World(13, "/tileMaps/Caves.txt", "/tileMaps/Metadata.xml",48, 36);
 
         menu = new GameMenu(world);
         player = world.getPlayer();
@@ -76,13 +77,9 @@ public class GameState extends State {
         if(key == KeyEvent.VK_ESCAPE) {
 
             switch(state) {
-                case "GAME":
-                    state = "MENU";
-                    break;
 
-                case "MENU":
-                    state = "GAME";
-                    break;
+                case "GAME": state = "MENU"; break;
+                case "MENU": state = "GAME"; break;
 
                 default: break;
             }

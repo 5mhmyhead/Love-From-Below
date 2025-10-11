@@ -14,13 +14,10 @@ public class Boots extends WorldObject {
         this.x = x;
         this.y = y;
 
-        this.width = GamePanel.TILE_SIZE;
-        this.height = GamePanel.TILE_SIZE;
-
-        this.room = room;
         this.hasCollision = false;
 
         this.image = Images.WorldObjects.BOOTS;
+        this.room = room;
     }
 
     @Override

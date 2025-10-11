@@ -167,10 +167,8 @@ public class WorldRoom implements Room {
 
     public Player getPlayer() { return player; }
 
-    public ArrayList<WorldObject> getWorldObjects()
-    {
-        return worldObjects;
-    }
+    public ArrayList<WorldObject> getWorldObjects() { return worldObjects; }
+    public ArrayList<Entity> getWorldNPCS() { return worldNPCS; }
 
     // DEBUG TO DRAW COLLISIONS OF TILES
     private void drawTileDebug(Graphics2D g2) {
