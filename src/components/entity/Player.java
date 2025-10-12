@@ -76,18 +76,11 @@ public class Player extends Entity {
         this.roomMetadata = world.getRoomMetadata();
 
         switch(state) {
-            case "IDLE":
+            case "IDLE", "DIALOGUE":
                 velX = 0;
                 velY = 0;
 
                 updatePlayerState();
-                break;
-
-            case "DIALOGUE":
-                velX = 0;
-                velY = 0;
-
-                //TODO CREATE DIALOGUE TREE
                 break;
 
             case "UP":
@@ -171,30 +164,33 @@ public class Player extends Entity {
 
             handleTileCollisions();
 
-            if(!interactPrevPressed && !interact) {
+            if(!interactPrevPressed && !interact) interactPrevPressed = true;
+            if(interactPrevPressed && interact) {
 
-                interactPrevPressed = true;
-                handleEntityCollisions();
-                handleObjectCollisions();
+                interactPrevPressed = false;
+                handleWorldObjectCollisions();
             }
-
-            if(interactPrevPressed && interact) interactPrevPressed = false;
         }
     }
 
     // UPDATE THE PLAYER STATE VARIABLE
     private void updatePlayerState() {
 
-        if(inputUp) state = "UP";
-        if(inputDown) state = "DOWN";
-        if(inputLeft) state = "LEFT";
-        if(inputRight) state = "RIGHT";
+        if(!state.equals("DIALOGUE")) {
 
-        if(sprint) moveSpeed = 5;
-        else moveSpeed = 3;
+            if(inputUp) state = "UP";
+            if(inputDown) state = "DOWN";
+            if(inputLeft) state = "LEFT";
+            if(inputRight) state = "RIGHT";
 
-        if(!(inputUp || inputDown || inputLeft || inputRight)) state = "IDLE";
-        if(transitionVelX != 0 || transitionVelY != 0) 	state = "TRANSITION";
+            if(sprint) moveSpeed = 5;
+            else moveSpeed = 3;
+
+            if(!(inputUp || inputDown || inputLeft || inputRight)) state = "IDLE";
+            if(transitionVelX != 0 || transitionVelY != 0) 	state = "TRANSITION";
+        } else {
+
+        }
     }
 
     // UPDATES PLAYER INPUT VARIABLES
@@ -211,9 +207,10 @@ public class Player extends Entity {
     }
 
     // HANDLE PLAYER COLLISIONS WITH OBJECTS IN THE ROOM
-    private void handleObjectCollisions() {
+    private void handleWorldObjectCollisions() {
 
         ArrayList<WorldObject> worldObjects = room.getWorldObjects();
+        ArrayList<Entity> worldNPCS = room.getWorldNPCS();
 
         for (WorldObject worldObject : worldObjects) {
             //TODO REFACTOR THIS, MAKE WORLD OBJECT INSTANCES BETTER
@@ -232,18 +229,13 @@ public class Player extends Entity {
                 }
             }
         }
-    }
-
-    private void handleEntityCollisions() {
-
-        ArrayList<Entity> worldNPCS = room.getWorldNPCS();
 
         for(Entity npc : worldNPCS) {
 
             if(this.getItemRange().intersects(npc.getBounds())) {
 
                 npc.update();
-                if(npc.getState().equals("READY_FOR_DIALOGUE")) { state = "DIALOGUE"; }
+                if(npc.getState().equals("DIALOGUE")) state = "DIALOGUE";
             }
         }
     }

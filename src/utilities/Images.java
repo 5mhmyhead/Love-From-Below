@@ -41,6 +41,12 @@ public class Images {
         public static final BufferedImage PLAYER_RUN_RIGHT = loadSingleImage("/assets/entities/player/playerRunRight.png");
     }
 
+    // ALL SPRITES FOR THE USER INTERFACE
+    public static class UserInterface {
+
+        public static final BufferedImage DIALOGUE_BOX = loadSingleImage("/assets/ui/dialogueBox.png");
+    }
+
     public static class npcAssets {
         // SLEEPING GUARD FLERP
         public static final BufferedImage FLERP_IDLE_SLEEP = loadSingleImage("/assets/entities/npcs/flerpIdleSleep.png");

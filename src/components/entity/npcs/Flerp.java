@@ -15,9 +15,7 @@ import java.util.TimerTask;
 public class Flerp extends Entity {
 
     private final Animation idleSleep, idleAwake, wakeUp, fallAsleep;
-
-    private final String[] text;
-    private GameDialogue dialogue;
+    private final GameDialogue dialogue;
 
     // CONSTRUCTOR
     public Flerp(int x, int y, String[] text, Room room) {
@@ -26,10 +24,9 @@ public class Flerp extends Entity {
         this.y = y;
 
         this.room = room;
-        this.text = text;
 
         hitbox = new Rectangle(x, y, width, height);
-        dialogue = new GameDialogue(text, 0, true);
+        dialogue = new GameDialogue(text, 0, false);
 
         idleSleep = new Animation(50, true, Objects.requireNonNull(Images.npcAssets.FLERP_IDLE_SLEEP), width, height);
         idleAwake = new Animation(50, true, Objects.requireNonNull(Images.npcAssets.FLERP_IDLE), width, height);
@@ -44,26 +41,47 @@ public class Flerp extends Entity {
     @Override
     public void update() {
 
-        Timer timer = new Timer();
+        switch (state) {
+            case "IDLE_SLEEP":
 
-        if(state.equals("IDLE_SLEEP")) {
-            state = "WAKE_UP";
+                state = "WAKE_UP";
 
-            TimerTask task = new TimerTask() {
+                Timer timer = new Timer();
+                TimerTask task = new TimerTask() {
 
-                @Override
-                public void run() {
+                    @Override
+                    public void run() {
 
-                    wakeUp.update();
-                    if(wakeUp.hasEnded()) { state = "READY_FOR_DIALOGUE"; }
+                        wakeUp.update();
+
+                        if(wakeUp.hasEnded()) {
+
+                            state = "IDLE_AWAKE";
+                            timer.cancel();
+                        }
+                    }
+                };
+
+                timer.schedule(task, 0, 10);
+                break;
+
+            case "IDLE_AWAKE":
+                state = "DIALOGUE";
+                break;
+
+            case "DIALOGUE":
+
+                if(!dialogue.hasEnded()) {
+                    dialogue.update();
+
+                    if(dialogue.hasEnded()) {
+
+                        state = "IDLE_AWAKE";
+                        dialogue.resetTo(5);
+                    }
                 }
-            };
 
-            timer.schedule(task, 0, 100);
-        }
-
-        if(state.equals("READY_FOR_DIALOGUE")) {
-            dialogue.update();
+                break;
         }
     }
 
@@ -73,26 +91,31 @@ public class Flerp extends Entity {
         switch (state) {
 
             case "IDLE_SLEEP":
+
                 idleSleep.draw(g2, x, y, width, height);
                 idleSleep.update();
                 break;
 
             case "IDLE_AWAKE":
+
                 idleAwake.draw(g2, x, y, width, height);
                 idleAwake.update();
                 break;
 
             case "FALL_ASLEEP":
+
                 fallAsleep.draw(g2, x, y, width, height);
                 fallAsleep.update();
                 break;
 
             case "WAKE_UP":
+
                 wakeUp.draw(g2, x, y, width, height);
                 wakeUp.update();
                 break;
 
-            case "READY_FOR_DIALOGUE":
+            case "DIALOGUE":
+
                 idleAwake.draw(g2, x, y, width, height);
                 idleAwake.update();
 
