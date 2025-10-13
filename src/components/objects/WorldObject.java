@@ -11,8 +11,8 @@ public abstract class WorldObject {
 
     protected Room room;
 
-    protected int x = 0;
-    protected int y = 0;
+    protected int x;
+    protected int y;
 
     protected int width = GamePanel.TILE_SIZE;
     protected int height = GamePanel.TILE_SIZE;

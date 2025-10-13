@@ -28,7 +28,6 @@ public abstract class Entity {
 
     protected int moveSpeed;
 
-    protected Rectangle hitbox;
     protected Direction direction;
     protected String state;
 
@@ -41,7 +40,7 @@ public abstract class Entity {
     public boolean checkCollisionWith(Rectangle otherRectangle) { return getBounds().intersects(otherRectangle); }
 
     // RETURN COLLISION BOX FOR THE ENTITY
-    public Rectangle getBounds() { return hitbox; }
+    public Rectangle getBounds() { return new Rectangle(x - width / 2, y - height / 2, width, height); }
 
     // RETURN ITEM RANGE FOR THE ENTITY, DEPENDING ON THE DIRECTION OF THE PLAYER
     public Rectangle getItemRange() {

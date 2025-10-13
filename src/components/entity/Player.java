@@ -1,5 +1,6 @@
 package components.entity;
 
+import components.entity.npcs.Flerp;
 import components.objects.Boots;
 import components.objects.NormalChest;
 import components.objects.WorldObject;
@@ -34,6 +35,10 @@ public class Player extends Entity {
     private int idleDelay = 0;                          // COUNT TO SMOOTHEN TRANSITION BETWEEN WALKING TO IDLE STATE
     private boolean interactPrevPressed = false;        // BOOLEAN FOR INTERACT KEY TO REGISTER ONLY ONCE
 
+    // WORLD OBJECTS AND ENTITIES
+    ArrayList<WorldObject> worldObjects;
+    ArrayList<Entity> worldNPCS;
+
     // CONSTRUCTOR
     public Player(World world, RoomMetadata metadata) {
 
@@ -46,13 +51,12 @@ public class Player extends Entity {
 
     private void setDefaultValues() {
 
-        setCoordinates(200, 280);
+        setCoordinates(100, 300);
 
         drawX = x;
         drawY = y;
 
         moveSpeed = 3;
-        hitbox = new Rectangle(x - width / 2, y - width / 2, width, height);
 
         // PLAYER ANIMATIONS
         walkUp = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_UP), width, height);
@@ -76,11 +80,17 @@ public class Player extends Entity {
         this.roomMetadata = world.getRoomMetadata();
 
         switch(state) {
-            case "IDLE", "DIALOGUE":
+            case "IDLE":
                 velX = 0;
                 velY = 0;
 
                 updatePlayerState();
+                break;
+
+            case "DIALOGUE":
+                velX = 0;
+                velY = 0;
+
                 break;
 
             case "UP":
@@ -163,20 +173,20 @@ public class Player extends Entity {
         if(!state.equals("TRANSITION")) {
 
             handleTileCollisions();
+            handleNonInteractables();       // HANDLES COLLISIONS THAT DO NOT NEED THE INTERACT KEY
 
+            // INTERACT PREVIOUS PRESSED ENSURES THAT THE FUNCTION UPDATES ONLY ONCE EVEN WHEN HELD
             if(!interactPrevPressed && !interact) interactPrevPressed = true;
             if(interactPrevPressed && interact) {
 
                 interactPrevPressed = false;
-                handleWorldObjectCollisions();
+                handleInteractables();      // HANDLES COLLISIONS THAT REQUIRES INTERACTING
             }
         }
     }
 
     // UPDATE THE PLAYER STATE VARIABLE
     private void updatePlayerState() {
-
-        if(!state.equals("DIALOGUE")) {
 
             if(inputUp) state = "UP";
             if(inputDown) state = "DOWN";
@@ -188,9 +198,6 @@ public class Player extends Entity {
 
             if(!(inputUp || inputDown || inputLeft || inputRight)) state = "IDLE";
             if(transitionVelX != 0 || transitionVelY != 0) 	state = "TRANSITION";
-        } else {
-
-        }
     }
 
     // UPDATES PLAYER INPUT VARIABLES
@@ -206,29 +213,14 @@ public class Player extends Entity {
         if(key == KeyEvent.VK_E) interact = bool;
     }
 
-    // HANDLE PLAYER COLLISIONS WITH OBJECTS IN THE ROOM
-    private void handleWorldObjectCollisions() {
+    private void handleInteractables() {
 
-        ArrayList<WorldObject> worldObjects = room.getWorldObjects();
-        ArrayList<Entity> worldNPCS = room.getWorldNPCS();
+        worldObjects = room.getWorldObjects();
+        worldNPCS = room.getWorldNPCS();
 
-        for (WorldObject worldObject : worldObjects) {
-            //TODO REFACTOR THIS, MAKE WORLD OBJECT INSTANCES BETTER
-
-            // IF THE PLAYER GETS IN ITEM RANGE OF THE PLAYER AND PRESSES INTERACT, THEN THE WORLD OBJECT UPDATES
-            if(worldObject instanceof NormalChest) {
-                if (this.getItemRange().intersects(worldObject.getBounds()) && interact) {
-                    worldObject.update();
-                }
-            }
-
-            // OTHER OBJECTS THAT ARE COLLECTIBLE WITHOUT USING THE INTERACT KEY
-            if(worldObject instanceof Boots) {
-                if (this.getBounds().intersects(worldObject.getBounds())) {
-                    worldObject.update();
-                }
-            }
-        }
+        for (WorldObject worldObject : worldObjects)
+            if (worldObject instanceof NormalChest && this.getItemRange().intersects(worldObject.getBounds()))
+                worldObject.update();
 
         for(Entity npc : worldNPCS) {
 
@@ -238,6 +230,16 @@ public class Player extends Entity {
                 if(npc.getState().equals("DIALOGUE")) state = "DIALOGUE";
             }
         }
+    }
+
+    private void handleNonInteractables() {
+
+        worldObjects = room.getWorldObjects();
+        worldNPCS = room.getWorldNPCS();
+
+        for (WorldObject worldObject : worldObjects)
+            if (worldObject instanceof Boots && this.getBounds().intersects(worldObject.getBounds()))
+                worldObject.update();
     }
 
     public void draw(Graphics2D g2) {

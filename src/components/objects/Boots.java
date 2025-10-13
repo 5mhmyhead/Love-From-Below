@@ -1,7 +1,6 @@
 package components.objects;
 
 import components.rooms.Room;
-import core.GamePanel;
 import utilities.GameData;
 import utilities.Images;
 
