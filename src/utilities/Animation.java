@@ -25,8 +25,7 @@ public class Animation {
         index = 0;
     }
 
-    // CONSTRUCTION THAT TAKES A SPRITESHEET
-    // ALL FRAMES MUST BE IN ONE ROW
+    // CONSTRUCTION THAT TAKES A SPRITESHEET WHERE ALL FRAMES MUST BE IN ONE ROW
     public Animation(int delay, boolean repeat, BufferedImage spritesheet, int spriteWidth, int spriteHeight) {
 
         this.delay = delay;
@@ -84,12 +83,11 @@ public class Animation {
     public int getWidth() { return images[index].getWidth(); }
     public int getHeight() { return images[index].getHeight(); }
 
+    public int getDelay() { return delay; }
     public void setDelay(int delay) {
 
         this.delay = delay;
         if(timer > delay) timer = delay;
     }
-
-    public int getDelay() { return delay; }
 }
 

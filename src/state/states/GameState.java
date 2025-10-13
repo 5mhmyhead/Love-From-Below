@@ -1,8 +1,7 @@
 package state.states;
 
 import components.entity.Player;
-import components.ui.GameDialogue;
-import components.ui.GameMenu;
+import core.ui.GameMenu;
 import components.world.World;
 import state.State;
 import state.StateManager;
@@ -18,7 +17,6 @@ public class GameState extends State {
 
     private String state;                // CHECK THE DIFFERENT STATES: GAME, INVENTORY, MENU OR TRANSITION
 
-    // CONSTRUCTOR
     public GameState(StateManager stateManager) {
 
         this.stateManager = stateManager;
@@ -30,11 +28,10 @@ public class GameState extends State {
 
         state = "GAME";
 
-        /* STARTING ROOM REFERS TO THE ROOM ID
-         * THE ID IS REPRESENTED BY TWO NUMBERS, THE FIRST FOR COLUMN AND SECOND FOR ROW
-         * STARTING ROOM 11 REFERS TO THE ROOM AT THE VERY TOP LEFT
-         */
-        world = new World(13, "/tileMaps/Caves.txt", "/tileMaps/Metadata.xml",48, 36);
+        // STARTING ROOM REFERS TO THE ROOM ID, REPRESENTED BY TWO NUMBERS:
+        // THE FIRST FOR COLUMN AND SECOND FOR ROW. STARTING ROOM 11 REFERS TO THE ROOM AT THE TOP LEFT
+        world = new World(13, "/tileMaps/Caves.txt",
+                "/tileMaps/Metadata.xml",48, 36);
 
         menu = new GameMenu(world);
         player = world.getPlayer();
@@ -45,17 +42,10 @@ public class GameState extends State {
 
         switch(state) {
 
-            case "GAME":
-                world.update();
-                break;
+            case "GAME": world.update(); break;
+            case "MENU": menu.update(); break;
 
-            case "MENU":
-                menu.update();
-                break;
-
-            case "TRANSITION":
-                if(!world.isTransitioning()) state = "GAME";
-                break;
+            case "TRANSITION": if(!world.isTransitioning()) state = "GAME"; break;
 
             default: break;
         }
@@ -73,8 +63,8 @@ public class GameState extends State {
 
     @Override
     public void keyPressed(int key) {
-
-        if(key == KeyEvent.VK_ESCAPE) {
+        // PAUSE MENU
+        if(key == KeyEvent.VK_ESCAPE || key == KeyEvent.VK_P) {
 
             switch(state) {
 

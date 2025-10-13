@@ -1,4 +1,4 @@
-package components.ui;
+package core.ui;
 
 import utilities.FontHandler;
 import utilities.Images;
@@ -51,5 +51,6 @@ public class GameDialogue {
 
     public void reset() { index = 0; }
     public void resetTo(int index) { this.index = index; }
+
     public boolean hasEnded() { return index == -1; }
 }

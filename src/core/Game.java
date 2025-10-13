@@ -6,9 +6,7 @@ import javax.swing.*;
 
 public class Game {
 
-    public static void main(String[] args) {
-        new Game().startGame();
-    }
+    public static void main(String[] args) { new Game().startGame(); }
 
     public void startGame() {
 

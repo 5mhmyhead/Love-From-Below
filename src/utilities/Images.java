@@ -1,7 +1,5 @@
 package utilities;
 
-import core.GamePanel;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -12,9 +10,8 @@ public class Images {
     // LOADS AN IMAGE FROM A PATH
     private static BufferedImage loadSingleImage(String path) {
 
-        try {
-            return ImageIO.read(Objects.requireNonNull(Images.class.getResourceAsStream(path)));
-        } catch(IOException e) {
+        try { return ImageIO.read(Objects.requireNonNull(Images.class.getResourceAsStream(path))); }
+        catch(IOException e) {
             e.printStackTrace();
         }
 
@@ -177,6 +174,7 @@ public class Images {
 
     // MISCELLANEOUS IMAGES
     public static class Misc {
+
         public static final BufferedImage ICON = loadSingleImage("/assets/misc/icon.png");
     }
 }

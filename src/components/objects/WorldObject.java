@@ -1,7 +1,6 @@
 package components.objects;
 
-import components.rooms.Room;
-import components.ui.GameMenu;
+import components.world.rooms.Room;
 import core.GamePanel;
 
 import java.awt.*;

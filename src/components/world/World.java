@@ -2,8 +2,8 @@ package components.world;
 
 import components.entity.Direction;
 import components.entity.Player;
-import components.rooms.RoomMetadata;
-import components.rooms.WorldRoom;
+import components.world.rooms.RoomMetadata;
+import components.world.rooms.WorldRoom;
 import core.GamePanel;
 import org.w3c.dom.Document;
 import utilities.MapHandler;
@@ -29,7 +29,6 @@ public class World {
     private RoomMetadata roomMetadata;                      // THE ACTUAL METADATA OF THE ROOM
     private Document metadata;                              // XML DOCUMENT STORING ROOM INFO
 
-    // CONSTRUCTOR
     public World(int startingRoom, String tileMapFilePath, String RoomMetadataFilePath, int columns, int rows) {
 
         mapHandler = new MapHandler(this, tileMapFilePath, columns, rows);

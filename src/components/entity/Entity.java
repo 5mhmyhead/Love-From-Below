@@ -1,8 +1,8 @@
 package components.entity;
 
 import components.objects.WorldObject;
-import components.rooms.Room;
-import components.rooms.RoomMetadata;
+import components.world.rooms.Room;
+import components.world.rooms.RoomMetadata;
 import core.GamePanel;
 import utilities.Tile;
 

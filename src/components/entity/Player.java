@@ -1,10 +1,9 @@
 package components.entity;
 
-import components.entity.npcs.Flerp;
 import components.objects.Boots;
 import components.objects.NormalChest;
 import components.objects.WorldObject;
-import components.rooms.RoomMetadata;
+import components.world.rooms.RoomMetadata;
 import components.world.World;
 import utilities.Animation;
 import utilities.GameData;
@@ -39,7 +38,6 @@ public class Player extends Entity {
     ArrayList<WorldObject> worldObjects;
     ArrayList<Entity> worldNPCS;
 
-    // CONSTRUCTOR
     public Player(World world, RoomMetadata metadata) {
 
         this.world = world;

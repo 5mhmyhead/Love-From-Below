@@ -5,7 +5,7 @@ import components.entity.npcs.Flerp;
 import components.objects.Boots;
 import components.objects.NormalChest;
 import components.objects.WorldObject;
-import components.rooms.Room;
+import components.world.rooms.Room;
 import components.world.World;
 import core.GamePanel;
 
@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
-// CLASS THAT HANDLE TILE, ENEMIES, AND SWITCHING MAPS
+// CLASS THAT HANDLES TILE, ENEMIES, AND SWITCHING MAPS
 // THIS CLASS IS INSTANTIATED BY THE WORLD CLASS FOR LOADING TILES AND RETURNING THEM TO THE WORLD
 public class MapHandler {
 
@@ -33,8 +33,8 @@ public class MapHandler {
     private void loadTiles(String filePath) {
         // BUFFERED READER TO READ TILEMAPS
         try(BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(filePath))
-                        , Charset.defaultCharset()))
+                new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream(filePath)),
+                        Charset.defaultCharset()))
         ) {
 
             String line;
@@ -74,7 +74,6 @@ public class MapHandler {
         Room room = (world.getLoadingRoom() != null) ?
                 world.getLoadingRoom() : world.getCurrentRoom();
 
-        // CREATE THE VARIOUS OBJECT
         return switch(id) {
 
             case "NORMAL_CHEST" -> new NormalChest(x, y, room);
@@ -85,15 +84,14 @@ public class MapHandler {
     }
 
     public Entity buildNPC(String id, String[] text, int col, int row) {
-        // FIND THE COORDINATES OF THE OBJECT
+        // FIND THE COORDINATES OF THE NPC
         int x = col * GamePanel.TILE_SIZE;
         int y = row * GamePanel.TILE_SIZE;
 
-        // CHECK IF WE LOAD THE OBJECT IN THE CURRENT ROOM OR THE LOADING ROOM
+        // CHECK IF WE LOAD THE NPC IN THE CURRENT ROOM OR THE LOADING ROOM
         Room room = (world.getLoadingRoom() != null) ?
                 world.getLoadingRoom() : world.getCurrentRoom();
 
-        // CREATE THE VARIOUS OBJECT
         return switch(id) {
 
             case "FLERP" -> new Flerp(x, y, text, room);

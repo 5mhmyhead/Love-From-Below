@@ -1,4 +1,4 @@
-package components.ui;
+package core.ui;
 
 import components.world.World;
 import utilities.FontHandler;
@@ -23,12 +23,9 @@ public class GameMenu {
         this.world = world;
     }
 
-    public void update() {
-
-    }
+    public void update() {}
 
     public void draw(Graphics2D g2) {
-
         drawWindow(g2, 300, 192, 100, 100);
     }
 

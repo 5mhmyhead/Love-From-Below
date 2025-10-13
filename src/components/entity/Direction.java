@@ -66,6 +66,7 @@ public enum Direction {
             case "RIGHT" -> RIGHT;
             case "DOWN" -> DOWN;
             case "LEFT" -> LEFT;
+
             default -> null;
         };
     }

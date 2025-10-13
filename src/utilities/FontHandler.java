@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class FontHandler {
-    // FONTS FOR THE GAME, INITIALIZED TO SIZE 40
+    // FONTS FOR THE GAME, INITIALIZED TO SIZE 30 AND 40 RESPECTIVELY
     public static Font comicoro;
     public static Font pixelBitAdvanced;
 
@@ -18,13 +18,14 @@ public class FontHandler {
             InputStream inputStream;
 
             inputStream = getClass().getResourceAsStream("/fonts/Comicoro.ttf");
+
             assert inputStream != null;
             comicoro = Font.createFont(Font.TRUETYPE_FONT, inputStream)
-                    .deriveFont(Font.PLAIN, 40f);
+                    .deriveFont(Font.PLAIN, 30f);
 
             inputStream = getClass().getResourceAsStream("/fonts/PixelBitAdvanced.ttf");
-            assert inputStream != null;
 
+            assert inputStream != null;
             pixelBitAdvanced = Font.createFont(Font.TRUETYPE_FONT, inputStream)
                     .deriveFont(Font.PLAIN, 40f);
 
@@ -33,9 +34,7 @@ public class FontHandler {
         }
     }
 
-    static {
-        new FontHandler();
-    }
+    static { new FontHandler(); }
 
     //CENTERS A STRING TO CENTER
     public void drawCenteredString(String string, int y, Graphics2D g2) {

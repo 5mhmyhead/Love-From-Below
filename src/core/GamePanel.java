@@ -28,7 +28,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     // CLASS THAT HANDLES THE CHANGING OF STATES IN THE GAME
     private StateManager stateManager;
 
-    // CONSTRUCTOR
     public GamePanel() {
 
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -98,9 +97,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        if(e != null) stateManager.keyReleased(e.getKeyCode());
-    }
+    public void keyReleased(KeyEvent e) { if(e != null) stateManager.keyReleased(e.getKeyCode()); }
 
     @Override
     public void keyTyped(KeyEvent e) {}

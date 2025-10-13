@@ -305,8 +305,6 @@ public enum Tile {
             case CAVE_WALLS_33 -> Images.Tiles.Walls.Cave.CAVE_WALL_33;
             case CAVE_WALLS_34 -> Images.Tiles.Walls.Cave.CAVE_WALL_34;
             case CAVE_WALLS_35 -> Images.Tiles.Walls.Cave.CAVE_WALL_35;
-
-            default -> null;
         };
     }
 

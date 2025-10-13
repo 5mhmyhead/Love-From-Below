@@ -17,7 +17,6 @@ public class StateManager {
     private final State[] states;           // ARRAY HOLDING THE STATES
     private int currentState;               // ID REPRESENTING THE CURRENT STATE
 
-    // CONSTRUCTOR
     public StateManager() {
 
         states = new State[NUMBER_OF_STATES];
@@ -28,17 +27,15 @@ public class StateManager {
     // UPDATES THE CURRENT STATE
     public void update() {
 
-        if(states[currentState] != null) {
+        if(states[currentState] != null)
             states[currentState].update();
-        }
     }
 
     // DRAWS THE CURRENT STATE
     public void draw(Graphics2D g2) {
 
-        if(states[currentState] != null) {
+        if(states[currentState] != null)
             states[currentState].draw(g2);
-        }
     }
 
     // SET STATE DEPENDING ON INDEX GIVEN

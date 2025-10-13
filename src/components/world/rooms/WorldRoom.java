@@ -1,4 +1,4 @@
-package components.rooms;
+package components.world.rooms;
 
 import components.entity.Entity;
 import components.entity.Player;
@@ -37,7 +37,6 @@ public class WorldRoom implements Room {
     // ROOM TILES
     private final Tile[][] tiles;
 
-    // CONSTRUCTOR
     public WorldRoom(int id, World world, MapHandler mapHandler) {
 
         this.id = id;
@@ -81,8 +80,7 @@ public class WorldRoom implements Room {
                 String tile = mapHandler.getTile(column, row);
                 // THEN PARSES IT TO INT
                 tiles[column - ((screenColumn - 1) * numOfColumns)]
-                        [row - (screenRow - 1) * numOfRows] =
-                        Tile.parseTileID(Integer.parseInt(tile));
+                        [row - (screenRow - 1) * numOfRows] = Tile.parseTileID(Integer.parseInt(tile));
             }
         }
     }

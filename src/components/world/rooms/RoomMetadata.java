@@ -1,4 +1,4 @@
-package components.rooms;
+package components.world.rooms;
 
 import components.entity.Entity;
 import components.objects.WorldObject;
@@ -20,7 +20,6 @@ public class RoomMetadata {
     private String roomType;
     private String music;
 
-    // CONSTRUCTOR
     public RoomMetadata(int id, World world) {
 
         this.id = id;
@@ -34,8 +33,8 @@ public class RoomMetadata {
         // GRABS THE METADATA DOCUMENT
         Document metadata = world.getMetadata();
 
-        Element thisRoom = null;
         // GETS ALL ROOMS AND FINDS THE MATCHING ID
+        Element thisRoom = null;
         NodeList rooms = metadata.getElementsByTagName("ROOM");
 
         for(int roomIndex = 0; roomIndex < rooms.getLength(); roomIndex++) {
@@ -51,7 +50,7 @@ public class RoomMetadata {
 
         if(thisRoom != null) {
 
-            // GRABS BASIC DATA
+            // GRABS BASIC ROOM DATA
             roomType = thisRoom.getElementsByTagName("ROOM-TYPE").item(0).getTextContent();
             music = thisRoom.getElementsByTagName("MUSIC").item(0).getTextContent();
 
@@ -85,7 +84,7 @@ public class RoomMetadata {
 
                 int col = Integer.parseInt(npc.getElementsByTagName("COL").item(0).getTextContent());
                 int row = Integer.parseInt(npc.getElementsByTagName("ROW").item(0).getTextContent());
-
+                // SPLIT THE TEXT DIALOGUE DIVIDED BY A SEMICOLON
                 String[] text = dialogue.split(";");
 
                 worldNPCS.add(world.getMapHandler().buildNPC(name, text, col, row));

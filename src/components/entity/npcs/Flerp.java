@@ -2,8 +2,8 @@ package components.entity.npcs;
 
 import components.entity.Direction;
 import components.entity.Entity;
-import components.rooms.Room;
-import components.ui.GameDialogue;
+import components.world.rooms.Room;
+import core.ui.GameDialogue;
 import utilities.Animation;
 import utilities.Images;
 

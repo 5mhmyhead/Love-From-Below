@@ -9,6 +9,8 @@ import utilities.Images;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+// TODO SAVE AND INTRO CUTSCENE MUST BE IMPLEMENTED ALONG WITH THE TITLE STATE
+
 public class TitleState extends State {
 
     private boolean pressedEnter;
@@ -18,7 +20,6 @@ public class TitleState extends State {
 
     private Animation titleScreenAnimation;
 
-    // CONSTRUCTOR
     public TitleState(StateManager stateManager) {
 
         this.stateManager = stateManager;
@@ -47,7 +48,7 @@ public class TitleState extends State {
             if(fade < 255) fade += 4;
             // IF THE PLAYER PRESSED ENTER AFTER 2 SECONDS, SWITCH STATE
             else if(timer >= (2 * GamePanel.FPS)) {
-                stateManager.setState(StateManager.GAME_STATE); // FIXME INTRO SHOULD BE SET HERE AFTER TESTING
+                stateManager.setState(StateManager.GAME_STATE);
             }
             // CONSTRAIN FADE
             if(fade < 0) fade = 0;
@@ -70,9 +71,8 @@ public class TitleState extends State {
     @Override
     public void keyPressed(int key) {
 
-        if(key == KeyEvent.VK_ENTER) {
+        if(key == KeyEvent.VK_ENTER)
             pressedEnter = true;
-        }
     }
 
     @Override
