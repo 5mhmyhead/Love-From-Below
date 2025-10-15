@@ -3,7 +3,6 @@ package components.entity;
 import components.objects.WorldObject;
 import components.world.rooms.Room;
 import components.world.rooms.RoomMetadata;
-import core.GamePanel;
 import utilities.Tile;
 
 import java.awt.*;
@@ -14,11 +13,11 @@ public abstract class Entity {
     protected Room room;
     protected RoomMetadata roomMetadata;
 
-    protected int x = 0;
-    protected int y = 0;
+    protected int x;
+    protected int y;
 
-    protected int width = GamePanel.TILE_SIZE;
-    protected int height = GamePanel.TILE_SIZE;
+    protected int width;
+    protected int height;
 
     protected int velX;
     protected int velY;
@@ -31,19 +30,22 @@ public abstract class Entity {
     protected Direction direction;
     protected String state;
 
+    protected Rectangle bounds;
+
     // UPDATE AND DRAW FUNCTIONS FOR ENTITY
     public abstract void update();
     public abstract void draw(Graphics2D g2);
 
-    // RETURNS IF THE ENTITY COLLIDES WITH ANOTHER ENTITY OR ANOTHER RECTANGLE
+    // RETURNS IF THE ENTITY COLLIDES WITH ANOTHER ENTITY, WORLD OBJECT OR ANOTHER RECTANGLE
     public boolean checkCollisionWith(Entity other) { return getBounds().intersects(other.getBounds()); }
+    public boolean checkCollisionWith(WorldObject other) { return getBounds().intersects(other.getBounds()); }
     public boolean checkCollisionWith(Rectangle otherRectangle) { return getBounds().intersects(otherRectangle); }
 
-    // RETURN COLLISION BOX FOR THE ENTITY
-    public Rectangle getBounds() { return new Rectangle(x - width / 2, y - height / 2, width, height); }
+    public Rectangle getBounds() { return bounds; }
 
+    // TODO REMOVE THIS FROM ENTITY, ONLY PLAYER SHOULD HAVE THIS
     // RETURN ITEM RANGE FOR THE ENTITY, DEPENDING ON THE DIRECTION OF THE PLAYER
-    public Rectangle getItemRange() {
+    protected Rectangle getItemRange() {
 
         return switch (direction) {
 
@@ -54,88 +56,25 @@ public abstract class Entity {
         };
     }
 
-    // HANDLES COLLISION WITH TILE
-    protected boolean handleTileCollisions() {
+    protected void handleCollisions() {
 
-        boolean collisionX = false;
-        boolean collisionY = false;
+        boolean collisionY = checkCollisions(0, velY);
+        boolean collisionX = checkCollisions(velX, 0);
 
-        if(checkCollisionWithTileMap(x + velX, y) ||
-                checkCollisionWithObjects(x + velX, y)) {
-            collisionX = true;
-        }
-
-        if(checkCollisionWithTileMap(x, y + velY) ||
-                checkCollisionWithObjects(x, y + velY)) {
-            collisionY = true;
-        }
-
-        // UPDATES THE PLAYERS X AND Y TO MOVE THE PLAYER
-        x += velX;
-        y += velY;
-
-        if(collisionX) {
-
-            x = (x / 8) * 8;
-            if(sign(velX) == -1) x += 8;   // CORRECT ROUNDING
-
-            velX = 0;
-            velY = 0;
-        }
-
-        if(collisionY) {
-
-            y = (y / 8) * 8;
-            if(sign(velY) == -1) y += 8;   // CORRECT ROUNDING
-
-            velX = 0;
-            velY = 0;
-        }
-
-        return collisionX || collisionY;
+        if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) x -= velX;
+        if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) y -= velY;
     }
 
-    // OBJECTS PRESENT IN THE WORLD
-    protected boolean checkCollisionWithObjects(int newX, int newY) {
-
-        ArrayList<WorldObject> worldObjects = roomMetadata.getWorldObjects();
-        ArrayList<Entity> worldNPCS = roomMetadata.getWorldNPCS();
-
-        for(WorldObject object : worldObjects) {
-
-            Rectangle objectRectangle = new Rectangle(object.getX(), object.getY(),
-                    object.getWidth(), object.getHeight() / 2);
-
-            Rectangle thisRectangle = new Rectangle(newX - width / 2, newY - height / 2,
-                    width, height);
-
-            if(object.isCollidable() && thisRectangle.intersects(objectRectangle)) {
-                return true;
-            }
-        }
-
-        for(Entity npc : worldNPCS) {
-
-            Rectangle objectRectangle = new Rectangle(npc.getX(), npc.getY(),
-                    npc.getWidth(), npc.getHeight() / 2);
-
-            Rectangle thisRectangle = new Rectangle(newX - width / 2, newY - height / 2,
-                    width, height);
-
-            return thisRectangle.intersects(objectRectangle);
-        }
-
-        return false;
-    }
-
-    protected boolean checkCollisionWithTileMap(int newX, int newY) {
+    protected boolean checkCollisions(int checkX, int checkY) {
 
         boolean collisionFlag = false;
 
-        int leftColumn = (newX - width / 2) / room.getWidthOfTile();
-        int rightColumn = (newX + width / 2) / room.getWidthOfTile();
-        int topRow = (newY - height / 2) / room.getHeightOfTile();
-        int bottomRow = (newY + height / 2) / room.getHeightOfTile();
+        // CHECKS TILE COLLISIONS
+        // FINDS THE TILES THAT ARE CLOSEST TO THE ENTITY, GREATLY REDUCES THE AMOUNT OF COLLISION CHECKS
+        int leftColumn = (x + checkX) / room.getWidthOfTile();
+        int rightColumn = (x + checkX + width) / room.getWidthOfTile();
+        int topRow = (y + checkY) / room.getHeightOfTile();
+        int bottomRow = (y + checkY + height) / room.getHeightOfTile();
 
         if(leftColumn < 0) leftColumn = 0;
         if(topRow < 0) topRow = 0;
@@ -155,29 +94,24 @@ public abstract class Entity {
                             j * room.getHeightOfTile(), room.getWidthOfTile(),
                             room.getHeightOfTile() / 2);
 
-                    Rectangle thisRectangle = new Rectangle(newX - width / 2, newY - height / 2,
-                            width, height);
-
-                    if(tile.hasTileCollision() && thisRectangle.intersects(tileRectangle)) {
-                        collisionFlag = true;
-                    }
+                    if(tile.hasTileCollision() && getBounds().intersects(tileRectangle)) collisionFlag = true;
                 }
             }
         }
 
-        return  collisionFlag;
-    }
+        // CHECKS OBJECT AND ENTITY COLLISIONS
+        ArrayList<WorldObject> worldObjects = roomMetadata.getWorldObjects();
+        ArrayList<Entity> worldNPCS = roomMetadata.getWorldNPCS();
 
-    // RETURNS A VALUE THAT IS ALIGNED TO THE NEAREST PROVIDED INT
-    // value   - VALUE TO BE ALIGNED
-    // alignTo - DISTANCE FOR THE VALUE TO BE ALIGNED TO
-    protected int alignToGrid(double value) {
-        // CHECK HOW MUCH OF VALUE IS
-        int extra = (int) Math.round(value) % 8;
-        // FIND THE HALFWAY MARK OF THE OFFSET
-        int halfway = (8 - 1) / 2;
-        // EITHER PUSHES IT FORWARD TO THE NEXT MARK OR PREVIOUS MARK
-        return (extra > halfway) ? 8 - extra : -extra;
+        for(WorldObject object : worldObjects)
+            if(object.isCollidable() && checkCollisionWith(object))
+                collisionFlag = true;
+
+        for(Entity npc : worldNPCS)
+            if(checkCollisionWith(npc))
+                collisionFlag = true;
+
+        return collisionFlag;
     }
 
     public int getX() { return x; }
@@ -192,32 +126,19 @@ public abstract class Entity {
         this.y = y;
     }
 
+    public void setSize(int width, int height) {
+
+        this.width = width;
+        this.height = height;
+    }
+
     public Direction getDirection() { return direction; }
     public String getState() { return state; }
 
-    // RETURNS SIGN OF DOUBLE: SIMPLE HELPER FUNCTION
-    public static int sign(double number) {
-
-        if(number > 0) return 1;
-        else if(number < 0) return -1;
-        else return 0;
-    }
-
-    // DEBUG TO DRAW COLLISIONS OF ENTITIES
+    // DEBUG TO DRAW BOUNDS OF ENTITY
     public void drawDebug(Graphics2D g2) {
-        // DRAW ENTITY BODY
+
         g2.setColor(new Color(255, 0, 0));
-        g2.fillRect(x - width / 2, y - height / 2, width, height);
-
-        // DRAW ENTITY RANGE
-        g2.setColor(new Color(255, 255, 0, 60));
-
-        switch(direction) {
-
-            case UP: g2.fillRect(x - width / 2, y - height / 2, width, height / 4); break;
-            case DOWN: g2.fillRect(x - width / 2, y + height / 2, width, height / 4); break;
-            case LEFT: g2.fillRect(x - width / 2 - width / 4, y - height / 2, width / 4, height); break;
-            case RIGHT: g2.fillRect(x + width / 2, y - height / 2, width / 4, height); break;
-        }
+        g2.fillRect(x + 8, y, 32, 48);
     }
 }

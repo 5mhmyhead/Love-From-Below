@@ -89,30 +89,34 @@ public class World {
 
         // CHECK IF SCREEN IS TRANSITIONING
         if(!player.getState().equals("TRANSITION") && loadingRoom == null) {
+            // PLAYER X AND Y IS IN THE TOP RIGHT CORNER
+            // SO WE MOVE IT TO THE CENTER OF THE PLAYER SPRITE
+            int centeredX = player.getX() + player.getWidth() / 2;
+            int centeredY = player.getY() + player.getHeight() / 2;
 
             // IF PLAYER IS LEAVING THROUGH THE LEFT
-            if(player.getX() <= 0 && player.getDirection() == Direction.LEFT) {
+            if(centeredX <= 0 && player.getDirection() == Direction.LEFT) {
 
                 loadNewRoom(new int[] {16, 0}, currentRoom.getId() - 10,
                         new int[] {-currentRoom.getRoomWidth(), 0});
             }
 
             // IF PLAYER IS LEAVING THROUGH THE RIGHT
-            if(player.getX() >= currentRoom.getRoomWidth() && player.getDirection() == Direction.RIGHT) {
+            if(centeredX >= currentRoom.getRoomWidth() && player.getDirection() == Direction.RIGHT) {
 
                 loadNewRoom(new int[] {-16, 0}, currentRoom.getId() + 10,
                         new int[] {currentRoom.getRoomWidth(), 0});
             }
 
             // IF PLAYER IS LEAVING UPWARDS
-            if(player.getY() <= 0 && player.getDirection() == Direction.UP) {
+            if(centeredY <= 0 && player.getDirection() == Direction.UP) {
 
                 loadNewRoom(new int[] {0, 12}, currentRoom.getId() - 1,
                         new int[] {0, -currentRoom.getRoomHeight()});
             }
 
             // IF PLAYER IS LEAVING DOWNWARDS
-            if(player.getY() >= currentRoom.getRoomHeight() && player.getDirection() == Direction.DOWN) {
+            if(centeredY >= currentRoom.getRoomHeight() && player.getDirection() == Direction.DOWN) {
 
                 loadNewRoom(new int[] {0, -12}, currentRoom.getId() + 1,
                         new int[] {0, currentRoom.getRoomHeight()});

@@ -3,6 +3,7 @@ package components.entity.npcs;
 import components.entity.Direction;
 import components.entity.Entity;
 import components.world.rooms.Room;
+import core.GamePanel;
 import core.ui.GameDialogue;
 import utilities.Animation;
 import utilities.Images;
@@ -20,8 +21,10 @@ public class Flerp extends Entity {
     // CONSTRUCTOR
     public Flerp(int x, int y, String[] text, Room room) {
 
-        this.x = x;
-        this.y = y;
+        setCoordinates(x, y);
+        setSize(GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+
+        bounds = new Rectangle(x, y, width, height);
 
         this.room = room;
         dialogue = new GameDialogue(text, 0, false);

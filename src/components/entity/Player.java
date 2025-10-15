@@ -5,6 +5,7 @@ import components.objects.NormalChest;
 import components.objects.WorldObject;
 import components.world.rooms.RoomMetadata;
 import components.world.World;
+import core.GamePanel;
 import utilities.Animation;
 import utilities.GameData;
 import utilities.Images;
@@ -49,11 +50,11 @@ public class Player extends Entity {
 
     private void setDefaultValues() {
 
-        setCoordinates(100, 300);
+        setCoordinates(200, 200);
+        setSize(GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 
         drawX = x;
         drawY = y;
-
         moveSpeed = 3;
 
         // PLAYER ANIMATIONS
@@ -92,46 +93,46 @@ public class Player extends Entity {
                 break;
 
             case "UP":
-                velX = alignToGrid(x);
                 velY = -moveSpeed;
                 direction = Direction.UP;
 
                 if(sprint) runUp.update();
                 else walkUp.update();
 
+                y += velY;
                 updatePlayerState();
                 break;
 
             case "DOWN":
-                velX = alignToGrid(x);
                 velY = moveSpeed;
                 direction = Direction.DOWN;
 
                 if(sprint) runDown.update();
                 else walkDown.update();
 
+                y += velY;
                 updatePlayerState();
                 break;
 
             case "LEFT":
                 velX = -moveSpeed;
-                velY = alignToGrid(y);
                 direction = Direction.LEFT;
 
                 if(sprint) runLeft.update();
                 else walkLeft.update();
 
+                x += velX;
                 updatePlayerState();
                 break;
 
             case "RIGHT":
                 velX = moveSpeed;
-                velY = alignToGrid(y);
                 direction = Direction.RIGHT;
 
                 if(sprint) runRight.update();
                 else walkRight.update();
 
+                x += velX;
                 updatePlayerState();
                 break;
 
@@ -170,7 +171,9 @@ public class Player extends Entity {
         // CHECK COLLISIONS WITH PLAYER AND TILEMAP
         if(!state.equals("TRANSITION")) {
 
-            handleTileCollisions();
+            bounds = new Rectangle(x + 8, y, GamePanel.TILE_SIZE - 16, GamePanel.TILE_SIZE);
+
+            handleCollisions();
             handleNonInteractables();       // HANDLES COLLISIONS THAT DO NOT NEED THE INTERACT KEY
 
             // INTERACT PREVIOUS PRESSED ENSURES THAT THE FUNCTION UPDATES ONLY ONCE EVEN WHEN HELD
@@ -233,17 +236,16 @@ public class Player extends Entity {
     private void handleNonInteractables() {
 
         worldObjects = room.getWorldObjects();
-        worldNPCS = room.getWorldNPCS();
 
         for (WorldObject worldObject : worldObjects)
-            if (worldObject instanceof Boots && this.getBounds().intersects(worldObject.getBounds()))
+            if (checkCollisionWith(worldObject.getBounds()) && worldObject instanceof Boots)
                 worldObject.update();
     }
 
     public void draw(Graphics2D g2) {
         //Set integer forms of the current x/y for drawing
-        drawX = x - width / 2;
-        drawY = y - height / 2;
+        drawX = x;
+        drawY = y;
 
         switch(state) {
 
