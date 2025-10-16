@@ -52,6 +52,7 @@ public class Player extends Entity {
 
         setCoordinates(200, 200);
         setSize(GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+        setBounds(x + 8, y + 16, width - 16, height - 16);
 
         drawX = x;
         drawY = y;
@@ -170,8 +171,8 @@ public class Player extends Entity {
 
         // CHECK COLLISIONS WITH PLAYER AND TILEMAP
         if(!state.equals("TRANSITION")) {
-
-            bounds = new Rectangle(x + 8, y, GamePanel.TILE_SIZE - 16, GamePanel.TILE_SIZE);
+            // UPDATE THE COLLISION BOX FOR THE PLAYER
+            setBounds(x + 8, y + 16, width - 16, height - 16);
 
             handleCollisions();
             handleNonInteractables();       // HANDLES COLLISIONS THAT DO NOT NEED THE INTERACT KEY
@@ -212,6 +213,18 @@ public class Player extends Entity {
 
         // INTERACT
         if(key == KeyEvent.VK_E) interact = bool;
+    }
+
+    // RETURN ITEM RANGE WHEN PRESSING INTERACT, DEPENDING ON THE DIRECTION OF THE PLAYER
+    private Rectangle getItemRange() {
+
+        return switch (direction) {
+
+            case UP -> new Rectangle(x + 8, y, 32, 16);
+            case DOWN -> new Rectangle(x + 8, y + 48, 32, 16);
+            case LEFT -> new Rectangle(x - 8, y + 16, 16, 32);
+            case RIGHT -> new Rectangle(x + 40, y + 16, 16, 32);
+        };
     }
 
     private void handleInteractables() {
@@ -313,6 +326,9 @@ public class Player extends Entity {
                 g2.drawRect(drawX, drawY, width, height);
                 break;
         }
+
+        drawDebug(g2);
+        drawInteractDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {
@@ -322,4 +338,16 @@ public class Player extends Entity {
     }
 
     public boolean isTransitioning() { return state.equals("TRANSITION") || world.isTransitioning(); }
+
+    public void drawInteractDebug(Graphics2D g2) {
+
+        g2.setColor(new Color(255, 255, 0, 60));
+        switch(direction) {
+
+            case UP: g2.fillRect(x + 8, y, 32, 16); break;
+            case DOWN: g2.fillRect(x + 8, y + 48, 32, 16); break;
+            case LEFT: g2.fillRect(x - 8, y + 16, 16, 32); break;
+            case RIGHT: g2.fillRect(x + 40, y + 16, 16, 32); break;
+        }
+    }
 }

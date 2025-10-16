@@ -41,20 +41,8 @@ public abstract class Entity {
     public boolean checkCollisionWith(WorldObject other) { return getBounds().intersects(other.getBounds()); }
     public boolean checkCollisionWith(Rectangle otherRectangle) { return getBounds().intersects(otherRectangle); }
 
+    public void setBounds(int x, int y, int width, int height) { bounds = new Rectangle(x, y, width, height); }
     public Rectangle getBounds() { return bounds; }
-
-    // TODO REMOVE THIS FROM ENTITY, ONLY PLAYER SHOULD HAVE THIS
-    // RETURN ITEM RANGE FOR THE ENTITY, DEPENDING ON THE DIRECTION OF THE PLAYER
-    protected Rectangle getItemRange() {
-
-        return switch (direction) {
-
-            case UP -> new Rectangle(x - width / 2, y - height / 2, width, height / 4);
-            case DOWN -> new Rectangle(x - width / 2, y + height / 2, width, height / 4);
-            case LEFT -> new Rectangle(x - width / 2 - width / 3, y - height / 2, width / 4, height);
-            case RIGHT -> new Rectangle(x + width / 2, y - height / 2, width / 4, height);
-        };
-    }
 
     protected void handleCollisions() {
 
@@ -91,8 +79,7 @@ public abstract class Entity {
                 if(tile != null) {
 
                     Rectangle tileRectangle = new Rectangle(i * room.getWidthOfTile(),
-                            j * room.getHeightOfTile(), room.getWidthOfTile(),
-                            room.getHeightOfTile() / 2);
+                            j * room.getHeightOfTile(), room.getWidthOfTile(), room.getHeightOfTile());
 
                     if(tile.hasTileCollision() && getBounds().intersects(tileRectangle)) collisionFlag = true;
                 }
@@ -139,6 +126,15 @@ public abstract class Entity {
     public void drawDebug(Graphics2D g2) {
 
         g2.setColor(new Color(255, 0, 0));
-        g2.fillRect(x + 8, y, 32, 48);
+        g2.fill(getBounds());
+
+        g2.setColor(new Color(255, 255, 0, 60));
+        switch(direction) {
+
+            case UP: g2.fillRect(x + 8, y, 32, 16); break;
+            case DOWN: g2.fillRect(x + 8, y + 48, 32, 16); break;
+            case LEFT: g2.fillRect(x - 8, y + 16, 16, 32); break;
+            case RIGHT: g2.fillRect(x + 40, y + 16, 16, 32); break;
+        }
     }
 }

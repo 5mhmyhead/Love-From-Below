@@ -181,7 +181,7 @@ public class WorldRoom implements Room {
 
                     Rectangle tileRectangle = new Rectangle(i * this.getWidthOfTile(),
                             j * this.getWidthOfTile(), this.getWidthOfTile(),
-                            this.getHeightOfTile() / 2);
+                            this.getHeightOfTile());
 
                     g2.fill(tileRectangle);
                 }

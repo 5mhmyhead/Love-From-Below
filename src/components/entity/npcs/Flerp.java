@@ -23,8 +23,7 @@ public class Flerp extends Entity {
 
         setCoordinates(x, y);
         setSize(GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-
-        bounds = new Rectangle(x, y, width, height);
+        setBounds(x, y, width, height);
 
         this.room = room;
         dialogue = new GameDialogue(text, 0, false);
