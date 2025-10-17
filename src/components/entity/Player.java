@@ -242,6 +242,7 @@ public class Player extends Entity {
 
                 npc.update();
                 if(npc.getState().equals("DIALOGUE")) state = "DIALOGUE";
+                if(!npc.getState().equals("DIALOGUE")) state = "IDLE";
             }
         }
     }
