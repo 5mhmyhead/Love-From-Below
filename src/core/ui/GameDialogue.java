@@ -1,24 +1,27 @@
 package core.ui;
 
+import components.entity.Entity;
+import core.GamePanel;
 import utilities.FontHandler;
 import utilities.Images;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class GameDialogue {
 
-    // TODO GET ENTITY POSITION, IF HIGH, DRAW THE DIALOGUE BOX LOW, AND VICE VERSA
-
+    private final Entity entity;
     private int index;                  // INDEX OF THE CURRENT DIALOGUE
 
     private final String[] text;        // ARRAY OF STRING OF TEXT FROM THE ENTITY
     private final boolean repeat;       // IF THE DIALOGUE SHOULD REPEAT OR NOT
 
-    public GameDialogue(String[] text, int startingIndex, boolean repeat) {
+    public GameDialogue(Entity entity, String[] text, int startingIndex, boolean repeat) {
+
+        this.entity = entity;
 
         this.text = text;
         this.repeat = repeat;
-
         this.index  = startingIndex;
     }
 
@@ -36,17 +39,34 @@ public class GameDialogue {
         }
     }
 
-    public void draw(Graphics2D g2) {
-        if(index != -1) drawWindow(g2, 0, 0, 0, 100);
-    }
+    public void draw(Graphics2D g2) { if(index != -1) drawWindow(g2); }
 
-    public void drawWindow(Graphics2D g2, int x, int y, int textX, int textY) {
+    public void drawWindow(Graphics2D g2) {
 
-        g2.drawImage(Images.UserInterface.DIALOGUE_BOX, x, y, null);
+        int topY = 100;
+        int bottomY = GamePanel.SCREEN_HEIGHT / 2 + 100;
 
         g2.setColor(Color.white);
         g2.setFont(FontHandler.comicoro);
-        g2.drawString(text[index], textX, textY);
+
+        if(entity.getY() <= GamePanel.SCREEN_HEIGHT / 2) {
+
+            g2.drawImage(Images.UI.DIALOGUE_BOX_BOTTOM, 0, 0, null);
+
+            for(String line : text[index].split("\\|")) {
+                g2.drawString(line, 70, bottomY);
+                bottomY += 30;
+            }
+        }
+        else {
+
+            g2.drawImage(Images.UI.DIALOGUE_BOX_TOP, 0, 0, null);
+
+            for(String line : text[index].split("\\|")) {
+                g2.drawString(line, 70, topY);
+                topY += 30;
+            }
+        }
     }
 
     public void reset() { index = 0; }

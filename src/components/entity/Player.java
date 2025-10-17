@@ -326,9 +326,6 @@ public class Player extends Entity {
                 g2.drawRect(drawX, drawY, width, height);
                 break;
         }
-
-        drawDebug(g2);
-        drawInteractDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {

@@ -39,9 +39,10 @@ public class Images {
     }
 
     // ALL SPRITES FOR THE USER INTERFACE
-    public static class UserInterface {
+    public static class UI {
 
-        public static final BufferedImage DIALOGUE_BOX = loadSingleImage("/assets/ui/dialogueBox.png");
+        public static final BufferedImage DIALOGUE_BOX_TOP = loadSingleImage("/assets/ui/dialogueBoxTop.png");
+        public static final BufferedImage DIALOGUE_BOX_BOTTOM = loadSingleImage("/assets/ui/dialogueBoxBottom.png");
     }
 
     public static class npcAssets {

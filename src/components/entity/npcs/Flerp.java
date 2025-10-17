@@ -26,7 +26,7 @@ public class Flerp extends Entity {
         setBounds(x, y, width, height);
 
         this.room = room;
-        dialogue = new GameDialogue(text, 0, false);
+        dialogue = new GameDialogue(this, text, 0, false);
 
         idleSleep = new Animation(50, true, Objects.requireNonNull(Images.npcAssets.FLERP_IDLE_SLEEP), width, height);
         idleAwake = new Animation(50, true, Objects.requireNonNull(Images.npcAssets.FLERP_IDLE), width, height);
