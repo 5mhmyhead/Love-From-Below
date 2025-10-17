@@ -47,6 +47,8 @@ public class Images {
 
     public static class npcAssets {
         // SLEEPING GUARD FLERP
+        public static final BufferedImage FLERP_PORTRAIT = loadSingleImage("/assets/entities/npcs/flerpPortrait.png");
+
         public static final BufferedImage FLERP_IDLE_SLEEP = loadSingleImage("/assets/entities/npcs/flerpIdleSleep.png");
         public static final BufferedImage FLERP_IDLE = loadSingleImage("/assets/entities/npcs/flerpIdle.png");
 

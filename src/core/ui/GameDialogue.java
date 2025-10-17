@@ -2,23 +2,30 @@ package core.ui;
 
 import components.entity.Entity;
 import core.GamePanel;
+import utilities.Animation;
 import utilities.FontHandler;
 import utilities.Images;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 public class GameDialogue {
 
-    private final Entity entity;
-    private int index;                  // INDEX OF THE CURRENT DIALOGUE
+    private final int portraitWidth = 144;
+    private final int portraitHeight = 144;
 
+    private final Entity entity;
+    private final Animation portrait;
+
+    private int index;                  // INDEX OF THE CURRENT DIALOGUE
     private final String[] text;        // ARRAY OF STRING OF TEXT FROM THE ENTITY
     private final boolean repeat;       // IF THE DIALOGUE SHOULD REPEAT OR NOT
 
-    public GameDialogue(Entity entity, String[] text, int startingIndex, boolean repeat) {
+    public GameDialogue(Entity entity, BufferedImage image, String[] text, int startingIndex, boolean repeat) {
 
         this.entity = entity;
+        this.portrait = new Animation(0, false, image, portraitWidth, portraitHeight);
 
         this.text = text;
         this.repeat = repeat;
@@ -49,21 +56,30 @@ public class GameDialogue {
         g2.setColor(Color.white);
         g2.setFont(FontHandler.comicoro);
 
+        // SPLITS BETWEEN THE PORTRAIT NUMBER AND THE TEXT ITSELF
+        String[] parts = text[index].split(":");
+
+        // GETS THE CORRESPONDING PORTRAIT WITH THE NUMBER GIVE
+        String numberOnly = parts[0].replaceAll("[^0-9]", "");
+        int portraitNum = Integer.parseInt(numberOnly);
+
         if(entity.getY() <= GamePanel.SCREEN_HEIGHT / 2) {
 
             g2.drawImage(Images.UI.DIALOGUE_BOX_BOTTOM, 0, 0, null);
+            portrait.drawSpecific(g2, portraitNum, 72, 360, portraitWidth, portraitHeight);
 
-            for(String line : text[index].split("\\|")) {
-                g2.drawString(line, 70, bottomY);
+            for(String line : parts[1].split("\\|")) {
+                g2.drawString(line, 240, bottomY);
                 bottomY += 30;
             }
         }
         else {
 
             g2.drawImage(Images.UI.DIALOGUE_BOX_TOP, 0, 0, null);
+            portrait.drawSpecific(g2, portraitNum, 72, 72, portraitWidth, portraitHeight);
 
-            for(String line : text[index].split("\\|")) {
-                g2.drawString(line, 70, topY);
+            for(String line : parts[1].split("\\|")) {
+                g2.drawString(line, 240, topY);
                 topY += 30;
             }
         }

@@ -40,24 +40,16 @@
             <NPC>
                 <NAME>FLERP</NAME>
                 <COL>6</COL>
-                <ROW>4</ROW>
+                <ROW>7</ROW>
 
                 <DIALOGUE>
-                    Oh! You seem to be a new face here...;
-                    Are you also in pursuit of the lost PRINCESS|
-                    down below?;
-                    ...;
-                    Not quite the talker, huh? Oh, well. I'm FLERP,|
-                    one of the knights ordered to find PRINCESS|
-                    GENEVIEVE.;
-                    We've decided to set up camp here, just to get|
-                    some rest after exploring these stone-cold walls,|
-                    you know?;
-                    Why don't you join in? I think a nap would suit|
-                    you greatly! Just INTERACT with that bonfire|
-                    so you could SAVE.;
-                    As for me, I think another nap would also do|
-                    me well...
+                    0:Oh! You seem to be a new face here...;
+                    0:Are you also in pursuit of the lost PRINCESS|down below?;
+                    4:...;
+                    3:Not quite the talker, huh? Oh, well. I'm FLERP,|one of the knights ordered to find PRINCESS|GENEVIEVE.;
+                    1:We've decided to set up camp here, just to get|some rest after exploring these stone-cold walls,|you know?;
+                    3:Why don't you join in? I think a nap would suit|you greatly! Just INTERACT with that bonfire|so you could SAVE.;
+                    2:As for me, I think another nap would also do|me well...
                 </DIALOGUE>
             </NPC>
         </NPCS>

@@ -51,6 +51,8 @@ public class World {
     private void loadRoomMetadata(String filePath) {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setIgnoringElementContentWhitespace(true);
+        factory.setNamespaceAware(true);
 
         try {
 
