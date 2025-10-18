@@ -1,15 +1,17 @@
 package components.entity;
 
-import components.objects.Boots;
-import components.objects.NormalChest;
+import components.objects.nonInteractables.Boots;
+import components.objects.interactables.NormalChest;
 import components.objects.WorldObject;
+import components.objects.nonInteractables.Sword;
 import components.world.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
 import utilities.Animation;
-import utilities.GameData;
+import core.ui.GameData;
 import utilities.Images;
 
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -22,7 +24,8 @@ public class Player extends Entity {
 
     // PLAYER INPUTS
     private boolean inputLeft, inputUp, inputRight,
-                    inputDown, interact, sprint;
+                    inputDown, interact, sprint,
+                    inputAttack;
 
     // PLAYER ANIMATIONS
     private Animation walkUp, walkDown, walkLeft, walkRight,
@@ -203,6 +206,8 @@ public class Player extends Entity {
             if(sprint) moveSpeed = 5;
             else moveSpeed = 3;
 
+            if(inputAttack && GameData.swordLevel > 0) state = "ATTACK";
+
             if(!(inputUp || inputDown || inputLeft || inputRight)) state = "IDLE";
             if(transitionVelX != 0 || transitionVelY != 0) 	state = "TRANSITION";
     }
@@ -216,8 +221,9 @@ public class Player extends Entity {
         if(key == KeyEvent.VK_S) inputDown = bool;
         if(key == KeyEvent.VK_SHIFT && GameData.hasBoots) sprint = bool;
 
-        // INTERACT
+        // ACTION KEYS
         if(key == KeyEvent.VK_E) interact = bool;
+        if(key == KeyEvent.VK_J) inputAttack = bool;
     }
 
     // RETURN ITEM RANGE WHEN PRESSING INTERACT, DEPENDING ON THE DIRECTION OF THE PLAYER
@@ -257,8 +263,10 @@ public class Player extends Entity {
         worldObjects = room.getWorldObjects();
 
         for (WorldObject worldObject : worldObjects)
-            if (checkCollisionWith(worldObject.getBounds()) && worldObject instanceof Boots)
-                worldObject.update();
+            if (checkCollisionWith(worldObject.getBounds())) {
+                if(worldObject instanceof Boots) worldObject.update();
+                if(worldObject instanceof Sword) worldObject.update();
+            }
     }
 
     public void draw(Graphics2D g2) {

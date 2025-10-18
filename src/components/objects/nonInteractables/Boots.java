@@ -1,7 +1,8 @@
-package components.objects;
+package components.objects.nonInteractables;
 
+import components.objects.WorldObject;
 import components.world.rooms.Room;
-import utilities.GameData;
+import core.ui.GameData;
 import utilities.Images;
 
 import java.awt.*;

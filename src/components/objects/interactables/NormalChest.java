@@ -1,5 +1,6 @@
-package components.objects;
+package components.objects.interactables;
 
+import components.objects.WorldObject;
 import components.world.rooms.Room;
 import utilities.Images;
 

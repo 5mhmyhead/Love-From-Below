@@ -2,9 +2,10 @@ package utilities;
 
 import components.entity.Entity;
 import components.entity.npcs.Flerp;
-import components.objects.Boots;
-import components.objects.NormalChest;
+import components.objects.nonInteractables.Boots;
+import components.objects.interactables.NormalChest;
 import components.objects.WorldObject;
+import components.objects.nonInteractables.Sword;
 import components.world.rooms.Room;
 import components.world.World;
 import core.GamePanel;
@@ -78,6 +79,7 @@ public class MapHandler {
 
             case "NORMAL_CHEST" -> new NormalChest(x, y, room);
             case "BOOTS" -> new Boots(x, y, room);
+            case "SWORD" -> new Sword(x, y, room);
 
             default -> null;
         };

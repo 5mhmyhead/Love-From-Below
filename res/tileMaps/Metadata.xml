@@ -34,6 +34,11 @@
     <ROOM id = "1-3">
 
         <OBJECTS>
+            <OBJECT>
+                <TYPE>SWORD</TYPE>
+                <COL>6</COL>
+                <ROW>7</ROW>
+            </OBJECT>
         </OBJECTS>
 
         <NPCS>

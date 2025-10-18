@@ -68,6 +68,7 @@ public class Images {
         public static final BufferedImage NORMAL_CHEST_OPENED = loadSingleImage("/assets/objects/nChestOpened.png");
 
         public static final BufferedImage BOOTS = loadSingleImage("/assets/objects/boots.png");
+        public static final BufferedImage SWORD = loadSingleImage("/assets/objects/sword.png");
     }
 
     // ALL TILE ASSETS
