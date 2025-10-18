@@ -50,6 +50,7 @@ public class Player extends Entity {
 
     private void setDefaultValues() {
 
+        // PLAYER ATTRIBUTES
         setCoordinates(200, 200);
         setSize(GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
         setBounds(x + 8, y + 16, width - 16, height - 16);
@@ -57,6 +58,10 @@ public class Player extends Entity {
         drawX = x;
         drawY = y;
         moveSpeed = 3;
+
+        knockbackDistance = 0;
+
+        health = 6;
 
         // PLAYER ANIMATIONS
         walkUp = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_UP), width, height);
@@ -333,6 +338,11 @@ public class Player extends Entity {
 
         this.transitionVelX = transitionVelX;
         this.transitionVelY = transitionVelY;
+    }
+
+    public int getHealth()
+    {
+        return health;
     }
 
     public boolean isTransitioning() { return state.equals("TRANSITION") || world.isTransitioning(); }

@@ -27,10 +27,16 @@ public abstract class Entity {
 
     protected int moveSpeed;
 
+    protected int health;
+    protected int invincibilityFrames;
+    protected int knockbackDistance;
+
     protected Direction direction;
     protected String state;
 
     protected Rectangle bounds;
+
+    protected boolean destroyFlag;
 
     // UPDATE AND DRAW FUNCTIONS FOR ENTITY
     public abstract void update();

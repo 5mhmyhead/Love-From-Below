@@ -9,6 +9,7 @@ import java.io.InputStream;
 public class FontHandler {
     // FONTS FOR THE GAME, INITIALIZED TO SIZE 30 AND 40 RESPECTIVELY
     public static Font comicoro;
+    public static Font maruMonica;
     public static Font pixelBitAdvanced;
 
     public FontHandler() {
@@ -22,6 +23,12 @@ public class FontHandler {
             assert inputStream != null;
             comicoro = Font.createFont(Font.TRUETYPE_FONT, inputStream)
                     .deriveFont(Font.PLAIN, 30f);
+
+            inputStream = getClass().getResourceAsStream("/fonts/MaruMonica.ttf");
+
+            assert inputStream != null;
+            maruMonica = Font.createFont(Font.TRUETYPE_FONT, inputStream)
+                    .deriveFont(Font.PLAIN, 25f);
 
             inputStream = getClass().getResourceAsStream("/fonts/PixelBitAdvanced.ttf");
 

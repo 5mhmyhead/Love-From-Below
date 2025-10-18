@@ -41,28 +41,45 @@ public class Flerp extends Entity {
     @Override
     public void update() {
 
+        Timer timer = new Timer();
+
+        TimerTask toSleep = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                state = "FALL_ASLEEP";
+                fallAsleep.update();
+
+                if(fallAsleep.hasEnded()) {
+
+                    state = "IDLE_SLEEP";
+                    timer.cancel();
+                    fallAsleep.reset();
+                }
+            }
+        };
+
+        TimerTask wakesUp = new TimerTask() {
+
+            @Override
+            public void run() {
+
+                wakeUp.update();
+
+                if(wakeUp.hasEnded()) {
+
+                    state = "IDLE_AWAKE";
+                    timer.cancel();
+                    wakeUp.reset();
+                }
+            }
+        };
+
         switch (state) {
             case "IDLE_SLEEP":
-
                 state = "WAKE_UP";
-
-                Timer timer = new Timer();
-                TimerTask task = new TimerTask() {
-
-                    @Override
-                    public void run() {
-
-                        wakeUp.update();
-
-                        if(wakeUp.hasEnded()) {
-
-                            state = "IDLE_AWAKE";
-                            timer.cancel();
-                        }
-                    }
-                };
-
-                timer.schedule(task, 0, 10);
+                timer.schedule(wakesUp, 0, 20);
                 break;
 
             case "IDLE_AWAKE":
@@ -78,6 +95,8 @@ public class Flerp extends Entity {
 
                         state = "IDLE_AWAKE";
                         dialogue.resetTo(5);
+
+                        timer.schedule(toSleep, 5000, 20);
                     }
                 }
 

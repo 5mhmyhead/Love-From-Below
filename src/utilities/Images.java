@@ -40,9 +40,14 @@ public class Images {
 
     // ALL SPRITES FOR THE USER INTERFACE
     public static class UI {
+        // DIALOGUE
+        public static final BufferedImage DIALOGUE_BOX_TOP = loadSingleImage("/assets/ui/dialogueUI/dialogueBoxTop.png");
+        public static final BufferedImage DIALOGUE_BOX_BOTTOM = loadSingleImage("/assets/ui/dialogueUI/dialogueBoxBottom.png");
 
-        public static final BufferedImage DIALOGUE_BOX_TOP = loadSingleImage("/assets/ui/dialogueBoxTop.png");
-        public static final BufferedImage DIALOGUE_BOX_BOTTOM = loadSingleImage("/assets/ui/dialogueBoxBottom.png");
+        // GAME UI
+        public static final BufferedImage HEALTH_BAR_FULL = loadSingleImage("/assets/ui/gameplayUI/healthBarFull.png");
+        public static final BufferedImage HEALTH_BAR_EMPTY = loadSingleImage("/assets/ui/gameplayUI/healthBarEmpty.png");
+        public static final BufferedImage HEART = loadSingleImage("/assets/ui/gameplayUI/heart.png");
     }
 
     public static class npcAssets {

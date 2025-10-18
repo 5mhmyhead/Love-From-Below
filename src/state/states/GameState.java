@@ -3,6 +3,7 @@ package state.states;
 import components.entity.Player;
 import core.ui.GameMenu;
 import components.world.World;
+import core.ui.GameUI;
 import state.State;
 import state.StateManager;
 
@@ -13,7 +14,9 @@ public class GameState extends State {
 
     private Player player;
     private World world;
+
     private GameMenu menu;
+    private GameUI ui;
 
     private String state;                // CHECK THE DIFFERENT STATES: GAME, INVENTORY, MENU OR TRANSITION
 
@@ -33,7 +36,9 @@ public class GameState extends State {
         world = new World(13, "/tileMaps/Caves.txt",
                 "/tileMaps/Metadata.xml",48, 36);
 
+        ui = new GameUI(world);
         menu = new GameMenu(world);
+
         player = world.getPlayer();
     }
 
@@ -57,7 +62,7 @@ public class GameState extends State {
         g2.getTransform();
         world.draw(g2);
 
-        // DRAW THE MENU WHEN IN MENU STATE
+        if(!world.getPlayer().getState().equals("DIALOGUE")) ui.draw(g2);
         if(state.equals("MENU")) menu.draw(g2);
     }
 
