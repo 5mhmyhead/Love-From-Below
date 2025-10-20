@@ -20,7 +20,7 @@ public class StateManager {
     public StateManager() {
 
         states = new State[NUMBER_OF_STATES];
-        currentState = GAME_STATE;          // FIXME CURRENT STATE SHOULD BE TITLE STATE AFTER TESTING
+        currentState = TITLE_STATE;          // FIXME CURRENT STATE SHOULD BE TITLE STATE AFTER TESTING
         loadState(currentState);
     }
 

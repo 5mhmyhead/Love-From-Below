@@ -26,7 +26,7 @@ public class NormalChest extends Interactable {
     public void update() {
 
         if(state.equals("CLOSED")) {
-
+            playClip();
             System.out.println("wow you got an item not");
             state = "OPENED";
         }

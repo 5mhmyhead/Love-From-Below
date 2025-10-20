@@ -7,6 +7,7 @@ import components.world.rooms.WorldRoom;
 import core.GamePanel;
 import org.w3c.dom.Document;
 import utilities.MapHandler;
+import utilities.SoundManager;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -45,6 +46,8 @@ public class World {
 
         roomBuffer = new ArrayList<>(Arrays.asList(new WorldRoom[5]));
         metadataBuffer = new ArrayList<>(Arrays.asList(new RoomMetadata[5]));
+
+        if(!SoundManager.OVERWORLD.isPlaying()) SoundManager.OVERWORLD.loop();
     }
 
     // LOADS THE METADATA FROM PATH

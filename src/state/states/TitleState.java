@@ -5,6 +5,7 @@ import state.State;
 import state.StateManager;
 import utilities.Animation;
 import utilities.Images;
+import utilities.SoundManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -36,6 +37,10 @@ public class TitleState extends State {
         assert Images.TitleScreenAssets.TITLE_SCREEN != null;
         titleScreenAnimation = new Animation(10, true, Images.TitleScreenAssets.TITLE_SCREEN,
                 GamePanel.SCREEN_WIDTH, GamePanel.SCREEN_HEIGHT);
+
+        // PLAY INTRO AUDIO
+        if(!SoundManager.INTRO.isPlaying()) SoundManager.INTRO.play();
+        SoundManager.INTRO.setVolume(-10);
     }
 
     @Override
@@ -71,8 +76,11 @@ public class TitleState extends State {
     @Override
     public void keyPressed(int key) {
 
-        if(key == KeyEvent.VK_ENTER)
+        if(key == KeyEvent.VK_ENTER) {
+
             pressedEnter = true;
+            SoundManager.INTRO.stop();
+        }
     }
 
     @Override
