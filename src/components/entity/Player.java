@@ -30,6 +30,8 @@ public class Player extends Entity {
     private Animation walkUp, walkDown, walkLeft, walkRight,
                     runUp, runDown, runLeft, runRight;
 
+    private Animation sparkle;
+
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
 
@@ -78,6 +80,9 @@ public class Player extends Entity {
         runDown = new Animation(7, true, Images.PlayerAssets.PLAYER_DOWN, width, height);
         runLeft = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_LEFT), width, height);
         runRight = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_RIGHT), width, height);
+
+        // SPARKLE ANIMATION FROM GET ITEM
+        sparkle = new Animation(10, true, Objects.requireNonNull(Images.Effects.SPARKLE), width * 2, height * 2);
 
         direction = Direction.DOWN;
         state = "IDLE";
@@ -367,6 +372,11 @@ public class Player extends Entity {
                 g2.drawImage(Images.PlayerAssets.PLAYER_GET_ITEM, drawX, drawY, width, height, null);
                 drawCollectible.draw(drawX + drawCollectible.getWidth() / 4,
                         drawY - drawCollectible.getHeight() / 2, g2);
+
+                sparkle.draw(g2, drawX - GamePanel.TILE_SIZE + 8, drawY - GamePanel.TILE_SIZE - 24,
+                        width * 2, height * 2);
+
+                sparkle.update();
                 break;
 
             default:

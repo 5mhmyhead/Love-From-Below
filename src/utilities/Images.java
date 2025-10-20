@@ -23,6 +23,10 @@ public class Images {
         public static final BufferedImage TITLE_SCREEN = loadSingleImage("/assets/titleScreen/titleScreen.png");
     }
 
+    public static class Effects {
+        public static final BufferedImage SPARKLE = loadSingleImage("/effects/sparkle.png");
+    }
+
     // ALL SPRITES FOR THE PLAYER
     public static class PlayerAssets {
         // MOVEMENT SPRITES
