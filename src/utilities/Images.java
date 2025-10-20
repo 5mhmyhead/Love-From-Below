@@ -36,6 +36,8 @@ public class Images {
 
         public static final BufferedImage PLAYER_RUN_LEFT = loadSingleImage("/assets/entities/player/playerRunLeft.png");
         public static final BufferedImage PLAYER_RUN_RIGHT = loadSingleImage("/assets/entities/player/playerRunRight.png");
+
+        public static final BufferedImage PLAYER_GET_ITEM = loadSingleImage("/assets/entities/player/playerGetItem.png");
     }
 
     // ALL SPRITES FOR THE USER INTERFACE

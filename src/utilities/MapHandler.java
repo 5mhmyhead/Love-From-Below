@@ -2,10 +2,10 @@ package utilities;
 
 import components.entity.Entity;
 import components.entity.npcs.Flerp;
-import components.objects.nonInteractables.Boots;
+import components.objects.collectibles.Boots;
 import components.objects.interactables.NormalChest;
 import components.objects.WorldObject;
-import components.objects.nonInteractables.Sword;
+import components.objects.collectibles.Sword;
 import components.world.rooms.Room;
 import components.world.World;
 import core.GamePanel;

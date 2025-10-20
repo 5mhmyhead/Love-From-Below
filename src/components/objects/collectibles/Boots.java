@@ -1,13 +1,14 @@
-package components.objects.nonInteractables;
+package components.objects.collectibles;
 
-import components.objects.WorldObject;
+import components.entity.Player;
+import components.objects.Collectible;
 import components.world.rooms.Room;
 import core.ui.GameData;
 import utilities.Images;
 
 import java.awt.*;
 
-public class Boots extends WorldObject {
+public class Boots extends Collectible {
 
     public Boots(int x, int y, Room room) {
 
@@ -23,12 +24,22 @@ public class Boots extends WorldObject {
     @Override
     public void update() {
 
+    }
+
+    @Override
+    public boolean action(Player player) {
+
         GameData.hasBoots = true;
-        this.image = null;
+        player.enterItemState(this);
+        playClip();
+
+        return true;
     }
 
     @Override
     public void draw(Graphics2D g2) {
-        g2.drawImage(image, x, y, width, height, null);
+
+        if(!GameData.hasBoots)
+            g2.drawImage(image, x, y, width, height, null);
     }
 }

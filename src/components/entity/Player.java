@@ -1,9 +1,8 @@
 package components.entity;
 
-import components.objects.nonInteractables.Boots;
-import components.objects.interactables.NormalChest;
+import components.objects.Collectible;
+import components.objects.Interactable;
 import components.objects.WorldObject;
-import components.objects.nonInteractables.Sword;
 import components.world.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
@@ -11,10 +10,10 @@ import utilities.Animation;
 import core.ui.GameData;
 import utilities.Images;
 
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class Player extends Entity {
@@ -42,6 +41,9 @@ public class Player extends Entity {
     ArrayList<WorldObject> worldObjects;
     ArrayList<Entity> worldNPCS;
 
+    private Collectible drawCollectible;                     // THE WORLD OBJECT THAT THE PLAYER JUST GOT
+    private int getAnimationTimer;                      // THE TIMER FOR THE GET ITEM ANIMATION
+
     public Player(World world, RoomMetadata metadata) {
 
         this.world = world;
@@ -63,7 +65,7 @@ public class Player extends Entity {
         moveSpeed = 3;
 
         knockbackDistance = 0;
-
+        getAnimationTimer = 0;
         health = 6;
 
         // PLAYER ANIMATIONS
@@ -145,6 +147,16 @@ public class Player extends Entity {
                 updatePlayerState();
                 break;
 
+            case "GET_ITEM":
+
+                velX = 0;
+                velY = 0;
+                if(getAnimationTimer == 0) getAnimationTimer = 120;
+                else getAnimationTimer--;
+                // AFTER 2 SECONDS, TURN BACK TO IDLE STATE
+                if(getAnimationTimer == 0) state = "IDLE";
+                break;
+
             case "TRANSITION":
 
                 velX = 0;
@@ -195,6 +207,53 @@ public class Player extends Entity {
         }
     }
 
+    private void handleInteractables() {
+
+        worldObjects = room.getWorldObjects();
+        worldNPCS = room.getWorldNPCS();
+
+        for (WorldObject object : worldObjects)
+            if (object instanceof Interactable && this.getItemRange().intersects(object.getBounds()))
+                object.update();
+
+        for(Entity npc : worldNPCS) {
+
+            if(this.getItemRange().intersects(npc.getBounds())) {
+
+                npc.update();
+                if(npc.getState().equals("DIALOGUE")) state = "DIALOGUE";
+                if(!npc.getState().equals("DIALOGUE")) state = "IDLE";
+            }
+        }
+    }
+
+    private void handleNonInteractables() {
+
+        worldObjects = room.getWorldObjects();
+        Iterator<WorldObject> iterator = worldObjects.iterator();
+
+        while(iterator.hasNext())
+        {
+            // GET THE WORLD OBJECT
+            WorldObject object = iterator.next();
+
+            // CHECK IF IT IS A COLLECTIBLE
+            if(object instanceof Collectible collectible) {
+
+                if (checkCollisionWith(collectible.getBounds()))
+                    if(collectible.action(this))
+                        iterator.remove();
+            }
+        }
+    }
+
+    // MAKE THE PLAYER GO INTO THE ITEM ANIMATION STATE
+    public void enterItemState(Collectible collectible) {
+
+        this.state = "GET_ITEM";
+        drawCollectible = collectible;
+    }
+
     // UPDATE THE PLAYER STATE VARIABLE
     private void updatePlayerState() {
 
@@ -238,39 +297,8 @@ public class Player extends Entity {
         };
     }
 
-    private void handleInteractables() {
-
-        worldObjects = room.getWorldObjects();
-        worldNPCS = room.getWorldNPCS();
-
-        for (WorldObject worldObject : worldObjects)
-            if (worldObject instanceof NormalChest && this.getItemRange().intersects(worldObject.getBounds()))
-                worldObject.update();
-
-        for(Entity npc : worldNPCS) {
-
-            if(this.getItemRange().intersects(npc.getBounds())) {
-
-                npc.update();
-                if(npc.getState().equals("DIALOGUE")) state = "DIALOGUE";
-                if(!npc.getState().equals("DIALOGUE")) state = "IDLE";
-            }
-        }
-    }
-
-    private void handleNonInteractables() {
-
-        worldObjects = room.getWorldObjects();
-
-        for (WorldObject worldObject : worldObjects)
-            if (checkCollisionWith(worldObject.getBounds())) {
-                if(worldObject instanceof Boots) worldObject.update();
-                if(worldObject instanceof Sword) worldObject.update();
-            }
-    }
-
     public void draw(Graphics2D g2) {
-        //Set integer forms of the current x/y for drawing
+        // SET BOTH DRAW X AND Y TO CURRENT X AND Y OF PLAYER
         drawX = x;
         drawY = y;
 
@@ -334,6 +362,13 @@ public class Player extends Entity {
                 else walkLeft.draw(g2, drawX, drawY, width, height);
                 break;
 
+            case "GET_ITEM":
+
+                g2.drawImage(Images.PlayerAssets.PLAYER_GET_ITEM, drawX, drawY, width, height, null);
+                drawCollectible.draw(drawX + drawCollectible.getWidth() / 4,
+                        drawY - drawCollectible.getHeight() / 2, g2);
+                break;
+
             default:
 
                 g2.setColor(Color.RED);
@@ -348,10 +383,7 @@ public class Player extends Entity {
         this.transitionVelY = transitionVelY;
     }
 
-    public int getHealth()
-    {
-        return health;
-    }
+    public int getHealth() { return health; }
 
     public boolean isTransitioning() { return state.equals("TRANSITION") || world.isTransitioning(); }
 

@@ -1,11 +1,13 @@
 package components.objects;
 
+import components.entity.Player;
 import components.world.rooms.Room;
 import core.GamePanel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+// AN OBJECT THAT EXISTS IN THE WORLD (COLLECTIBLES, INTERACTABLES, WARP TILES)
 public abstract class WorldObject {
 
     protected Room room;

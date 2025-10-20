@@ -1,12 +1,12 @@
 package components.objects.interactables;
 
-import components.objects.WorldObject;
+import components.objects.Interactable;
 import components.world.rooms.Room;
 import utilities.Images;
 
 import java.awt.*;
 
-public class NormalChest extends WorldObject {
+public class NormalChest extends Interactable {
 
     private String state;
 
