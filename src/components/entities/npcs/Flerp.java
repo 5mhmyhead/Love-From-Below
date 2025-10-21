@@ -1,7 +1,8 @@
-package components.entity.npcs;
+package components.entities.npcs;
 
-import components.entity.Direction;
-import components.entity.Entity;
+import components.entities.Direction;
+import components.entities.Entity;
+import components.entities.NPC;
 import components.world.rooms.Room;
 import core.GamePanel;
 import core.ui.GameDialogue;
@@ -13,7 +14,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Flerp extends Entity {
+public class Flerp extends NPC {
 
     private final Animation idleSleep, idleAwake, wakeUp, fallAsleep;
     private final GameDialogue dialogue;

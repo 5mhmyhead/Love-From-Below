@@ -1,6 +1,6 @@
 package core.ui;
 
-import components.entity.Entity;
+import components.entities.Entity;
 import core.GamePanel;
 import utilities.Animation;
 import utilities.FontHandler;
@@ -8,7 +8,6 @@ import utilities.Images;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 public class GameDialogue {
 

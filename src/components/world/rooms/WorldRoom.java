@@ -1,7 +1,8 @@
 package components.world.rooms;
 
-import components.entity.Entity;
-import components.entity.Player;
+import components.entities.Entity;
+import components.entities.NPC;
+import components.entities.Player;
 import components.objects.WorldObject;
 import components.world.World;
 import core.GamePanel;
@@ -28,7 +29,7 @@ public class WorldRoom implements Room {
     private final Player player;
 
     private final ArrayList<WorldObject> worldObjects;
-    private final ArrayList<Entity> worldNPCS;
+    private final ArrayList<NPC> worldNPCS;
 
     // HELPER CLASSES
     private final MapHandler mapHandler;
@@ -166,7 +167,7 @@ public class WorldRoom implements Room {
     public Player getPlayer() { return player; }
 
     public ArrayList<WorldObject> getWorldObjects() { return worldObjects; }
-    public ArrayList<Entity> getWorldNPCS() { return worldNPCS; }
+    public ArrayList<NPC> getWorldNPCS() { return worldNPCS; }
 
     // DEBUG TO DRAW COLLISIONS OF TILES
     private void drawTileDebug(Graphics2D g2) {

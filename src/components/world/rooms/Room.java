@@ -1,7 +1,8 @@
 package components.world.rooms;
 
-import components.entity.Entity;
-import components.entity.Player;
+import components.entities.Entity;
+import components.entities.NPC;
+import components.entities.Player;
 import components.objects.WorldObject;
 import utilities.Tile;
 
@@ -23,7 +24,7 @@ public interface Room {
     Tile getTile(int column, int row);
 
     ArrayList<WorldObject> getWorldObjects();
-    ArrayList<Entity> getWorldNPCS();
+    ArrayList<NPC> getWorldNPCS();
 
     Player getPlayer();
 }

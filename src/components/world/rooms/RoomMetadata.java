@@ -1,6 +1,7 @@
 package components.world.rooms;
 
-import components.entity.Entity;
+import components.entities.Entity;
+import components.entities.NPC;
 import components.objects.WorldObject;
 import components.world.World;
 import org.w3c.dom.Document;
@@ -15,7 +16,7 @@ public class RoomMetadata {
     private final int id;
 
     private ArrayList<WorldObject> worldObjects;
-    private ArrayList<Entity> worldNPCS;
+    private ArrayList<NPC> worldNPCS;
 
     private String roomType;
     private String music;
@@ -93,5 +94,5 @@ public class RoomMetadata {
     }
 
     public ArrayList<WorldObject> getWorldObjects() { return worldObjects; }
-    public ArrayList<Entity> getWorldNPCS() { return worldNPCS; }
+    public ArrayList<NPC> getWorldNPCS() { return worldNPCS; }
 }

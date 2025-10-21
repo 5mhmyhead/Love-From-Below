@@ -1,7 +1,8 @@
-package components.entity;
+package components.entities;
 
 import components.objects.Collectible;
 import components.objects.Interactable;
+import components.objects.Weapon;
 import components.objects.WorldObject;
 import components.world.rooms.RoomMetadata;
 import components.world.World;
@@ -46,9 +47,9 @@ public class Player extends Entity {
 
     // WORLD OBJECTS AND ENTITIES
     ArrayList<WorldObject> worldObjects;
-    ArrayList<Entity> worldNPCS;
+    ArrayList<NPC> worldNPCS;
 
-    private Collectible drawCollectible;                     // THE WORLD OBJECT THAT THE PLAYER JUST GOT
+    private WorldObject drawObject;                     // THE WORLD OBJECT THAT THE PLAYER JUST GOT
     private int getAnimationTimer;                      // THE TIMER FOR THE GET ITEM ANIMATION
 
     public Player(World world, RoomMetadata metadata) {
@@ -265,7 +266,7 @@ public class Player extends Entity {
             if (object instanceof Interactable && this.getItemRange().intersects(object.getBounds()))
                 object.update();
 
-        for(Entity npc : worldNPCS) {
+        for(NPC npc : worldNPCS) {
 
             if(this.getItemRange().intersects(npc.getBounds())) {
 
@@ -293,14 +294,22 @@ public class Player extends Entity {
                     if(collectible.action(this))
                         iterator.remove();
             }
+
+            // CHECK IF IT IS A WEAPON
+            if(object instanceof Weapon weapon) {
+
+                if (checkCollisionWith(weapon.getBounds()))
+                    if(weapon.playerAction(this))
+                        iterator.remove();
+            }
         }
     }
 
     // MAKE THE PLAYER GO INTO THE ITEM ANIMATION STATE
-    public void enterItemState(Collectible collectible) {
+    public void enterItemState(WorldObject object) {
 
         this.state = "GET_ITEM";
-        drawCollectible = collectible;
+        drawObject = object;
     }
 
     // UPDATE THE PLAYER STATE VARIABLE
@@ -330,7 +339,7 @@ public class Player extends Entity {
         if(key == KeyEvent.VK_SHIFT) sprint = bool;
 
         // ACTION KEYS
-        if(key == KeyEvent.VK_K) inputAttack = bool;
+        if(key == KeyEvent.VK_J) inputAttack = bool;
         if(key == KeyEvent.VK_E) interact = bool;
     }
 
@@ -425,8 +434,8 @@ public class Player extends Entity {
             case "GET_ITEM":
 
                 g2.drawImage(Images.PlayerAssets.PLAYER_GET_ITEM, drawX, drawY, width, height, null);
-                drawCollectible.draw(drawX + drawCollectible.getWidth() / 4,
-                        drawY - drawCollectible.getHeight() / 2, g2);
+                drawObject.draw(drawX + drawObject.getWidth() / 4,
+                        drawY - drawObject.getHeight() / 2, g2);
 
                 sparkle.draw(g2, drawX - GamePanel.TILE_SIZE + 8, drawY - GamePanel.TILE_SIZE - 24,
                         width * 2, height * 2);

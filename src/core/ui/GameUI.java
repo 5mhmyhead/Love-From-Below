@@ -1,6 +1,6 @@
 package core.ui;
 
-import components.entity.Player;
+import components.entities.Player;
 import components.world.World;
 import utilities.Images;
 

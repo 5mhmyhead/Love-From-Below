@@ -1,6 +1,6 @@
 package state.states;
 
-import components.entity.Player;
+import components.entities.Player;
 import core.ui.GameMenu;
 import components.world.World;
 import core.ui.GameUI;

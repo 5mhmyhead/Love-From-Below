@@ -1,6 +1,6 @@
 package components.objects.collectibles;
 
-import components.entity.Player;
+import components.entities.Player;
 import components.objects.Collectible;
 import components.world.rooms.Room;
 import core.ui.GameData;

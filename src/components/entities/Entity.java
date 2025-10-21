@@ -1,4 +1,4 @@
-package components.entity;
+package components.entities;
 
 import components.objects.WorldObject;
 import components.world.rooms.Room;
@@ -94,13 +94,13 @@ public abstract class Entity {
 
         // CHECKS OBJECT AND ENTITY COLLISIONS
         ArrayList<WorldObject> worldObjects = roomMetadata.getWorldObjects();
-        ArrayList<Entity> worldNPCS = roomMetadata.getWorldNPCS();
+        ArrayList<NPC> worldNPCS = roomMetadata.getWorldNPCS();
 
         for(WorldObject object : worldObjects)
             if(object.isCollidable() && checkCollisionWith(object))
                 collisionFlag = true;
 
-        for(Entity npc : worldNPCS)
+        for(NPC npc : worldNPCS)
             if(checkCollisionWith(npc))
                 collisionFlag = true;
 

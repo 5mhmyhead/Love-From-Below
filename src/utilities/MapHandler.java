@@ -1,11 +1,11 @@
 package utilities;
 
-import components.entity.Entity;
-import components.entity.npcs.Flerp;
+import components.entities.NPC;
+import components.entities.npcs.Flerp;
 import components.objects.collectibles.Boots;
 import components.objects.interactables.NormalChest;
 import components.objects.WorldObject;
-import components.objects.collectibles.Sword;
+import components.objects.weapons.Sword;
 import components.world.rooms.Room;
 import components.world.World;
 import core.GamePanel;
@@ -85,7 +85,7 @@ public class MapHandler {
         };
     }
 
-    public Entity buildNPC(String id, String[] text, int col, int row) {
+    public NPC buildNPC(String id, String[] text, int col, int row) {
         // FIND THE COORDINATES OF THE NPC
         int x = col * GamePanel.TILE_SIZE;
         int y = row * GamePanel.TILE_SIZE;

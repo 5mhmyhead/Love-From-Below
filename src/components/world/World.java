@@ -1,13 +1,12 @@
 package components.world;
 
-import components.entity.Direction;
-import components.entity.Player;
+import components.entities.Direction;
+import components.entities.Player;
 import components.world.rooms.RoomMetadata;
 import components.world.rooms.WorldRoom;
 import core.GamePanel;
 import org.w3c.dom.Document;
 import utilities.MapHandler;
-import utilities.SoundManager;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

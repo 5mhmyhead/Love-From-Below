@@ -1,19 +1,23 @@
 package components.objects;
 
+import components.entities.Enemy;
 import components.entities.Player;
 import utilities.SoundManager;
 import utilities.SoundPlayer;
 
 import java.awt.*;
 
-//AN ITEM THAT PERFORMS AN ACTION WHEN COLLIDED WITH
-public abstract class Collectible extends WorldObject {
+public abstract class Weapon extends WorldObject {
+
+    private int damage;
 
     // THE ACTION TO BE TAKEN WHEN THE PLAYER COLLIDES WITH THE ITEM
     // RETURNS WHETHER THE ITEM SHOULD BE REMOVED
-    public abstract boolean action(Player player);
+    public abstract boolean playerAction(Player player);
+    public abstract void enemyAction(Enemy enemy);
 
-    // PLAYS THE SOUND FOR COLLECTING THE ITEM
+    // TODO HAVE DIFFERENT SOUND EFFECTS FOR DIFFERENT TYPES OF WORLD OBJECTS
+    // PLAYS THE SOUND FOR INTERACTING WITH THE ITEM
     public void playClip() {
         // GET THE CURRENT SONG AND SAVE IT
         SoundPlayer current = SoundManager.getPlaying();
@@ -34,5 +38,13 @@ public abstract class Collectible extends WorldObject {
             }
         });
         thread.start();
+    }
+
+    // WHETHER THE ENEMY SHOULD EXPERIENCE INVINCIBILITY FRAMES AFTER BEING HIT
+    public abstract boolean callsInvincibility();
+
+    public int getDamage()
+    {
+        return damage;
     }
 }

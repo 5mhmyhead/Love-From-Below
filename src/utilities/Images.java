@@ -1,11 +1,16 @@
 package utilities;
 
+import core.GamePanel;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
 public class Images {
+
+    private static final int TILE_WIDTH = GamePanel.TILE_SIZE;
+    private static final int TILE_HEIGHT = GamePanel.TILE_SIZE;
 
     // LOADS AN IMAGE FROM A PATH
     private static BufferedImage loadSingleImage(String path) {
@@ -189,6 +194,21 @@ public class Images {
             public static final BufferedImage SOLID_3 = loadSingleImage("/assets/tiles/solid/solid3.png");
             public static final BufferedImage SOLID_4 = loadSingleImage("/assets/tiles/solid/solid4.png");
         }
+    }
+
+    public static class Enemies {
+
+        private static final BufferedImage CLOUD = loadSingleImage("/assets/entities/enemies/cloud.png");
+
+        public static final BufferedImage CLOUD_1 = CLOUD != null ?
+                CLOUD.getSubimage(0, 0, TILE_WIDTH, TILE_HEIGHT) :
+                null;
+        public static final BufferedImage CLOUD_2 = CLOUD != null ?
+                CLOUD.getSubimage(TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT) :
+                null;
+        public static final BufferedImage CLOUD_3 = CLOUD != null ?
+                CLOUD.getSubimage(TILE_WIDTH * 2, 0, TILE_WIDTH, TILE_HEIGHT) :
+                null;
     }
 
     // MISCELLANEOUS IMAGES

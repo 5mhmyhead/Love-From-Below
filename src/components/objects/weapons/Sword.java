@@ -1,14 +1,15 @@
-package components.objects.collectibles;
+package components.objects.weapons;
 
-import components.entity.Player;
-import components.objects.Collectible;
+import components.entities.Enemy;
+import components.entities.Player;
+import components.objects.Weapon;
 import components.world.rooms.Room;
 import core.ui.GameData;
 import utilities.Images;
 
 import java.awt.*;
 
-public class Sword extends Collectible {
+public class Sword extends Weapon {
 
     public Sword(int x, int y, Room room) {
 
@@ -27,7 +28,7 @@ public class Sword extends Collectible {
     }
 
     @Override
-    public boolean action(Player player) {
+    public boolean playerAction(Player player) {
 
         GameData.swordLevel = 1;
         player.enterItemState(this);
@@ -37,9 +38,17 @@ public class Sword extends Collectible {
     }
 
     @Override
+    public void enemyAction(Enemy enemy) {
+
+    }
+
+    @Override
     public void draw(Graphics2D g2) {
 
         if(GameData.swordLevel == 0)
             g2.drawImage(image, x, y, width, height, null);
     }
+
+    @Override
+    public boolean callsInvincibility() { return true; }
 }

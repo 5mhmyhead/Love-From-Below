@@ -1,6 +1,5 @@
 package components.objects;
 
-import components.entity.Player;
 import components.world.rooms.Room;
 import core.GamePanel;
 
@@ -23,6 +22,10 @@ public abstract class WorldObject {
 
     public abstract void update();
     public abstract void draw(Graphics2D g2);
+
+    public void draw(int x, int y, Graphics2D g2) {
+        g2.drawImage(image, x - width / 2, y - height / 2, width, height, null);
+    }
 
     public int getX() { return x; }
     public int getY() { return y; }
