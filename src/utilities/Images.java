@@ -30,8 +30,6 @@ public class Images {
     // ALL SPRITES FOR THE PLAYER
     public static class PlayerAssets {
         // MOVEMENT SPRITES
-        public static final BufferedImage PLAYER_MOVEMENT = loadSingleImage("/assets/entities/player/movement/playerMovement.png");
-
         public static final BufferedImage PLAYER_DOWN = loadSingleImage("/assets/entities/player/movement/playerDown.png");
         public static final BufferedImage PLAYER_UP = loadSingleImage("/assets/entities/player/movement/playerUp.png");
 
@@ -57,9 +55,9 @@ public class Images {
         public static final BufferedImage DIALOGUE_BOX_BOTTOM = loadSingleImage("/assets/ui/dialogueUI/dialogueBoxBottom.png");
 
         // GAME UI
-        public static final BufferedImage HEALTH_BAR_FULL = loadSingleImage("/assets/ui/gameplayUI/healthBarFull.png");
-        public static final BufferedImage HEALTH_BAR_EMPTY = loadSingleImage("/assets/ui/gameplayUI/healthBarEmpty.png");
+        public static final BufferedImage HEALTH_BAR_PLAYER = loadSingleImage("/assets/ui/gameplayUI/healthBarPlayer.png");
         public static final BufferedImage HEART = loadSingleImage("/assets/ui/gameplayUI/heart.png");
+        public static final BufferedImage HEART_EMPTY = loadSingleImage("/assets/ui/gameplayUI/heartEmpty.png");
     }
 
     public static class npcAssets {

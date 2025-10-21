@@ -3,7 +3,6 @@ package components.entity;
 import components.objects.Collectible;
 import components.objects.Interactable;
 import components.objects.WorldObject;
-import components.objects.collectibles.Sword;
 import components.world.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
@@ -34,13 +33,14 @@ public class Player extends Entity {
 
     private Animation sparkle;
 
-    private Sword sword;                                // PLAYER SWORD
-    private int swordTimer;                             // TIMER FOR THE ANIMATION
+    private int maxHealth;
 
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
 
     // MISCELLANEOUS VARIABLES FOR KEYDOWN VALUES AND ANIMATION DELAY
+    private int swordTimer;                             // TIMER FOR THE ANIMATION
+
     private int idleDelay = 0;                          // COUNT TO SMOOTHEN TRANSITION BETWEEN WALKING TO IDLE STATE
     private boolean interactPrevPressed = false;        // BOOLEAN FOR INTERACT KEY TO REGISTER ONLY ONCE
 
@@ -73,7 +73,9 @@ public class Player extends Entity {
 
         knockbackDistance = 0;
         getAnimationTimer = 0;
+
         health = 6;
+        maxHealth = 6;
 
         // WALK ANIMATIONS
         walkUp = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_UP), width, height);
@@ -447,6 +449,7 @@ public class Player extends Entity {
     }
 
     public int getHealth() { return health; }
+    public int getMaxHealth() { return maxHealth; }
 
     public boolean isTransitioning() { return state.equals("TRANSITION") || world.isTransitioning(); }
 

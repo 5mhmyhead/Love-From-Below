@@ -33,8 +33,23 @@ public class GameUI {
         int xOrigin = 20;
         int yOrigin = 20;
 
-        g2.drawImage(Images.UI.HEALTH_BAR_EMPTY, xOrigin, yOrigin, null);
+        g2.drawImage(Images.UI.HEALTH_BAR_PLAYER, xOrigin, yOrigin, null);
 
+        // DRAW THE MAX AMOUNT OF HEARTS OF THE PLAYER
+        for(int i = 1; i <= world.getPlayer().getMaxHealth(); i++) {
+
+            if(i % 2 == 0) {
+                yOrigin = 38;
+            } else {
+                yOrigin = 20;
+            }
+
+            g2.drawImage(Images.UI.HEART_EMPTY, xOrigin, yOrigin, null);
+            xOrigin += 21;
+        }
+
+        xOrigin = 20;
+        // DRAW THE AMOUNT OF HEARTS THAT THE PLAYER CURRENTLY HAS
         for(int i = 1; i <= world.getPlayer().getHealth(); i++) {
 
             if(i % 2 == 0) {
