@@ -47,7 +47,8 @@ public class World {
         roomBuffer = new ArrayList<>(Arrays.asList(new WorldRoom[5]));
         metadataBuffer = new ArrayList<>(Arrays.asList(new RoomMetadata[5]));
 
-        if(!SoundManager.OVERWORLD.isPlaying()) SoundManager.OVERWORLD.loop();
+        // FIXME TURNED OFF MUSIC
+        // if(!SoundManager.OVERWORLD.isPlaying()) SoundManager.OVERWORLD.loop();
     }
 
     // LOADS THE METADATA FROM PATH

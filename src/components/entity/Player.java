@@ -3,6 +3,7 @@ package components.entity;
 import components.objects.Collectible;
 import components.objects.Interactable;
 import components.objects.WorldObject;
+import components.objects.collectibles.Sword;
 import components.world.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
@@ -28,9 +29,13 @@ public class Player extends Entity {
 
     // PLAYER ANIMATIONS
     private Animation walkUp, walkDown, walkLeft, walkRight,
-                    runUp, runDown, runLeft, runRight;
+                    runUp, runDown, runLeft, runRight,
+                    attackUp, attackDown, attackLeft, attackRight;
 
     private Animation sparkle;
+
+    private Sword sword;                                // PLAYER SWORD
+    private int swordTimer;                             // TIMER FOR THE ANIMATION
 
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
@@ -70,7 +75,7 @@ public class Player extends Entity {
         getAnimationTimer = 0;
         health = 6;
 
-        // PLAYER ANIMATIONS
+        // WALK ANIMATIONS
         walkUp = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_UP), width, height);
         walkDown = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_DOWN), width, height);
         walkLeft = new Animation(10, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_WALK_LEFT), width, height);
@@ -80,6 +85,16 @@ public class Player extends Entity {
         runDown = new Animation(7, true, Images.PlayerAssets.PLAYER_DOWN, width, height);
         runLeft = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_LEFT), width, height);
         runRight = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_RIGHT), width, height);
+
+        // ATTACK ANIMATIONS
+        attackUp = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_UP),
+                width * 3, height * 3);
+        attackDown = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_DOWN),
+                width * 3, height * 3);
+        attackLeft = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_LEFT),
+                width * 3, height * 3);
+        attackRight = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_RIGHT),
+                width * 3, height * 3);
 
         // SPARKLE ANIMATION FROM GET ITEM
         sparkle = new Animation(10, true, Objects.requireNonNull(Images.Effects.SPARKLE), width * 2, height * 2);
@@ -150,6 +165,33 @@ public class Player extends Entity {
 
                 x += velX;
                 updatePlayerState();
+                break;
+
+            case "ATTACK":
+                velX = 0;
+                velY = 0;
+
+                if(swordTimer == 0) swordTimer = 39;
+                else swordTimer--;
+
+                switch(direction) {
+
+                    case UP: attackUp.update();
+                    case DOWN: attackDown.update();
+                    case LEFT: attackLeft.update();
+                    case RIGHT: attackRight.update();
+                }
+
+                // AFTER 39 FRAMES, GO BACK TO IDLE STATE
+                if(swordTimer == 0) {
+
+                    if(attackUp.hasEnded()) attackUp.reset();
+                    if(attackDown.hasEnded()) attackDown.reset();
+                    if(attackLeft.hasEnded()) attackLeft.reset();
+                    if(attackRight.hasEnded()) attackRight.reset();
+
+                    state = "IDLE";
+                }
                 break;
 
             case "GET_ITEM":
@@ -267,12 +309,12 @@ public class Player extends Entity {
             if(inputLeft) state = "LEFT";
             if(inputRight) state = "RIGHT";
 
-            if(sprint) moveSpeed = 5;
+            if(sprint && GameData.hasBoots) moveSpeed = 5;
             else moveSpeed = 3;
 
             if(inputAttack && GameData.swordLevel > 0) state = "ATTACK";
 
-            if(!(inputUp || inputDown || inputLeft || inputRight)) state = "IDLE";
+            if(!(inputUp || inputDown || inputLeft || inputRight || inputAttack)) state = "IDLE";
             if(transitionVelX != 0 || transitionVelY != 0) 	state = "TRANSITION";
     }
 
@@ -283,11 +325,11 @@ public class Player extends Entity {
         if(key == KeyEvent.VK_A) inputLeft = bool;
         if(key == KeyEvent.VK_W) inputUp = bool;
         if(key == KeyEvent.VK_S) inputDown = bool;
-        if(key == KeyEvent.VK_SHIFT && GameData.hasBoots) sprint = bool;
+        if(key == KeyEvent.VK_SHIFT) sprint = bool;
 
         // ACTION KEYS
+        if(key == KeyEvent.VK_K) inputAttack = bool;
         if(key == KeyEvent.VK_E) interact = bool;
-        if(key == KeyEvent.VK_J) inputAttack = bool;
     }
 
     // RETURN ITEM RANGE WHEN PRESSING INTERACT, DEPENDING ON THE DIRECTION OF THE PLAYER
@@ -365,6 +407,17 @@ public class Player extends Entity {
                 idleDelay = 0;
                 if(sprint) runLeft.draw(g2, drawX, drawY, width, height);
                 else walkLeft.draw(g2, drawX, drawY, width, height);
+                break;
+
+            case "ATTACK":
+
+                switch(direction) {
+
+                    case UP: attackUp.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
+                    case DOWN: attackDown.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
+                    case LEFT: attackLeft.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
+                    case RIGHT: attackRight.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
+                }
                 break;
 
             case "GET_ITEM":

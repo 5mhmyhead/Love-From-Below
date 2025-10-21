@@ -30,18 +30,24 @@ public class Images {
     // ALL SPRITES FOR THE PLAYER
     public static class PlayerAssets {
         // MOVEMENT SPRITES
-        public static final BufferedImage PLAYER_MOVEMENT = loadSingleImage("/assets/entities/player/playerMovement.png");
+        public static final BufferedImage PLAYER_MOVEMENT = loadSingleImage("/assets/entities/player/movement/playerMovement.png");
 
-        public static final BufferedImage PLAYER_DOWN = loadSingleImage("/assets/entities/player/playerDown.png");
-        public static final BufferedImage PLAYER_UP = loadSingleImage("/assets/entities/player/playerUp.png");
+        public static final BufferedImage PLAYER_DOWN = loadSingleImage("/assets/entities/player/movement/playerDown.png");
+        public static final BufferedImage PLAYER_UP = loadSingleImage("/assets/entities/player/movement/playerUp.png");
 
-        public static final BufferedImage PLAYER_WALK_LEFT = loadSingleImage("/assets/entities/player/playerWalkLeft.png");
-        public static final BufferedImage PLAYER_WALK_RIGHT = loadSingleImage("/assets/entities/player/playerWalkRight.png");
+        public static final BufferedImage PLAYER_WALK_LEFT = loadSingleImage("/assets/entities/player/movement/playerWalkLeft.png");
+        public static final BufferedImage PLAYER_WALK_RIGHT = loadSingleImage("/assets/entities/player/movement/playerWalkRight.png");
 
-        public static final BufferedImage PLAYER_RUN_LEFT = loadSingleImage("/assets/entities/player/playerRunLeft.png");
-        public static final BufferedImage PLAYER_RUN_RIGHT = loadSingleImage("/assets/entities/player/playerRunRight.png");
+        public static final BufferedImage PLAYER_RUN_LEFT = loadSingleImage("/assets/entities/player/movement/playerRunLeft.png");
+        public static final BufferedImage PLAYER_RUN_RIGHT = loadSingleImage("/assets/entities/player/movement/playerRunRight.png");
 
         public static final BufferedImage PLAYER_GET_ITEM = loadSingleImage("/assets/entities/player/playerGetItem.png");
+
+        // ATTACK SPRITES
+        public static final BufferedImage PLAYER_ATTACK_DOWN = loadSingleImage("/assets/entities/player/attack/attackDown.png");
+        public static final BufferedImage PLAYER_ATTACK_UP = loadSingleImage("/assets/entities/player/attack/attackUp.png");
+        public static final BufferedImage PLAYER_ATTACK_LEFT = loadSingleImage("/assets/entities/player/attack/attackLeft.png");
+        public static final BufferedImage PLAYER_ATTACK_RIGHT = loadSingleImage("/assets/entities/player/attack/attackRight.png");
     }
 
     // ALL SPRITES FOR THE USER INTERFACE
