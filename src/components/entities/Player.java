@@ -90,13 +90,13 @@ public class Player extends Entity {
         runRight = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_RIGHT), width, height);
 
         // ATTACK ANIMATIONS
-        attackUp = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_UP),
+        attackUp = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_UP),
                 width * 3, height * 3);
-        attackDown = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_DOWN),
+        attackDown = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_DOWN),
                 width * 3, height * 3);
-        attackLeft = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_LEFT),
+        attackLeft = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_LEFT),
                 width * 3, height * 3);
-        attackRight = new Animation(7, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_RIGHT),
+        attackRight = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_RIGHT),
                 width * 3, height * 3);
 
         // SPARKLE ANIMATION FROM GET ITEM
@@ -174,7 +174,7 @@ public class Player extends Entity {
                 velX = 0;
                 velY = 0;
 
-                if(swordTimer == 0) swordTimer = 39;
+                if(swordTimer == 0) swordTimer = 29;
                 else swordTimer--;
 
                 switch(direction) {

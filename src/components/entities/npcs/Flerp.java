@@ -1,7 +1,6 @@
 package components.entities.npcs;
 
 import components.entities.Direction;
-import components.entities.Entity;
 import components.entities.NPC;
 import components.world.rooms.Room;
 import core.GamePanel;
@@ -10,6 +9,7 @@ import utilities.Animation;
 import utilities.Images;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,17 +17,19 @@ import java.util.TimerTask;
 public class Flerp extends NPC {
 
     private final Animation idleSleep, idleAwake, wakeUp, fallAsleep;
-    private final GameDialogue dialogue;
+    private final GameDialogue dialogueFirstTime;
+    private final GameDialogue dialogueDefault;
 
     // CONSTRUCTOR
-    public Flerp(int x, int y, String[] text, Room room) {
+    public Flerp(int x, int y, ArrayList<String[]> dialogue, Room room) {
 
         setCoordinates(x, y);
         setSize(GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
         setBounds(x, y, width, height);
 
         this.room = room;
-        dialogue = new GameDialogue(this, Images.npcAssets.FLERP_PORTRAIT, text, 0, false);
+        dialogueFirstTime = new GameDialogue(this, Images.npcAssets.FLERP_PORTRAIT, dialogue.get(0), 0, false);
+        dialogueDefault = new GameDialogue(this, Images.npcAssets.FLERP_PORTRAIT, dialogue.get(1), 0, false);
 
         idleSleep = new Animation(50, true, Objects.requireNonNull(Images.npcAssets.FLERP_IDLE_SLEEP), width, height);
         idleAwake = new Animation(50, true, Objects.requireNonNull(Images.npcAssets.FLERP_IDLE), width, height);
@@ -39,6 +41,7 @@ public class Flerp extends NPC {
         state = "IDLE_SLEEP";
     }
 
+    // FIXME timer.schedule(toSleep, 5000, 20);
     @Override
     public void update() {
 
@@ -89,15 +92,19 @@ public class Flerp extends NPC {
 
             case "DIALOGUE":
 
-                if(!dialogue.hasEnded()) {
-                    dialogue.update();
+                if(!dialogueFirstTime.hasEnded()) {
 
-                    if(dialogue.hasEnded()) {
+                    dialogueFirstTime.update();
+                    if(dialogueFirstTime.hasEnded()) state = "IDLE_AWAKE";
+                }
+
+                if(dialogueFirstTime.hasEnded()) {
+
+                    dialogueDefault.update();
+                    if(dialogueDefault.hasEnded()) {
 
                         state = "IDLE_AWAKE";
-                        dialogue.resetTo(5);
-
-                        timer.schedule(toSleep, 5000, 20);
+                        dialogueDefault.reset();
                     }
                 }
 
@@ -139,7 +146,8 @@ public class Flerp extends NPC {
                 idleAwake.draw(g2, x, y, width, height);
                 idleAwake.update();
 
-                dialogue.draw(g2);
+                if(!dialogueFirstTime.hasEnded()) dialogueFirstTime.draw(g2);
+                if(dialogueFirstTime.hasEnded()) dialogueDefault.draw(g2);
                 break;
 
             default:

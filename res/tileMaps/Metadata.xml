@@ -56,6 +56,10 @@
                     3:Why don't you join in? I think a nap would suit|you greatly! Just INTERACT with that bonfire|so you could SAVE.;
                     2:As for me, I think another nap would also do|me well...
                 </DIALOGUE>
+                <DIALOGUE>
+                    3:Why don't you join in? I think a nap would suit|you greatly!;
+                    2:As for me, I think another nap would also do|me well...
+                </DIALOGUE>
             </NPC>
         </NPCS>
 

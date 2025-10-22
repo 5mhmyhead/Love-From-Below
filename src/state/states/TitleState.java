@@ -38,9 +38,9 @@ public class TitleState extends State {
         titleScreenAnimation = new Animation(10, true, Images.TitleScreenAssets.TITLE_SCREEN,
                 GamePanel.SCREEN_WIDTH, GamePanel.SCREEN_HEIGHT);
 
-        // PLAY INTRO AUDIO
-        if(!SoundManager.INTRO.isPlaying()) SoundManager.INTRO.play();
-        SoundManager.INTRO.setVolume(-10);
+        // FIXME PLAY INTRO AUDIO
+        // if(!SoundManager.INTRO.isPlaying()) SoundManager.INTRO.play();
+        // SoundManager.INTRO.setVolume(-10);
     }
 
     @Override

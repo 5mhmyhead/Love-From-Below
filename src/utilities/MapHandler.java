@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
@@ -85,7 +86,7 @@ public class MapHandler {
         };
     }
 
-    public NPC buildNPC(String id, String[] text, int col, int row) {
+    public NPC buildNPC(String id, ArrayList<String[]> dialogue, int col, int row) {
         // FIND THE COORDINATES OF THE NPC
         int x = col * GamePanel.TILE_SIZE;
         int y = row * GamePanel.TILE_SIZE;
@@ -96,7 +97,7 @@ public class MapHandler {
 
         return switch(id) {
 
-            case "FLERP" -> new Flerp(x, y, text, room);
+            case "FLERP" -> new Flerp(x, y, dialogue, room);
 
             default -> null;
         };

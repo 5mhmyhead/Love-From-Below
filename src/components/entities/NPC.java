@@ -5,6 +5,8 @@ import java.awt.*;
 // TODO ADD NPC SPECIFIC CODE HERE
 public abstract class NPC extends Entity {
 
+
+
     @Override
     public void update() {
 

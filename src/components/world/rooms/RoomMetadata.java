@@ -81,14 +81,26 @@ public class RoomMetadata {
 
                 Element npc = (Element) npcList.item(npcIndex);
                 String name = npc.getElementsByTagName("NAME").item(0).getTextContent();
-                String dialogue = npc.getElementsByTagName("DIALOGUE").item(0).getTextContent();
+
+                // CREATE AN ARRAY LIST OF DIALOGUES
+                ArrayList<String[]> dialogue = new ArrayList<>();
+                NodeList dialogueList = npc.getElementsByTagName("DIALOGUE");
+
+                for(int dialogueIndex = 0; dialogueIndex < dialogueList.getLength(); dialogueIndex++) {
+                    // ADD EACH DIALOGUE PART TO THE ARRAY OF DIALOGUES
+                    Element dialogueElement = (Element) dialogueList.item(dialogueIndex);
+                    String dialogueText = dialogueElement.getTextContent();
+
+                    // SPLIT THE TEXT DIALOGUE DIVIDED BY A SEMICOLON
+                    String[] text = dialogueText.split(";");
+                    // THEN ADD IT TO THE ARRAY LIST DIALOGUE
+                    dialogue.add(text);
+                }
 
                 int col = Integer.parseInt(npc.getElementsByTagName("COL").item(0).getTextContent());
                 int row = Integer.parseInt(npc.getElementsByTagName("ROW").item(0).getTextContent());
-                // SPLIT THE TEXT DIALOGUE DIVIDED BY A SEMICOLON
-                String[] text = dialogue.split(";");
 
-                worldNPCS.add(world.getMapHandler().buildNPC(name, text, col, row));
+                worldNPCS.add(world.getMapHandler().buildNPC(name, dialogue, col, row));
             }
         }
     }

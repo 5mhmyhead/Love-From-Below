@@ -32,7 +32,7 @@ public class Sword extends Weapon {
 
         GameData.swordLevel = 1;
         player.enterItemState(this);
-        playClip();
+        // playClip();
 
         return true;
     }
