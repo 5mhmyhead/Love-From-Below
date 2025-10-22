@@ -271,8 +271,8 @@ public class Player extends Entity {
             if(this.getItemRange().intersects(npc.getBounds())) {
 
                 npc.update();
-                if(npc.getState().equals("DIALOGUE")) state = "DIALOGUE";
-                if(!npc.getState().equals("DIALOGUE")) state = "IDLE";
+                if(npc.isInDialogue()) state = "DIALOGUE";
+                if(!npc.isInDialogue()) state = "IDLE";
             }
         }
     }

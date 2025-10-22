@@ -87,27 +87,29 @@ public class Flerp extends NPC {
                 break;
 
             case "IDLE_AWAKE":
-                state = "DIALOGUE";
+
+                if(!dialogueFirstTime.hasEnded()) state = "DIALOGUE_FIRST_TIME";
+                else state = "DIALOGUE_DEFAULT";
                 break;
 
-            case "DIALOGUE":
+            case "DIALOGUE_FIRST_TIME":
 
                 if(!dialogueFirstTime.hasEnded()) {
 
                     dialogueFirstTime.update();
                     if(dialogueFirstTime.hasEnded()) state = "IDLE_AWAKE";
                 }
-                // FIXME
-                if(dialogueFirstTime.hasEnded()) {
+                break;
+
+            case "DIALOGUE_DEFAULT":
+
+                if(!dialogueDefault.hasEnded()) {
 
                     dialogueDefault.update();
-                    if(dialogueDefault.hasEnded()) {
 
-                        state = "IDLE_AWAKE";
-                        dialogueDefault.reset();
-                    }
+                    if(dialogueDefault.hasEnded()) state = "IDLE_AWAKE";
+                    dialogueDefault.reset();
                 }
-
                 break;
         }
     }
@@ -141,7 +143,7 @@ public class Flerp extends NPC {
                 wakeUp.update();
                 break;
 
-            case "DIALOGUE":
+            case "DIALOGUE_FIRST_TIME", "DIALOGUE_DEFAULT":
 
                 idleAwake.draw(g2, x, y, width, height);
                 idleAwake.update();
