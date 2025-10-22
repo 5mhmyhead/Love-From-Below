@@ -97,7 +97,7 @@ public class Flerp extends NPC {
                     dialogueFirstTime.update();
                     if(dialogueFirstTime.hasEnded()) state = "IDLE_AWAKE";
                 }
-
+                // FIXME
                 if(dialogueFirstTime.hasEnded()) {
 
                     dialogueDefault.update();
