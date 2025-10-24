@@ -200,11 +200,8 @@ public class World {
         if(metadataBuffer.size() > 5) metadataBuffer.remove(4);
     }
 
-    public WorldRoom getCurrentRoom()
-    {
-        return currentRoom;
-    }
-    public WorldRoom getLoadingRoom()  {return loadingRoom; }
+    public WorldRoom getCurrentRoom() { return currentRoom; }
+    public WorldRoom getLoadingRoom() { return loadingRoom; }
 
     public Player getPlayer() { return player; }
     public MapHandler getMapHandler()

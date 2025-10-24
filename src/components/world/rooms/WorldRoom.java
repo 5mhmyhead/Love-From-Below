@@ -1,5 +1,6 @@
 package components.world.rooms;
 
+import components.entities.Enemy;
 import components.entities.Entity;
 import components.entities.NPC;
 import components.entities.Player;
@@ -12,6 +13,7 @@ import utilities.Tile;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class WorldRoom implements Room {
 
@@ -30,6 +32,7 @@ public class WorldRoom implements Room {
 
     private final ArrayList<WorldObject> worldObjects;
     private final ArrayList<NPC> worldNPCS;
+    private final ArrayList<Enemy> worldEnemies;
 
     // HELPER CLASSES
     private final MapHandler mapHandler;
@@ -63,6 +66,7 @@ public class WorldRoom implements Room {
         player = world.getPlayer();
         worldObjects = new ArrayList<>();
         worldNPCS = new ArrayList<>();
+        worldEnemies = new ArrayList<>();
 
         loadTiles();
     }
@@ -93,11 +97,27 @@ public class WorldRoom implements Room {
 
         this.worldObjects.addAll(roomMetadata.getWorldObjects());
         this.worldNPCS.addAll(roomMetadata.getWorldNPCS());
+        this.worldEnemies.addAll(roomMetadata.getWorldEnemies());
     }
 
     // UPDATE OBJECTS IN THE ROOM
     public void update() {
+
         updateDrawCoordinates();
+
+        if(drawVelX == 0 && drawVelY == 0) {
+            Iterator<Enemy> enemyIterator = worldEnemies.iterator();
+
+            while(enemyIterator.hasNext()) {
+
+                Enemy enemy = enemyIterator.next();
+
+                if(enemy.getStunTimer() == 0) enemy.update();
+                else enemy.updateHealth();
+
+                if(enemy.getDestroyFlag()) enemyIterator.remove();
+            }
+        }
     }
 
     // DRAWS THE ROOM
@@ -117,6 +137,7 @@ public class WorldRoom implements Room {
 
         for(WorldObject object : worldObjects) { object.draw(g2); }
         for(Entity npc : worldNPCS) { npc.draw(g2); }
+        for(Enemy enemy : worldEnemies) { enemy.draw(g2); }
 
         g2.setTransform(transform);
     }
@@ -168,6 +189,7 @@ public class WorldRoom implements Room {
 
     public ArrayList<WorldObject> getWorldObjects() { return worldObjects; }
     public ArrayList<NPC> getWorldNPCS() { return worldNPCS; }
+    public ArrayList<Enemy> getWorldEnemies() { return worldEnemies; }
 
     // DEBUG TO DRAW COLLISIONS OF TILES
     private void drawTileDebug(Graphics2D g2) {

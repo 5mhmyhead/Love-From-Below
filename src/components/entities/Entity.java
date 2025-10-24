@@ -50,13 +50,15 @@ public abstract class Entity {
     public void setBounds(int x, int y, int width, int height) { bounds = new Rectangle(x, y, width, height); }
     public Rectangle getBounds() { return bounds; }
 
-    protected void handleCollisions() {
+    protected boolean handleCollisions() {
 
         boolean collisionY = checkCollisions(0, velY);
         boolean collisionX = checkCollisions(velX, 0);
 
         if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) x -= velX;
         if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) y -= velY;
+
+        return collisionX || collisionY;
     }
 
     protected boolean checkCollisions(int checkX, int checkY) {
@@ -93,8 +95,9 @@ public abstract class Entity {
         }
 
         // CHECKS OBJECT AND ENTITY COLLISIONS
-        ArrayList<WorldObject> worldObjects = roomMetadata.getWorldObjects();
-        ArrayList<NPC> worldNPCS = roomMetadata.getWorldNPCS();
+        ArrayList<WorldObject> worldObjects = room.getWorldObjects();
+        ArrayList<NPC> worldNPCS = room.getWorldNPCS();
+        ArrayList<Enemy> worldEnemies = room.getWorldEnemies();
 
         for(WorldObject object : worldObjects)
             if(object.isCollidable() && checkCollisionWith(object))
@@ -102,6 +105,10 @@ public abstract class Entity {
 
         for(NPC npc : worldNPCS)
             if(checkCollisionWith(npc))
+                collisionFlag = true;
+
+        for(Enemy enemy : worldEnemies)
+            if(checkCollisionWith(enemy))
                 collisionFlag = true;
 
         return collisionFlag;
@@ -127,6 +134,8 @@ public abstract class Entity {
 
     public Direction getDirection() { return direction; }
     public String getState() { return state; }
+
+    public boolean getDestroyFlag() { return destroyFlag; }
 
     // DEBUG TO DRAW BOUNDS OF ENTITY
     public void drawDebug(Graphics2D g2) {

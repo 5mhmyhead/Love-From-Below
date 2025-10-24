@@ -48,14 +48,33 @@ public enum Direction {
         };
     }
 
-    public double[] getVector(double magnitude) {
-        return switch (this) {
+    // GETS A RANDOM DIRECTION FOR ENEMY MOVEMENT
+    public static Direction getRandom() {
 
-            case UP -> new double[]{0, -magnitude};
-            case RIGHT -> new double[]{magnitude, 0};
-            case DOWN -> new double[]{0, magnitude};
-            case LEFT -> new double[]{-magnitude, 0};
-        };
+        double number = Math.random() * 4;
+
+        if(number < 1) return UP;
+        else if(number < 2) return RIGHT;
+        else if(number < 3) return DOWN;
+        else if(number < 4) return LEFT;
+        else return DOWN;
+    }
+
+    // GETS A RANDOM DIRECTION WITH AN EXCLUDED SPECIFIED DIRECTION
+    public static Direction getExcludedRandom(Direction direction) {
+
+        Direction chosenDirection = null;
+
+        double number = Math.random() * 4;
+        if(number < 1) chosenDirection = UP;
+        else if(number < 2) chosenDirection = RIGHT;
+        else if(number < 3) chosenDirection = DOWN;
+        else if(number < 4) chosenDirection = LEFT;
+        else chosenDirection = DOWN;
+
+        // IF IT IS THE CHOSEN DIRECTION, RUN THE FUNCTION AGAIN UNTIL WE GET A DIRECTION THAT WAS NOT PROVIDED
+        if(chosenDirection == direction) chosenDirection = getExcludedRandom(direction);
+        return chosenDirection;
     }
 
     public static Direction parseString(String direction) {

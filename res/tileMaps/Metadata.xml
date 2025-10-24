@@ -10,6 +10,9 @@
         <NPCS>
         </NPCS>
 
+        <ENEMIES>
+        </ENEMIES>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -26,6 +29,9 @@
 
         <NPCS>
         </NPCS>
+
+        <ENEMIES>
+        </ENEMIES>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
@@ -63,6 +69,9 @@
             </NPC>
         </NPCS>
 
+        <ENEMIES>
+        </ENEMIES>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -90,6 +99,9 @@
         <NPCS>
         </NPCS>
 
+        <ENEMIES>
+        </ENEMIES>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -101,6 +113,9 @@
 
         <NPCS>
         </NPCS>
+
+        <ENEMIES>
+        </ENEMIES>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
@@ -124,6 +139,14 @@
         <NPCS>
         </NPCS>
 
+        <ENEMIES>
+            <ENEMY>
+                <NAME>SLIME</NAME>
+                <COL>5</COL>
+                <ROW>5</ROW>
+            </ENEMY>
+        </ENEMIES>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -135,6 +158,9 @@
 
         <NPCS>
         </NPCS>
+
+        <ENEMIES>
+        </ENEMIES>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
@@ -148,6 +174,9 @@
         <NPCS>
         </NPCS>
 
+        <ENEMIES>
+        </ENEMIES>
+
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>
     </ROOM>
@@ -159,6 +188,9 @@
 
         <NPCS>
         </NPCS>
+
+        <ENEMIES>
+        </ENEMIES>
 
         <ROOM-TYPE>NORMAL</ROOM-TYPE>
         <MUSIC>CAVES</MUSIC>

@@ -1,6 +1,6 @@
 package components.world.rooms;
 
-import components.entities.Entity;
+import components.entities.Enemy;
 import components.entities.NPC;
 import components.objects.WorldObject;
 import components.world.World;
@@ -17,6 +17,7 @@ public class RoomMetadata {
 
     private ArrayList<WorldObject> worldObjects;
     private ArrayList<NPC> worldNPCS;
+    private ArrayList<Enemy> worldEnemies;
 
     private String roomType;
     private String music;
@@ -57,6 +58,7 @@ public class RoomMetadata {
 
             worldObjects = new ArrayList<>();
             worldNPCS = new ArrayList<>();
+            worldEnemies = new ArrayList<>();
 
             // GOES THROUGH ALL OBJECTS
             Element objectsElement = (Element) thisRoom.getElementsByTagName("OBJECTS").item(0);
@@ -102,9 +104,25 @@ public class RoomMetadata {
 
                 worldNPCS.add(world.getMapHandler().buildNPC(name, dialogue, col, row));
             }
+
+            // GOES THROUGH ALL ENEMIES
+            Element enemyElement = (Element) thisRoom.getElementsByTagName("ENEMIES").item(0);
+            NodeList enemyList = enemyElement.getElementsByTagName("ENEMY");
+
+            for(int enemyIndex = 0; enemyIndex < enemyList.getLength(); enemyIndex++) {
+
+                Element enemy = (Element) enemyList.item(enemyIndex);
+                String name = enemy.getElementsByTagName("NAME").item(0).getTextContent();
+
+                int col = Integer.parseInt(enemy.getElementsByTagName("COL").item(0).getTextContent());
+                int row = Integer.parseInt(enemy.getElementsByTagName("ROW").item(0).getTextContent());
+
+                worldEnemies.add(world.getMapHandler().buildEnemy(name, col, row));
+            }
         }
     }
 
     public ArrayList<WorldObject> getWorldObjects() { return worldObjects; }
     public ArrayList<NPC> getWorldNPCS() { return worldNPCS; }
+    public ArrayList<Enemy> getWorldEnemies() { return worldEnemies; }
 }

@@ -14,7 +14,7 @@ public abstract class Enemy extends Entity {
 
     public Enemy(int x, int y, Room room, int health, int damage, String state, int width, int height) {
 
-        this.room = room;
+         this.room = room;
 
         setCoordinates(x, y);
         setSize(width, height);
@@ -27,6 +27,7 @@ public abstract class Enemy extends Entity {
         this.state = state;
     }
 
+    @Override
     public void update() {
 
         if(state.equals("KNOCKBACK")) {

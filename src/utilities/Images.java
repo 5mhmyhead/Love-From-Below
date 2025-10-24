@@ -209,6 +209,25 @@ public class Images {
         public static final BufferedImage CLOUD_3 = CLOUD != null ?
                 CLOUD.getSubimage(TILE_WIDTH * 2, 0, TILE_WIDTH, TILE_HEIGHT) :
                 null;
+
+        public static class Slime {
+
+            public static final BufferedImage SLIME_UP = loadSingleImage("/assets/entities/enemies/slime/slimeUp.png");
+            public static final BufferedImage SLIME_UP_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeUpAttack.png");
+            public static final BufferedImage SLIME_UP_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeUpDamaged.png");
+
+            public static final BufferedImage SLIME_DOWN = loadSingleImage("/assets/entities/enemies/slime/slimeDown.png");
+            public static final BufferedImage SLIME_DOWN_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeDownAttack.png");
+            public static final BufferedImage SLIME_DOWN_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeDownDamaged.png");
+
+            public static final BufferedImage SLIME_LEFT = loadSingleImage("/assets/entities/enemies/slime/slimeLeft.png");
+            public static final BufferedImage SLIME_LEFT_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeLeftAttack.png");
+            public static final BufferedImage SLIME_LEFT_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeLeftDamaged.png");
+
+            public static final BufferedImage SLIME_RIGHT = loadSingleImage("/assets/entities/enemies/slime/slimeRight.png");
+            public static final BufferedImage SLIME_RIGHT_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeRightAttack.png");
+            public static final BufferedImage SLIME_RIGHT_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeRightDamaged.png");
+        }
     }
 
     // MISCELLANEOUS IMAGES

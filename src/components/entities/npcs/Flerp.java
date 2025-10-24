@@ -90,6 +90,7 @@ public class Flerp extends NPC {
 
                 if(!dialogueFirstTime.hasEnded()) state = "DIALOGUE_FIRST_TIME";
                 else state = "DIALOGUE_DEFAULT";
+                inDialogue = true;
                 break;
 
             case "DIALOGUE_FIRST_TIME":
@@ -97,7 +98,11 @@ public class Flerp extends NPC {
                 if(!dialogueFirstTime.hasEnded()) {
 
                     dialogueFirstTime.update();
-                    if(dialogueFirstTime.hasEnded()) state = "IDLE_AWAKE";
+                    if(dialogueFirstTime.hasEnded()) {
+
+                        state = "IDLE_AWAKE";
+                        inDialogue = false;
+                    }
                 }
                 break;
 
@@ -106,9 +111,12 @@ public class Flerp extends NPC {
                 if(!dialogueDefault.hasEnded()) {
 
                     dialogueDefault.update();
+                    if(dialogueDefault.hasEnded()) {
 
-                    if(dialogueDefault.hasEnded()) state = "IDLE_AWAKE";
-                    dialogueDefault.reset();
+                        state = "IDLE_AWAKE";
+                        inDialogue = false;
+                        dialogueDefault.reset();
+                    }
                 }
                 break;
         }

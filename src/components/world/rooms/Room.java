@@ -1,6 +1,6 @@
 package components.world.rooms;
 
-import components.entities.Entity;
+import components.entities.Enemy;
 import components.entities.NPC;
 import components.entities.Player;
 import components.objects.WorldObject;
@@ -25,6 +25,7 @@ public interface Room {
 
     ArrayList<WorldObject> getWorldObjects();
     ArrayList<NPC> getWorldNPCS();
+    ArrayList<Enemy> getWorldEnemies();
 
     Player getPlayer();
 }

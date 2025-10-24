@@ -1,6 +1,9 @@
 package utilities;
 
+import components.entities.Direction;
+import components.entities.Enemy;
 import components.entities.NPC;
+import components.entities.enemies.Slime;
 import components.entities.npcs.Flerp;
 import components.objects.collectibles.Boots;
 import components.objects.interactables.NormalChest;
@@ -29,6 +32,7 @@ public class MapHandler {
 
         this.world = world;
         worldTiles = new String[columns][rows];
+
         loadTiles(tileMapFilePath);
     }
 
@@ -98,6 +102,23 @@ public class MapHandler {
         return switch(id) {
 
             case "FLERP" -> new Flerp(x, y, dialogue, room);
+
+            default -> null;
+        };
+    }
+
+    public Enemy buildEnemy(String id, int col, int row) {
+        // FIND THE COORDINATES OF THE ENEMY
+        int x = col * GamePanel.TILE_SIZE;
+        int y = row * GamePanel.TILE_SIZE;
+
+        // CHECK IF WE LOAD THE NPC IN THE CURRENT ROOM OR THE LOADING ROOM
+        Room room = (world.getLoadingRoom() != null) ?
+                world.getLoadingRoom() : world.getCurrentRoom();
+
+        return switch(id) {
+
+            case "SLIME" -> new Slime(x, y, Direction.getRandom(), room);
 
             default -> null;
         };
