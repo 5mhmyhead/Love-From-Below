@@ -8,6 +8,7 @@ import utilities.Animation;
 import utilities.Images;
 
 import java.awt.*;
+import java.sql.SQLOutput;
 import java.util.Objects;
 
 public class Slime extends Enemy {
@@ -29,14 +30,10 @@ public class Slime extends Enemy {
         velY = 0;
         moveSpeed = 1;
 
-        walkUp = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_UP),
-                GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-        walkDown = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_DOWN),
-                GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-        walkLeft = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_LEFT),
-                GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-        walkRight = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_RIGHT),
-                GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+        walkUp = new Animation(40, true, Images.Enemies.Slime.SLIME_UP_1, Images.Enemies.Slime.SLIME_UP_2);
+        walkDown = new Animation(40, true, Images.Enemies.Slime.SLIME_DOWN_1, Images.Enemies.Slime.SLIME_DOWN_2);
+        walkLeft = new Animation(40, true, Images.Enemies.Slime.SLIME_LEFT_1, Images.Enemies.Slime.SLIME_LEFT_2);
+        walkRight = new Animation(40, true, Images.Enemies.Slime.SLIME_RIGHT_1, Images.Enemies.Slime.SLIME_RIGHT_2);
 
         attackUp = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_UP_ATTACK),
                 GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
@@ -58,6 +55,8 @@ public class Slime extends Enemy {
     }
 
     public void update() {
+
+        setBounds(x + width / 4, y + height / 3, width / 2, height / 2);
 
         switch(state) {
 
@@ -90,8 +89,6 @@ public class Slime extends Enemy {
                         break;
                 }
 
-                if((Math.random() * 100) < 2) direction = Direction.getRandom();
-
                 if(x < 0) direction = Direction.RIGHT;
                 if(y < 0) direction = Direction.DOWN;
 
@@ -104,9 +101,11 @@ public class Slime extends Enemy {
                 break;
         }
 
+        System.out.println(handleCollisions());
+
         if(handleCollisions() && movementRefreshTimer == 0) {
 
-            movementRefreshTimer = 120;
+            movementRefreshTimer = 40;
             direction = Direction.getExcludedRandom(direction);
         }
 
@@ -116,6 +115,8 @@ public class Slime extends Enemy {
 
     @Override
     public void draw(Graphics2D g2) {
+
+        drawDebug(g2);
 
         drawX = x;
         drawY = y;

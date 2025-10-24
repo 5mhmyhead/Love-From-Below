@@ -52,8 +52,11 @@ public abstract class Entity {
 
     protected boolean handleCollisions() {
 
-        boolean collisionY = checkCollisions(0, velY);
-        boolean collisionX = checkCollisions(velX, 0);
+        boolean collisionY = false;
+        boolean collisionX = false;
+
+        if(checkTileCollisions(0, velY) || checkEntityCollisions()) collisionY = true;
+        if(checkTileCollisions(velX, 0) || checkEntityCollisions()) collisionX = true;
 
         if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) x -= velX;
         if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) y -= velY;
@@ -61,7 +64,7 @@ public abstract class Entity {
         return collisionX || collisionY;
     }
 
-    protected boolean checkCollisions(int checkX, int checkY) {
+    protected boolean checkTileCollisions(int checkX, int checkY) {
 
         boolean collisionFlag = false;
 
@@ -94,6 +97,12 @@ public abstract class Entity {
             }
         }
 
+        return collisionFlag;
+    }
+
+    protected boolean checkEntityCollisions() {
+
+        boolean collisionFlag = false;
         // CHECKS OBJECT AND ENTITY COLLISIONS
         ArrayList<WorldObject> worldObjects = room.getWorldObjects();
         ArrayList<NPC> worldNPCS = room.getWorldNPCS();
@@ -142,14 +151,5 @@ public abstract class Entity {
 
         g2.setColor(new Color(255, 0, 0));
         g2.fill(getBounds());
-
-        g2.setColor(new Color(255, 255, 0, 60));
-        switch(direction) {
-
-            case UP: g2.fillRect(x + 8, y, 32, 16); break;
-            case DOWN: g2.fillRect(x + 8, y + 48, 32, 16); break;
-            case LEFT: g2.fillRect(x - 8, y + 16, 16, 32); break;
-            case RIGHT: g2.fillRect(x + 40, y + 16, 16, 32); break;
-        }
     }
 }

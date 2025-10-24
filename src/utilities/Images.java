@@ -216,17 +216,45 @@ public class Images {
             public static final BufferedImage SLIME_UP_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeUpAttack.png");
             public static final BufferedImage SLIME_UP_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeUpDamaged.png");
 
+            public static final BufferedImage SLIME_UP_1 = SLIME_UP != null ?
+                    SLIME_UP.getSubimage(0, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
+            public static final BufferedImage SLIME_UP_2 = SLIME_UP != null ?
+                    SLIME_UP.getSubimage(TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
+
             public static final BufferedImage SLIME_DOWN = loadSingleImage("/assets/entities/enemies/slime/slimeDown.png");
             public static final BufferedImage SLIME_DOWN_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeDownAttack.png");
             public static final BufferedImage SLIME_DOWN_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeDownDamaged.png");
+
+            public static final BufferedImage SLIME_DOWN_1 = SLIME_DOWN != null ?
+                    SLIME_DOWN.getSubimage(0, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
+            public static final BufferedImage SLIME_DOWN_2 = SLIME_DOWN != null ?
+                    SLIME_DOWN.getSubimage(TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
 
             public static final BufferedImage SLIME_LEFT = loadSingleImage("/assets/entities/enemies/slime/slimeLeft.png");
             public static final BufferedImage SLIME_LEFT_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeLeftAttack.png");
             public static final BufferedImage SLIME_LEFT_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeLeftDamaged.png");
 
+            public static final BufferedImage SLIME_LEFT_1 = SLIME_LEFT != null ?
+                    SLIME_LEFT.getSubimage(0, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
+            public static final BufferedImage SLIME_LEFT_2 = SLIME_LEFT != null ?
+                    SLIME_LEFT.getSubimage(TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
+
             public static final BufferedImage SLIME_RIGHT = loadSingleImage("/assets/entities/enemies/slime/slimeRight.png");
             public static final BufferedImage SLIME_RIGHT_ATTACK = loadSingleImage("/assets/entities/enemies/slime/slimeRightAttack.png");
             public static final BufferedImage SLIME_RIGHT_DAMAGED = loadSingleImage("/assets/entities/enemies/slime/slimeRightDamaged.png");
+
+            public static final BufferedImage SLIME_RIGHT_1 = SLIME_RIGHT != null ?
+                    SLIME_RIGHT.getSubimage(0, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
+            public static final BufferedImage SLIME_RIGHT_2 = SLIME_RIGHT != null ?
+                    SLIME_RIGHT.getSubimage(TILE_WIDTH, 0, TILE_WIDTH, TILE_HEIGHT) :
+                    null;
         }
     }
 

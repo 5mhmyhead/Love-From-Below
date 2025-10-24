@@ -105,6 +105,7 @@ public class WorldRoom implements Room {
 
         updateDrawCoordinates();
 
+        // IF THE ROOM IS NOT MOVING, THEN UPDATE THE ENEMIES
         if(drawVelX == 0 && drawVelY == 0) {
             Iterator<Enemy> enemyIterator = worldEnemies.iterator();
 
