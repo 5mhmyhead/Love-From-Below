@@ -3,12 +3,12 @@ package components.entities.enemies;
 import components.entities.Direction;
 import components.entities.Enemy;
 import components.world.rooms.Room;
+import core.Game;
 import core.GamePanel;
 import utilities.Animation;
 import utilities.Images;
 
 import java.awt.*;
-import java.sql.SQLOutput;
 import java.util.Objects;
 
 public class Slime extends Enemy {
@@ -28,7 +28,7 @@ public class Slime extends Enemy {
 
         velX = 0;
         velY = 0;
-        moveSpeed = 1;
+        moveSpeed = 2;
 
         walkUp = new Animation(40, true, Images.Enemies.Slime.SLIME_UP_1, Images.Enemies.Slime.SLIME_UP_2);
         walkDown = new Animation(40, true, Images.Enemies.Slime.SLIME_DOWN_1, Images.Enemies.Slime.SLIME_DOWN_2);
@@ -56,44 +56,29 @@ public class Slime extends Enemy {
 
     public void update() {
 
-        setBounds(x + width / 4, y + height / 3, width / 2, height / 2);
+        handleCollisions();
 
         switch(state) {
 
             case "MOVING":
 
-                int[] vector = direction.getVector(moveSpeed);
-                velX = vector[0];
-                velY = vector[1];
+                if(direction == Direction.UP) {
+                    walkUp.update();
+                    velY = -moveSpeed;
+                    y += velY;
+                }
 
-                switch(direction) {
-
-                    case UP:
-                        walkUp.update();
-                        y += velY;
-                        break;
-
-                    case DOWN:
-                        walkDown.update();
-                        y += velY;
-                        break;
-
-                    case LEFT:
-                        walkLeft.update();
-                        x += velX;
-                        break;
-
-                    case RIGHT:
-                        walkRight.update();
-                        x += velX;
-                        break;
+                if(direction == Direction.DOWN) {
+                    walkDown.update();
+                    velY = moveSpeed;
+                    y += velY;
                 }
 
                 if(x < 0) direction = Direction.RIGHT;
                 if(y < 0) direction = Direction.DOWN;
 
-                if(x > room.getRoomWidth()) direction = Direction.LEFT;
-                if(y > room.getRoomHeight()) direction = Direction.UP;
+                if(x > room.getRoomWidth() - GamePanel.TILE_SIZE) direction = Direction.LEFT;
+                if(y > room.getRoomHeight() - GamePanel.TILE_SIZE) direction = Direction.UP;
                 break;
 
             default:
@@ -101,22 +86,20 @@ public class Slime extends Enemy {
                 break;
         }
 
-        System.out.println(handleCollisions());
+        if(movementRefreshTimer == 0) {
 
-        if(handleCollisions() && movementRefreshTimer == 0) {
-
-            movementRefreshTimer = 40;
-            direction = Direction.getExcludedRandom(direction);
+            movementRefreshTimer = 320;
+            if(direction == Direction.UP) direction = Direction.DOWN;
+            else direction = Direction.UP;
         }
 
         if(movementRefreshTimer > 0) movementRefreshTimer--;
+        setBounds(x + width / 4, y + height / 3, width / 2, height / 2);
         super.update();
     }
 
     @Override
     public void draw(Graphics2D g2) {
-
-        drawDebug(g2);
 
         drawX = x;
         drawY = y;

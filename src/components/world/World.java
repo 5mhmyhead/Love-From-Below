@@ -2,6 +2,7 @@ package components.world;
 
 import components.entities.Direction;
 import components.entities.Player;
+import components.world.rooms.Room;
 import components.world.rooms.RoomMetadata;
 import components.world.rooms.WorldRoom;
 import core.GamePanel;
@@ -22,29 +23,23 @@ public class World {
     private WorldRoom loadingRoom;                          // ROOM THAT PLAYER IS ENTERING
 
     private final ArrayList<WorldRoom> roomBuffer;          // STORES THE STATE OF THE LAST 5 ROOMS
-    private final ArrayList<RoomMetadata> metadataBuffer;   // STORES THE METADATA OF THE LAST 5 ROOMS
 
     private final MapHandler mapHandler;                    // MAP HELPER TO CONSTRUCT WORLD
-
-    private RoomMetadata roomMetadata;                      // THE ACTUAL METADATA OF THE ROOM
     private Document metadata;                              // XML DOCUMENT STORING ROOM INFO
 
     public World(int startingRoom, String tileMapFilePath, String RoomMetadataFilePath, int columns, int rows) {
 
+        player = new Player(this);
+
         mapHandler = new MapHandler(this, tileMapFilePath, columns, rows);
         loadRoomMetadata(RoomMetadataFilePath);
 
-        roomMetadata = new RoomMetadata(startingRoom, this);
-
         currentRoom = new WorldRoom(startingRoom, this, mapHandler);
-        currentRoom.setRoomMetadata(roomMetadata);
+        currentRoom.setRoomMetadata(new RoomMetadata(startingRoom, this));
 
         loadingRoom = null;
 
-        player = new Player(this, roomMetadata);
-
         roomBuffer = new ArrayList<>(Arrays.asList(new WorldRoom[5]));
-        metadataBuffer = new ArrayList<>(Arrays.asList(new RoomMetadata[5]));
 
         // FIXME TURNED OFF MUSIC
         // if(!SoundManager.OVERWORLD.isPlaying()) SoundManager.OVERWORLD.loop();
@@ -52,7 +47,7 @@ public class World {
 
     // LOADS THE METADATA FROM PATH
     private void loadRoomMetadata(String filePath) {
-
+        // FIXME CHECK REFACTOR
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringElementContentWhitespace(true);
         factory.setNamespaceAware(true);
@@ -156,16 +151,11 @@ public class World {
         // IF THERE IS NO ROOM FOUND
         if(roomFoundIndex == -1) {
 
-            roomMetadata = new RoomMetadata(loadingRoomID, this);
-
             loadingRoom = new WorldRoom(loadingRoomID, this, mapHandler);
-            loadingRoom.setRoomMetadata(roomMetadata);
+            loadingRoom.setRoomMetadata(new RoomMetadata(loadingRoomID, this));
         } else {
             // IF THERE IS, THEN SET IT AS THE LOADING SCREEN
-            roomMetadata = metadataBuffer.get(roomFoundIndex);
-
             loadingRoom = roomBuffer.get(roomFoundIndex);
-            loadingRoom.setRoomMetadata(roomMetadata);
         }
 
         // SET THE COORDINATES FOR THE ROOM TO MOVE
@@ -195,9 +185,6 @@ public class World {
 
         roomBuffer.addFirst(currentRoom);
         if(roomBuffer.size() > 5) roomBuffer.remove(4);
-
-        metadataBuffer.addFirst(roomMetadata);
-        if(metadataBuffer.size() > 5) metadataBuffer.remove(4);
     }
 
     public WorldRoom getCurrentRoom() { return currentRoom; }
@@ -210,7 +197,6 @@ public class World {
     }
 
     public Document getMetadata() { return metadata; }
-    public RoomMetadata getRoomMetadata() { return roomMetadata; }
 
     // CHECK IF IN TRANSITION PHASE
     public boolean isTransitioning() {

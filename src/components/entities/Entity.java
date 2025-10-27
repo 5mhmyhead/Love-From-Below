@@ -2,7 +2,6 @@ package components.entities;
 
 import components.objects.WorldObject;
 import components.world.rooms.Room;
-import components.world.rooms.RoomMetadata;
 import utilities.Tile;
 
 import java.awt.*;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 public abstract class Entity {
 
     protected Room room;
-    protected RoomMetadata roomMetadata;
 
     protected int x;
     protected int y;
@@ -113,11 +111,11 @@ public abstract class Entity {
                 collisionFlag = true;
 
         for(NPC npc : worldNPCS)
-            if(checkCollisionWith(npc))
+            if(!(this instanceof NPC) && checkCollisionWith(npc))
                 collisionFlag = true;
 
         for(Enemy enemy : worldEnemies)
-            if(checkCollisionWith(enemy))
+            if(!(this instanceof Enemy) && checkCollisionWith(enemy))
                 collisionFlag = true;
 
         return collisionFlag;

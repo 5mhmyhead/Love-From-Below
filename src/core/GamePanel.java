@@ -9,21 +9,18 @@ import java.awt.event.*;
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     // GLOBAL SCREEN SETTINGS
-    private final static int ORIGINAL_TILE_SIZE = 16; // 16 x 16 per tile
-    private final static int SCALE = 3;
+    public final static int MAX_SCREEN_COL = 16;                        // 16 TILES FROM LEFT TO RIGHT
+    public final static int MAX_SCREEN_ROW = 12;                        // 12 TILES FROM TOP TO BOTTOM
+    public final static int TILE_SIZE = 48;                             // 48 x 48 PER TILE
 
-    public final static int MAX_SCREEN_COL = 16;
-    public final static int MAX_SCREEN_ROW = 12;
-
-    public final static int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48 x 48 per tile
-    public final static int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-    public final static int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
+    public final static int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;  // 768 PIXELS
+    public final static int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 PIXELS
 
     // THREAD AND FPS SETTINGS
+    public static final double FPS = 60.0;
+
     private Thread gameThread;
     private boolean running;
-
-    public static final double FPS = 60.0;
 
     // CLASS THAT HANDLES THE CHANGING OF STATES IN THE GAME
     private StateManager stateManager;

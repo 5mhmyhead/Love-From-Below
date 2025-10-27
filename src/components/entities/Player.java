@@ -52,10 +52,9 @@ public class Player extends Entity {
     private WorldObject drawObject;                     // THE WORLD OBJECT THAT THE PLAYER JUST GOT
     private int getAnimationTimer;                      // THE TIMER FOR THE GET ITEM ANIMATION
 
-    public Player(World world, RoomMetadata metadata) {
+    public Player(World world) {
 
         this.world = world;
-        this.roomMetadata = metadata;
         this.room = world.getCurrentRoom();
 
         setDefaultValues();
@@ -111,7 +110,6 @@ public class Player extends Entity {
     public void update() {
         // SETS UP THE CURRENT ROOM
         this.room = world.getCurrentRoom();
-        this.roomMetadata = world.getRoomMetadata();
 
         switch(state) {
             case "IDLE":
