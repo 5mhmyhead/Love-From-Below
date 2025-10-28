@@ -1,6 +1,5 @@
 package core.ui;
 
-import components.entities.Player;
 import components.world.World;
 import utilities.Images;
 
@@ -9,18 +8,10 @@ import java.awt.*;
 public class GameUI {
 
     private final World world;
-    private final Player player;
-
-    private final int width;
-    private final int height;
 
     public GameUI(World world) {
 
-        width = 768;
-        height = 576;
-
         this.world = world;
-        this.player = world.getPlayer();
     }
 
     public void draw(Graphics2D g2) {
@@ -38,11 +29,8 @@ public class GameUI {
         // DRAW THE MAX AMOUNT OF HEARTS OF THE PLAYER
         for(int i = 1; i <= world.getPlayer().getMaxHealth(); i++) {
 
-            if(i % 2 == 0) {
-                yOrigin = 38;
-            } else {
-                yOrigin = 20;
-            }
+            if(i % 2 == 0) yOrigin = 38;
+            else yOrigin = 20;
 
             g2.drawImage(Images.UI.HEART_EMPTY, xOrigin, yOrigin, null);
             xOrigin += 21;
@@ -52,11 +40,8 @@ public class GameUI {
         // DRAW THE AMOUNT OF HEARTS THAT THE PLAYER CURRENTLY HAS
         for(int i = 1; i <= world.getPlayer().getHealth(); i++) {
 
-            if(i % 2 == 0) {
-                yOrigin = 38;
-            } else {
-                yOrigin = 20;
-            }
+            if(i % 2 == 0) yOrigin = 38;
+            else yOrigin = 20;
 
             g2.drawImage(Images.UI.HEART, xOrigin, yOrigin, null);
             xOrigin += 21;

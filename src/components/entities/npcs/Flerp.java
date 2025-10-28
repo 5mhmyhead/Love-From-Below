@@ -41,6 +41,7 @@ public class Flerp extends NPC {
         state = "IDLE_SLEEP";
     }
 
+    // TODO MOVE THIS TO AN ACTION FUNCTION
     // FIXME timer.schedule(toSleep, 5000, 20);
     @Override
     public void update() {

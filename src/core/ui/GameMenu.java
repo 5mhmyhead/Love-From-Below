@@ -9,16 +9,7 @@ public class GameMenu {
 
     private final World world;
 
-    private final int width;
-    private final int height;
-
-    private int selectedIndex;
-
     public GameMenu(World world) {
-        // MENU DIMENSIONS
-        width = 768;
-        height = 576;
-        selectedIndex = 0;
 
         this.world = world;
     }

@@ -29,9 +29,12 @@ public class Boots extends Collectible {
     @Override
     public boolean action(Player player) {
 
-        GameData.hasBoots = true;
-        player.enterItemState(this);
-        playClip();
+        if(!GameData.hasBoots) {
+
+            GameData.hasBoots = true;
+            player.enterItemState(this);
+            playClip();
+        }
 
         return true;
     }

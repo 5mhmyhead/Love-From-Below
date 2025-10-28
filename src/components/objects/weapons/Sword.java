@@ -30,9 +30,12 @@ public class Sword extends Weapon {
     @Override
     public boolean playerAction(Player player) {
 
-        GameData.swordLevel = 1;
-        player.enterItemState(this);
-        // playClip();
+        if(GameData.swordLevel == 0) {
+
+            GameData.swordLevel = 1;
+            player.enterItemState(this);
+            playClip();
+        }
 
         return true;
     }

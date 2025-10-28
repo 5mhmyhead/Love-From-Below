@@ -3,7 +3,6 @@ package components.entities.enemies;
 import components.entities.Direction;
 import components.entities.Enemy;
 import components.world.rooms.Room;
-import core.Game;
 import core.GamePanel;
 import utilities.Animation;
 import utilities.Images;
@@ -28,7 +27,7 @@ public class Slime extends Enemy {
 
         velX = 0;
         velY = 0;
-        moveSpeed = 2;
+        moveSpeed = 1;
 
         walkUp = new Animation(40, true, Images.Enemies.Slime.SLIME_UP_1, Images.Enemies.Slime.SLIME_UP_2);
         walkDown = new Animation(40, true, Images.Enemies.Slime.SLIME_DOWN_1, Images.Enemies.Slime.SLIME_DOWN_2);
@@ -56,23 +55,35 @@ public class Slime extends Enemy {
 
     public void update() {
 
-        handleCollisions();
+        // HANDLE MOVEMENT COLLISIONS
+        if(handleCollisions() && movementRefreshTimer == 0) {
+
+            movementRefreshTimer = 120;
+            direction = Direction.getExcludedRandom(direction);
+        }
+
+        if(movementRefreshTimer > 0) movementRefreshTimer--;
 
         switch(state) {
 
             case "MOVING":
 
-                if(direction == Direction.UP) {
-                    walkUp.update();
-                    velY = -moveSpeed;
-                    y += velY;
+                int[] vector = direction.getVector(moveSpeed);
+                velX = vector[0];
+                velY = vector[1];
+
+                switch(direction) {
+
+                    case UP: walkUp.update(); break;
+                    case DOWN: walkDown.update(); break;
+                    case LEFT: walkLeft.update(); break;
+                    case RIGHT: walkRight.update(); break;
                 }
 
-                if(direction == Direction.DOWN) {
-                    walkDown.update();
-                    velY = moveSpeed;
-                    y += velY;
-                }
+                x += velX;
+                y += velY;
+
+                if((Math.random() * 120) < 2) direction = Direction.getRandom();
 
                 if(x < 0) direction = Direction.RIGHT;
                 if(y < 0) direction = Direction.DOWN;
@@ -86,20 +97,14 @@ public class Slime extends Enemy {
                 break;
         }
 
-        if(movementRefreshTimer == 0) {
-
-            movementRefreshTimer = 320;
-            if(direction == Direction.UP) direction = Direction.DOWN;
-            else direction = Direction.UP;
-        }
-
-        if(movementRefreshTimer > 0) movementRefreshTimer--;
         setBounds(x + width / 4, y + height / 3, width / 2, height / 2);
         super.update();
     }
 
     @Override
     public void draw(Graphics2D g2) {
+
+        drawDebug(g2);
 
         drawX = x;
         drawY = y;

@@ -141,6 +141,8 @@ public class WorldRoom implements Room {
         for(Enemy enemy : worldEnemies) { enemy.draw(g2); }
 
         g2.setTransform(transform);
+
+        drawTileDebug(g2);
     }
 
     // UPDATES DRAW POSITION OF ROOM

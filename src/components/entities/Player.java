@@ -4,7 +4,6 @@ import components.objects.Collectible;
 import components.objects.Interactable;
 import components.objects.Weapon;
 import components.objects.WorldObject;
-import components.world.rooms.RoomMetadata;
 import components.world.World;
 import core.GamePanel;
 import utilities.Animation;

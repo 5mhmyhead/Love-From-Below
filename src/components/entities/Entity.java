@@ -56,9 +56,21 @@ public abstract class Entity {
         if(checkTileCollisions(0, velY) || checkEntityCollisions()) collisionY = true;
         if(checkTileCollisions(velX, 0) || checkEntityCollisions()) collisionX = true;
 
-        if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) x -= velX;
-        if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) y -= velY;
+        // PUSH BACK THE ENTITY IF THERE IS A COLLISION HAPPENING
+        if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) {
 
+            x -= velX;
+            velX = 0;
+            velY = 0;
+        }
+
+        if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) {
+
+            y -= velY;
+            velX = 0;
+            velY = 0;
+        }
+        
         return collisionX || collisionY;
     }
 
@@ -67,9 +79,10 @@ public abstract class Entity {
         boolean collisionFlag = false;
 
         // CHECKS TILE COLLISIONS
-        // FINDS THE TILES THAT ARE CLOSEST TO THE ENTITY, GREATLY REDUCES THE AMOUNT OF COLLISION CHECKS
+        // FINDS THE TILES THAT ARE CLOSEST TO THE ENTITY, WHICH GREATLY REDUCES THE AMOUNT OF COLLISION CHECKS
         int leftColumn = (x + checkX) / room.getWidthOfTile();
         int rightColumn = (x + checkX + width) / room.getWidthOfTile();
+
         int topRow = (y + checkY) / room.getHeightOfTile();
         int bottomRow = (y + checkY + height) / room.getHeightOfTile();
 
