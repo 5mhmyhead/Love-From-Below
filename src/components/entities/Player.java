@@ -12,6 +12,7 @@ import utilities.Images;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
@@ -39,7 +40,7 @@ public class Player extends Entity {
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
 
     // MISCELLANEOUS VARIABLES FOR KEYDOWN VALUES AND ANIMATION DELAY
-    private int swordTimer;                             // TIMER FOR THE ANIMATION
+    private int swordTimer;                             // TIMER FOR THE SWORD ANIMATION
 
     private int idleDelay = 0;                          // COUNT TO SMOOTHEN TRANSITION BETWEEN WALKING TO IDLE STATE
     private boolean interactPrevPressed = false;        // BOOLEAN FOR INTERACT KEY TO REGISTER ONLY ONCE
@@ -88,13 +89,13 @@ public class Player extends Entity {
         runRight = new Animation(7, true, Objects.requireNonNull(Images.PlayerAssets.PLAYER_RUN_RIGHT), width, height);
 
         // ATTACK ANIMATIONS
-        attackUp = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_UP),
+        attackUp = new Animation(4, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_UP),
                 width * 3, height * 3);
-        attackDown = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_DOWN),
+        attackDown = new Animation(4, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_DOWN),
                 width * 3, height * 3);
-        attackLeft = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_LEFT),
+        attackLeft = new Animation(4, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_LEFT),
                 width * 3, height * 3);
-        attackRight = new Animation(5, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_RIGHT),
+        attackRight = new Animation(4, false, Objects.requireNonNull(Images.PlayerAssets.PLAYER_ATTACK_RIGHT),
                 width * 3, height * 3);
 
         // SPARKLE ANIMATION FROM GET ITEM
@@ -121,49 +122,48 @@ public class Player extends Entity {
             case "DIALOGUE":
                 velX = 0;
                 velY = 0;
-
                 break;
 
             case "UP":
-                velY = -moveSpeed;
                 direction = Direction.UP;
 
                 if(sprint) runUp.update();
                 else walkUp.update();
 
+                velY = -moveSpeed;
                 y += velY;
                 updatePlayerState();
                 break;
 
             case "DOWN":
-                velY = moveSpeed;
                 direction = Direction.DOWN;
 
                 if(sprint) runDown.update();
                 else walkDown.update();
 
+                velY = moveSpeed;
                 y += velY;
                 updatePlayerState();
                 break;
 
             case "LEFT":
-                velX = -moveSpeed;
                 direction = Direction.LEFT;
 
                 if(sprint) runLeft.update();
                 else walkLeft.update();
 
+                velX = -moveSpeed;
                 x += velX;
                 updatePlayerState();
                 break;
 
             case "RIGHT":
-                velX = moveSpeed;
                 direction = Direction.RIGHT;
 
                 if(sprint) runRight.update();
                 else walkRight.update();
 
+                velX = moveSpeed;
                 x += velX;
                 updatePlayerState();
                 break;
@@ -172,9 +172,10 @@ public class Player extends Entity {
                 velX = 0;
                 velY = 0;
 
-                if(swordTimer == 0) swordTimer = 29;
+                if(swordTimer == 0) swordTimer = 24;
                 else swordTimer--;
 
+                // UPDATE THE ANIMATION DEPENDING ON THE DIRECTION OF THE PLAYER
                 switch(direction) {
 
                     case UP: attackUp.update();
@@ -183,7 +184,7 @@ public class Player extends Entity {
                     case RIGHT: attackRight.update();
                 }
 
-                // AFTER 39 FRAMES, GO BACK TO IDLE STATE
+                // AFTER 24 FRAMES, GO BACK TO IDLE STATE AND RESET THE ANIMATIONS
                 if(swordTimer == 0) {
 
                     if(attackUp.hasEnded()) attackUp.reset();
@@ -196,17 +197,16 @@ public class Player extends Entity {
                 break;
 
             case "GET_ITEM":
-
                 velX = 0;
                 velY = 0;
+                // AFTER 2 SECONDS, TURN BACK TO IDLE STATE
                 if(getAnimationTimer == 0) getAnimationTimer = 120;
                 else getAnimationTimer--;
-                // AFTER 2 SECONDS, TURN BACK TO IDLE STATE
+
                 if(getAnimationTimer == 0) state = "IDLE";
                 break;
 
             case "TRANSITION":
-
                 velX = 0;
                 velY = 0;
 
@@ -232,17 +232,56 @@ public class Player extends Entity {
                 }
                 break;
 
+            case "KNOCKBACK":
+                // GET A VECTOR IN THE OPPOSITE DIRECTION OF THE PLAYER
+                int[] knockback = direction.getOpposite().getVector(3);
+                velX = knockback[0];
+                velY = knockback[1];
+
+                x += velX;
+                y += velY;
+                // STORE HOW FAR THE PLAYER HAS MOVED
+                knockbackDistance += (velX + velY);
+                // IF THE PLAYER HAS MOVED A TILE, STOP THE KNOCKBACK
+                if(Math.abs(knockbackDistance) >= room.getWidthOfTile()) {
+
+                    knockbackDistance = 0;
+                    state = "IDLE";
+                }
+                break;
+
             default:
                 System.out.println(state);
                 break;
         }
+
+        // DECREASE INVINCIBILITY FRAMES, IF PLAYER HAS ANY
+        if(invincibilityFrames > 0) invincibilityFrames--;
+        if(health < 0) health = 0;
+
+        // CREATE A RECTANGLE TO CHECK IF THINGS ARE GOING OFFSCREEN
+        Rectangle screen = new Rectangle(room.getRoomWidth(), room.getRoomHeight());
 
         // CHECK COLLISIONS WITH PLAYER AND TILEMAP
         if(!state.equals("TRANSITION")) {
             // UPDATE THE COLLISION BOX FOR THE PLAYER
             setBounds(x + 8, y + 16, width - 16, height - 16);
 
-            handleCollisions();
+            // IF THE PLAYER HITS A TILE, PLAYER GOES OUT OF KNOCKBACK
+            if(handleCollisions() && state.equals("KNOCKBACK")) {
+
+                knockbackDistance = 0;
+                state = "IDLE";
+            }
+
+            // IF THE PLAYER GOES OFFSCREEN, PLAYER GOES OUT OF KNOCKBACK
+            if(!screen.intersects(this.getBounds()) && state.equals("KNOCKBACK")) {
+
+                knockbackDistance = 0;
+                state = "IDLE";
+            }
+
+            if(invincibilityFrames == 0) handleEnemyCollisions();
             handleNonInteractables();       // HANDLES COLLISIONS THAT DO NOT NEED THE INTERACT KEY
 
             // INTERACT PREVIOUS PRESSED ENSURES THAT THE FUNCTION UPDATES ONLY ONCE EVEN WHEN HELD
@@ -251,6 +290,21 @@ public class Player extends Entity {
 
                 interactPrevPressed = false;
                 handleInteractables();      // HANDLES COLLISIONS THAT REQUIRES INTERACTING
+            }
+        }
+    }
+
+    private void handleEnemyCollisions() {
+
+        ArrayList<Enemy> enemies = room.getWorldEnemies();
+
+        for(Enemy enemy : enemies) {
+            // CHECKS FOR A DIRECT COLLISION WITH THE ENEMY
+            if (checkCollisionWith(enemy) && enemy.getDamage() > 0) {
+
+                health -= enemy.getDamage();
+                state = "KNOCKBACK";
+                invincibilityFrames = 40;
             }
         }
     }
@@ -355,98 +409,102 @@ public class Player extends Entity {
 
     @Override
     public void draw(Graphics2D g2) {
-        // SET BOTH DRAW X AND Y TO CURRENT X AND Y OF PLAYER
-        drawX = x;
-        drawY = y;
 
-        switch(state) {
+        // IF THE PLAYER IS INVINCIBLE MAKE HIM FLICKER BY DRAWING HIM EVERY THIRD FRAME
+        if(!(invincibilityFrames > 0 && invincibilityFrames % 3 == 0)) {
+            // SET BOTH DRAW X AND Y TO CURRENT X AND Y OF PLAYER
+            drawX = x;
+            drawY = y;
 
-            case "IDLE", "TRANSITION", "DIALOGUE":
+            switch(state) {
 
-                idleDelay++;
+                case "IDLE", "TRANSITION", "DIALOGUE", "KNOCKBACK":
 
-                if(idleDelay < 10) {
+                    idleDelay++;
 
-                    switch (direction) {
+                    if(idleDelay < 10) {
 
-                        case UP: walkUp.draw(g2, drawX, drawY, width, height); break;
-                        case RIGHT: walkRight.draw(g2, drawX, drawY, width, height); break;
-                        case DOWN: walkDown.draw(g2, drawX, drawY, width, height); break;
-                        case LEFT: walkLeft.draw(g2, drawX, drawY, width, height); break;
-                        default: break;
+                        switch (direction) {
+
+                            case UP: walkUp.draw(g2, drawX, drawY, width, height); break;
+                            case RIGHT: walkRight.draw(g2, drawX, drawY, width, height); break;
+                            case DOWN: walkDown.draw(g2, drawX, drawY, width, height); break;
+                            case LEFT: walkLeft.draw(g2, drawX, drawY, width, height); break;
+                            default: break;
+                        }
+
+                    } else {
+
+                        switch (direction) {
+
+                            case UP: walkUp.drawFirst(g2, drawX, drawY, width, height); break;
+                            case RIGHT: walkRight.drawFirst(g2, drawX, drawY, width, height); break;
+                            case DOWN: walkDown.drawFirst(g2, drawX, drawY, width, height); break;
+                            case LEFT: walkLeft.drawFirst(g2, drawX, drawY, width, height); break;
+                            default: break;
+                        }
+
                     }
 
-                } else {
+                    break;
 
-                    switch (direction) {
+                case "UP":
 
-                        case UP: walkUp.drawFirst(g2, drawX, drawY, width, height); break;
-                        case RIGHT: walkRight.drawFirst(g2, drawX, drawY, width, height); break;
-                        case DOWN: walkDown.drawFirst(g2, drawX, drawY, width, height); break;
-                        case LEFT: walkLeft.drawFirst(g2, drawX, drawY, width, height); break;
-                        default: break;
+                    idleDelay = 0;
+                    if(sprint) runUp.draw(g2, drawX, drawY, width, height);
+                    else walkUp.draw(g2, drawX, drawY, width, height);
+                    break;
+
+                case "DOWN":
+
+                    idleDelay = 0;
+                    if(sprint) runDown.draw(g2, drawX, drawY, width, height);
+                    else walkDown.draw(g2, drawX, drawY, width, height);
+                    break;
+
+                case "RIGHT":
+
+                    idleDelay = 0;
+                    if(sprint) runRight.draw(g2, drawX, drawY, width, height);
+                    else walkRight.draw(g2, drawX, drawY, width, height);
+                    break;
+
+                case "LEFT":
+
+                    idleDelay = 0;
+                    if(sprint) runLeft.draw(g2, drawX, drawY, width, height);
+                    else walkLeft.draw(g2, drawX, drawY, width, height);
+                    break;
+
+                case "ATTACK":
+
+                    switch(direction) {
+
+                        case UP: attackUp.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
+                        case DOWN: attackDown.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
+                        case LEFT: attackLeft.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
+                        case RIGHT: attackRight.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
                     }
+                    break;
 
-                }
+                case "GET_ITEM":
 
-                break;
+                    g2.drawImage(Images.PlayerAssets.PLAYER_GET_ITEM, drawX, drawY, width, height, null);
+                    drawObject.draw(drawX + drawObject.getWidth() / 4,
+                            drawY - drawObject.getHeight() / 2, g2);
 
-            case "UP":
+                    sparkle.draw(g2, drawX - GamePanel.TILE_SIZE + 8, drawY - GamePanel.TILE_SIZE - 24,
+                            width * 2, height * 2);
 
-                idleDelay = 0;
-                if(sprint) runUp.draw(g2, drawX, drawY, width, height);
-                else walkUp.draw(g2, drawX, drawY, width, height);
-                break;
+                    sparkle.update();
+                    break;
 
-            case "DOWN":
+                default:
 
-                idleDelay = 0;
-                if(sprint) runDown.draw(g2, drawX, drawY, width, height);
-                else walkDown.draw(g2, drawX, drawY, width, height);
-                break;
-
-            case "RIGHT":
-
-                idleDelay = 0;
-                if(sprint) runRight.draw(g2, drawX, drawY, width, height);
-                else walkRight.draw(g2, drawX, drawY, width, height);
-                break;
-
-            case "LEFT":
-
-                idleDelay = 0;
-                if(sprint) runLeft.draw(g2, drawX, drawY, width, height);
-                else walkLeft.draw(g2, drawX, drawY, width, height);
-                break;
-
-            case "ATTACK":
-
-                switch(direction) {
-
-                    case UP: attackUp.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
-                    case DOWN: attackDown.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
-                    case LEFT: attackLeft.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
-                    case RIGHT: attackRight.draw(g2, drawX - width, drawY - height, width * 3, height * 3); break;
-                }
-                break;
-
-            case "GET_ITEM":
-
-                g2.drawImage(Images.PlayerAssets.PLAYER_GET_ITEM, drawX, drawY, width, height, null);
-                drawObject.draw(drawX + drawObject.getWidth() / 4,
-                        drawY - drawObject.getHeight() / 2, g2);
-
-                sparkle.draw(g2, drawX - GamePanel.TILE_SIZE + 8, drawY - GamePanel.TILE_SIZE - 24,
-                        width * 2, height * 2);
-
-                sparkle.update();
-                break;
-
-            default:
-
-                g2.setColor(Color.RED);
-                g2.drawRect(drawX, drawY, width, height);
-                break;
+                    g2.setColor(Color.RED);
+                    g2.drawRect(drawX, drawY, width, height);
+                    break;
+            }
         }
     }
 

@@ -83,7 +83,7 @@ public class Slime extends Enemy {
                 x += velX;
                 y += velY;
 
-                if((Math.random() * 120) < 2) direction = Direction.getRandom();
+                if((Math.random() * 200) < 2) direction = Direction.getRandom();
 
                 if(x < 0) direction = Direction.RIGHT;
                 if(y < 0) direction = Direction.DOWN;
