@@ -12,7 +12,6 @@ import utilities.Images;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
@@ -34,14 +33,15 @@ public class Player extends Entity {
 
     private Animation sparkle;
 
+    private Weapon playerWeapon;                        // WEAPON THAT THE PLAYER HAS
+    private int weaponTimer;                            // TIMER FOR THE WEAPON ANIMATION
+
     private int maxHealth;
 
     private int transitionAmountX, transitionAmountY;   // HOW FAR LINK HAS MOVED IN THE TRANSITION
     private int transitionVelX, transitionVelY;         // HOW FAST LINK IS MOVING FOR THE TRANSITION
 
     // MISCELLANEOUS VARIABLES FOR KEYDOWN VALUES AND ANIMATION DELAY
-    private int swordTimer;                             // TIMER FOR THE SWORD ANIMATION
-
     private int idleDelay = 0;                          // COUNT TO SMOOTHEN TRANSITION BETWEEN WALKING TO IDLE STATE
     private boolean interactPrevPressed = false;        // BOOLEAN FOR INTERACT KEY TO REGISTER ONLY ONCE
 
@@ -172,25 +172,37 @@ public class Player extends Entity {
                 velX = 0;
                 velY = 0;
 
-                if(swordTimer == 0) swordTimer = 24;
-                else swordTimer--;
+                if(weaponTimer == 0) weaponTimer = 25;
+                else weaponTimer--;
 
                 // UPDATE THE ANIMATION DEPENDING ON THE DIRECTION OF THE PLAYER
                 switch(direction) {
 
-                    case UP: attackUp.update();
-                    case DOWN: attackDown.update();
-                    case LEFT: attackLeft.update();
-                    case RIGHT: attackRight.update();
+                    case UP:
+                        attackUp.update();
+                        if(attackUp.hasEnded()) attackUp.setIndex(4);
+                        break;
+                    case DOWN:
+                        attackDown.update();
+                        if(attackDown.hasEnded()) attackDown.setIndex(4);
+                        break;
+                    case LEFT:
+                        attackLeft.update();
+                        if(attackLeft.hasEnded()) attackLeft.setIndex(4);
+                        break;
+                    case RIGHT:
+                        attackRight.update();
+                        if(attackRight.hasEnded()) attackRight.setIndex(4);
+                        break;
                 }
 
-                // AFTER 24 FRAMES, GO BACK TO IDLE STATE AND RESET THE ANIMATIONS
-                if(swordTimer == 0) {
+                // AFTER 25 FRAMES, GO BACK TO IDLE STATE AND RESET THE ANIMATIONS
+                if(weaponTimer == 0) {
 
-                    if(attackUp.hasEnded()) attackUp.reset();
-                    if(attackDown.hasEnded()) attackDown.reset();
-                    if(attackLeft.hasEnded()) attackLeft.reset();
-                    if(attackRight.hasEnded()) attackRight.reset();
+                    attackUp.reset();
+                    attackDown.reset();
+                    attackLeft.reset();
+                    attackRight.reset();
 
                     state = "IDLE";
                 }
@@ -281,7 +293,7 @@ public class Player extends Entity {
                 state = "IDLE";
             }
 
-            if(invincibilityFrames == 0) handleEnemyCollisions();
+            handleEnemyCollisions();
             handleNonInteractables();       // HANDLES COLLISIONS THAT DO NOT NEED THE INTERACT KEY
 
             // INTERACT PREVIOUS PRESSED ENSURES THAT THE FUNCTION UPDATES ONLY ONCE EVEN WHEN HELD
@@ -298,14 +310,25 @@ public class Player extends Entity {
 
         ArrayList<Enemy> enemies = room.getWorldEnemies();
 
-        for(Enemy enemy : enemies) {
-            // CHECKS FOR A DIRECT COLLISION WITH THE ENEMY
-            if (checkCollisionWith(enemy) && enemy.getDamage() > 0) {
+        // HANDLES THE PLAYER TAKING DAMAGE
+        if(invincibilityFrames == 0) {
+            for(Enemy enemy : enemies) {
+                // CHECKS FOR A DIRECT COLLISION WITH THE ENEMY
+                if (checkCollisionWith(enemy) && enemy.getDamage() > 0) {
 
-                health -= enemy.getDamage();
-                state = "KNOCKBACK";
-                invincibilityFrames = 40;
+                    health -= enemy.getDamage();
+                    state = "KNOCKBACK";
+                    invincibilityFrames = 40;
+                }
             }
+        }
+
+        // HANDLES THE PLAYER DEALING DAMAGE
+        if(state.equals("ATTACK")) {
+
+            for(Enemy enemy : enemies)
+                if(this.getAttackRange().intersects(enemy.getBounds()))
+                    enemy.checkDamageCollisions(playerWeapon);
         }
     }
 
@@ -362,6 +385,8 @@ public class Player extends Entity {
 
         this.state = "GET_ITEM";
         drawObject = object;
+
+        if(object instanceof Weapon) playerWeapon = (Weapon) object;
     }
 
     // UPDATE THE PLAYER STATE VARIABLE
@@ -404,6 +429,18 @@ public class Player extends Entity {
             case DOWN -> new Rectangle(x + 8, y + 48, 32, 16);
             case LEFT -> new Rectangle(x - 8, y + 16, 16, 32);
             case RIGHT -> new Rectangle(x + 40, y + 16, 16, 32);
+        };
+    }
+
+    // RETURN ATTACK RANGE FOR HITTING ENEMIES, DEPENDING ON THE DIRECTION OF THE PLAYER
+    private Rectangle getAttackRange() {
+
+        return switch (direction) {
+
+            case UP -> new Rectangle(x - 24, y - 12, 80, 32);
+            case DOWN -> new Rectangle(x - 16, y + 44, 80, 32);
+            case LEFT -> new Rectangle(x - 24, y - 8, 32, 80);
+            case RIGHT -> new Rectangle(x + 40, y - 8, 32, 80);
         };
     }
 
@@ -506,6 +543,9 @@ public class Player extends Entity {
                     break;
             }
         }
+
+        drawDebug(g2);
+        drawAttackDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {
@@ -528,6 +568,18 @@ public class Player extends Entity {
             case DOWN: g2.fillRect(x + 8, y + 48, 32, 16); break;
             case LEFT: g2.fillRect(x - 8, y + 16, 16, 32); break;
             case RIGHT: g2.fillRect(x + 40, y + 16, 16, 32); break;
+        }
+    }
+
+    public void drawAttackDebug(Graphics2D g2) {
+
+        g2.setColor(new Color(255, 0, 50, 60));
+        switch(direction) {
+
+            case UP: g2.fillRect(x - 24, y - 12, 80, 32); break;
+            case DOWN: g2.fillRect(x  - 16, y + 44, 80, 32); break;
+            case LEFT: g2.fillRect(x - 24, y - 8, 32, 80); break;
+            case RIGHT: g2.fillRect(x + 40, y - 8, 32, 80); break;
         }
     }
 }

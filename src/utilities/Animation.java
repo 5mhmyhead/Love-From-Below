@@ -87,6 +87,9 @@ public class Animation {
     public int getWidth() { return images[index].getWidth(); }
     public int getHeight() { return images[index].getHeight(); }
 
+    public int getIndex() { return index; }
+    public void setIndex(int index) { this.index = index; }
+
     public int getDelay() { return delay; }
     public void setDelay(int delay) {
 

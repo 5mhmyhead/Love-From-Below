@@ -4,5 +4,5 @@ package core.ui;
 public class GameData {
 
     public static boolean hasBoots = true;
-    public static int swordLevel = 1;
+    public static int swordLevel = 0;
 }

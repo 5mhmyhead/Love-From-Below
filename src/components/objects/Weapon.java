@@ -9,7 +9,7 @@ import java.awt.*;
 
 public abstract class Weapon extends WorldObject {
 
-    private int damage;
+    protected int damage;
 
     // THE ACTION TO BE TAKEN WHEN THE PLAYER COLLIDES WITH THE ITEM
     // RETURNS WHETHER THE ITEM SHOULD BE REMOVED
@@ -42,9 +42,5 @@ public abstract class Weapon extends WorldObject {
 
     // WHETHER THE ENEMY SHOULD EXPERIENCE INVINCIBILITY FRAMES AFTER BEING HIT
     public abstract boolean callsInvincibility();
-
-    public int getDamage()
-    {
-        return damage;
-    }
+    public int getDamage() { return damage; }
 }

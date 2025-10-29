@@ -10,8 +10,6 @@ public abstract class Enemy extends Entity {
     private int stunTimer = 0;
     protected int damage;
 
-    private Weapon weapon;
-
     public Enemy(int x, int y, Room room, int health, int damage, String state, int width, int height) {
 
          this.room = room;
@@ -50,31 +48,22 @@ public abstract class Enemy extends Entity {
 
     public void updateHealth() {
 
-        checkDamageCollisions();
-
         if(invincibilityFrames > 0) invincibilityFrames--;
         if(health < 0) destroyFlag = true;
 
         //TODO ADD ITEM DROPS IF EVER
     }
 
-    private void checkDamageCollisions() {
+    public void checkDamageCollisions(Weapon weapon) {
 
-        if(weapon != null) {
+        if(weapon != null && invincibilityFrames == 0) {
+            // THE ENEMY TAKES DAMAGE
+            health -= weapon.getDamage();
 
-            boolean collision = checkCollisionWith(weapon.getBounds());
-
-            if(collision && invincibilityFrames == 0) {
-                // THE ENEMY TAKES DAMAGE
-                health -= weapon.getDamage();
-
-                weapon.enemyAction(this);
-                if(weapon.callsInvincibility()) invincibilityFrames = 30;
-            }
+            weapon.enemyAction(this);
+            if(weapon.callsInvincibility()) invincibilityFrames = 30;
         }
     }
-
-    public void setWeapon(Weapon weapon) { this.weapon = weapon; }
 
     public int getDamage() { return damage; }
 

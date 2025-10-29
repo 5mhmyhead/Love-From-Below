@@ -13,6 +13,8 @@ public class Sword extends Weapon {
 
     public Sword(int x, int y, Room room) {
 
+        this.damage = 1;
+
         this.x = x;
         this.y = y;
 
