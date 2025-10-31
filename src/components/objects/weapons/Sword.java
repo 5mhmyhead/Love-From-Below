@@ -15,6 +15,9 @@ public class Sword extends Weapon {
 
         this.damage = 1;
 
+        this.startUp = 20;
+        this.windDown = 12;
+
         this.x = x;
         this.y = y;
 
@@ -25,9 +28,7 @@ public class Sword extends Weapon {
     }
 
     @Override
-    public void update() {
-
-    }
+    public void update() {}
 
     @Override
     public boolean playerAction(Player player) {
@@ -36,7 +37,7 @@ public class Sword extends Weapon {
 
             GameData.swordLevel = 1;
             player.enterItemState(this);
-            playClip();
+            //playClip();
         }
 
         return true;

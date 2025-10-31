@@ -1,5 +1,6 @@
 package components.objects;
 
+import components.entities.Player;
 import utilities.SoundManager;
 import utilities.SoundPlayer;
 
@@ -7,6 +8,10 @@ import java.awt.*;
 
 // A SOLID WORLD OBJECT THAT PERFORMS AN ACTION WHEN INTERACTED WITH
 public abstract class Interactable extends WorldObject {
+
+    // THE ACTION TO BE TAKEN WHEN THE PLAYER COLLIDES WITH THE ITEM
+    // RETURNS WHETHER THE ITEM SHOULD BE REMOVED
+    public abstract boolean action(Player player);
 
     // PLAYS THE SOUND FOR INTERACTING WITH THE ITEM
     public void playClip() {

@@ -1,7 +1,9 @@
 package components.objects.interactables;
 
+import components.entities.Player;
 import components.objects.Interactable;
 import components.world.rooms.Room;
+import core.ui.GameData;
 import utilities.Images;
 
 import java.awt.*;
@@ -23,13 +25,18 @@ public class NormalChest extends Interactable {
     }
 
     @Override
-    public void update() {
+    public void update() {}
+
+    @Override
+    public boolean action(Player player) {
 
         if(state.equals("CLOSED")) {
             playClip();
             System.out.println("wow you got an item not");
             state = "OPENED";
         }
+
+        return false;
     }
 
     @Override

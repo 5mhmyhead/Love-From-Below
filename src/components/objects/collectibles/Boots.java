@@ -22,9 +22,7 @@ public class Boots extends Collectible {
     }
 
     @Override
-    public void update() {
-
-    }
+    public void update() {}
 
     @Override
     public boolean action(Player player) {

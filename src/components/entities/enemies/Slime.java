@@ -20,7 +20,7 @@ public class Slime extends Enemy {
 
     public Slime(int x, int y, Direction direction, Room room) {
 
-        super(x, y, room, 1, 1, "MOVING", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+        super(x, y, room, 10, 1, false, "MOVING", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 
         this.direction = direction;
         setBounds(x + width / 4, y + height / 3, width / 2, height / 2);
@@ -43,20 +43,26 @@ public class Slime extends Enemy {
         attackRight = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_RIGHT_ATTACK),
                 GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 
-        damagedUp = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_UP_DAMAGED),
+        damagedUp = new Animation(5, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_UP_DAMAGED),
                 GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-        damagedDown = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_DOWN_DAMAGED),
+        damagedDown = new Animation(5, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_DOWN_DAMAGED),
                 GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-        damagedLeft = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_LEFT_DAMAGED),
+        damagedLeft = new Animation(5, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_LEFT_DAMAGED),
                 GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
-        damagedRight = new Animation(20, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_RIGHT_DAMAGED),
+        damagedRight = new Animation(5, true, Objects.requireNonNull(Images.Enemies.Slime.SLIME_RIGHT_DAMAGED),
                 GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
     }
 
     public void update() {
 
-        // HANDLE MOVEMENT COLLISIONS
+        // HANDLE MOVEMENT WHEN HITTING A TILE
         if(handleCollisions() && movementRefreshTimer == 0) {
+            // IF THE ENEMY HITS A WALL, RETURN TO PRIOR STATE
+            if(state.equals("KNOCKBACK")) {
+
+                knockbackDistance = 0;
+                priorState = state;
+            }
 
             movementRefreshTimer = 120;
             direction = Direction.getExcludedRandom(direction);
@@ -92,6 +98,18 @@ public class Slime extends Enemy {
                 if(y > room.getRoomHeight() - GamePanel.TILE_SIZE) direction = Direction.UP;
                 break;
 
+            case "KNOCKBACK":
+
+                switch(direction) {
+
+                    case UP: damagedUp.update(); break;
+                    case DOWN: damagedDown.update(); break;
+                    case LEFT: damagedLeft.update(); break;
+                    case RIGHT: damagedRight.update(); break;
+                }
+
+                break;
+
             default:
                 System.out.println(state);
                 break;
@@ -121,6 +139,16 @@ public class Slime extends Enemy {
                     case RIGHT: walkRight.draw(g2, drawX, drawY, width, height); break;
                 }
                 break;
+
+            case "KNOCKBACK":
+
+                switch (direction) {
+
+                    case UP: damagedUp.draw(g2, drawX, drawY, width, height); break;
+                    case DOWN: damagedDown.draw(g2, drawX, drawY, width, height); break;
+                    case LEFT: damagedLeft.draw(g2, drawX, drawY, width, height); break;
+                    case RIGHT: damagedRight.draw(g2, drawX, drawY, width, height); break;
+                }
         }
     }
 }

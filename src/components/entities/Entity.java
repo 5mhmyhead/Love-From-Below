@@ -70,8 +70,13 @@ public abstract class Entity {
             velX = 0;
             velY = 0;
         }
-        
+
         return collisionX || collisionY;
+    }
+
+    protected boolean checkCollisions() {
+
+        return checkTileCollisions(0, velY) || checkTileCollisions(velX, 0) || checkEntityCollisions();
     }
 
     protected boolean checkTileCollisions(int checkX, int checkY) {

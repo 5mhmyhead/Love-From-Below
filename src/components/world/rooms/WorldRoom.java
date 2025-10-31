@@ -4,7 +4,9 @@ import components.entities.Enemy;
 import components.entities.Entity;
 import components.entities.NPC;
 import components.entities.Player;
+import components.entities.enemies.Cloud;
 import components.objects.WorldObject;
+import components.objects.misc.AnimationObject;
 import components.world.World;
 import core.GamePanel;
 import utilities.MapHandler;
@@ -97,7 +99,9 @@ public class WorldRoom implements Room {
 
         this.worldObjects.addAll(roomMetadata.getWorldObjects());
         this.worldNPCS.addAll(roomMetadata.getWorldNPCS());
-        this.worldEnemies.addAll(roomMetadata.getWorldEnemies());
+
+        for(Enemy enemy : roomMetadata.getWorldEnemies())
+            this.worldObjects.add(new Cloud(enemy.getX(), enemy.getY(),this, enemy));
     }
 
     // UPDATE OBJECTS IN THE ROOM
@@ -105,8 +109,9 @@ public class WorldRoom implements Room {
 
         updateDrawCoordinates();
 
-        // IF THE ROOM IS NOT MOVING, THEN UPDATE THE ENEMIES
+        // IF THE ROOM IS NOT MOVING...
         if(drawVelX == 0 && drawVelY == 0) {
+            // UPDATE ENEMIES
             Iterator<Enemy> enemyIterator = worldEnemies.iterator();
 
             while(enemyIterator.hasNext()) {
@@ -117,6 +122,27 @@ public class WorldRoom implements Room {
                 else enemy.updateHealth();
 
                 if(enemy.getDestroyFlag()) enemyIterator.remove();
+            }
+
+            // UPDATE WORLD OBJECTS
+            Iterator<WorldObject> objectIterator = worldObjects.iterator();
+
+            while(objectIterator.hasNext()) {
+
+                WorldObject worldObject = objectIterator.next();
+
+                worldObject.update();
+
+                if(worldObject instanceof AnimationObject animationObject) {
+
+                    if(animationObject.getAnimation().hasEnded()) {
+
+                        objectIterator.remove();
+
+                        if(animationObject instanceof Cloud cloud)
+                            worldEnemies.add(cloud.getEnemy());
+                    }
+                }
             }
         }
     }
@@ -141,8 +167,6 @@ public class WorldRoom implements Room {
         for(Enemy enemy : worldEnemies) { enemy.draw(g2); }
 
         g2.setTransform(transform);
-
-        drawTileDebug(g2);
     }
 
     // UPDATES DRAW POSITION OF ROOM

@@ -11,6 +11,9 @@ public abstract class Weapon extends WorldObject {
 
     protected int damage;
 
+    public int startUp;      // THE TIME WHEN THE WEAPON SHOULD DEAL DAMAGE IN THE ANIMATION
+    public int windDown;     // THE TIME WHEN THE WEAPON SHOULD STOP DEALING DAMAGE IN THE ANIMATION
+
     // THE ACTION TO BE TAKEN WHEN THE PLAYER COLLIDES WITH THE ITEM
     // RETURNS WHETHER THE ITEM SHOULD BE REMOVED
     public abstract boolean playerAction(Player player);

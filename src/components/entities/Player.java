@@ -34,6 +34,7 @@ public class Player extends Entity {
     private Animation sparkle;
 
     private Weapon playerWeapon;                        // WEAPON THAT THE PLAYER HAS
+    private boolean weaponActive;                       // BOOLEAN FOR HANDLING COLLISIONS
     private int weaponTimer;                            // TIMER FOR THE WEAPON ANIMATION
 
     private int maxHealth;
@@ -172,8 +173,15 @@ public class Player extends Entity {
                 velX = 0;
                 velY = 0;
 
-                if(weaponTimer == 0) weaponTimer = 25;
+                if(weaponTimer == 0) {
+
+                    weaponActive = false;
+                    weaponTimer = 25;
+                }
                 else weaponTimer--;
+
+                if(weaponTimer == playerWeapon.startUp) weaponActive = true;
+                if(weaponTimer == playerWeapon.windDown) weaponActive = false;
 
                 // UPDATE THE ANIMATION DEPENDING ON THE DIRECTION OF THE PLAYER
                 switch(direction) {
@@ -204,6 +212,7 @@ public class Player extends Entity {
                     attackLeft.reset();
                     attackRight.reset();
 
+                    weaponActive = false;
                     state = "IDLE";
                 }
                 break;
@@ -324,7 +333,7 @@ public class Player extends Entity {
         }
 
         // HANDLES THE PLAYER DEALING DAMAGE
-        if(state.equals("ATTACK")) {
+        if(state.equals("ATTACK") && weaponActive) {
 
             for(Enemy enemy : enemies)
                 if(this.getAttackRange().intersects(enemy.getBounds()))
@@ -338,14 +347,14 @@ public class Player extends Entity {
         worldNPCS = room.getWorldNPCS();
 
         for (WorldObject object : worldObjects)
-            if (object instanceof Interactable && this.getItemRange().intersects(object.getBounds()))
-                object.update();
+            if (object instanceof Interactable interactable && this.getItemRange().intersects(object.getBounds()))
+                interactable.action(this);
 
         for(NPC npc : worldNPCS) {
 
             if(this.getItemRange().intersects(npc.getBounds())) {
 
-                npc.update();
+                npc.action();
                 if(npc.isInDialogue()) state = "DIALOGUE";
                 if(!npc.isInDialogue()) state = "IDLE";
             }
@@ -386,7 +395,11 @@ public class Player extends Entity {
         this.state = "GET_ITEM";
         drawObject = object;
 
-        if(object instanceof Weapon) playerWeapon = (Weapon) object;
+        if(object instanceof Weapon) {
+
+            playerWeapon = (Weapon) object;
+            weaponActive = false;
+        }
     }
 
     // UPDATE THE PLAYER STATE VARIABLE
