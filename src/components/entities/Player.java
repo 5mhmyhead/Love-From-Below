@@ -288,6 +288,8 @@ public class Player extends Entity {
             // UPDATE THE COLLISION BOX FOR THE PLAYER
             setBounds(x + 8, y + 16, width - 16, height - 16);
 
+            // FIXME WHEN PLAYER IS IN ENEMY, IT IS CONSIDERED A TRUE COLLISION, SO IT STOPS THE KNOCKBACK ERRONEOUSLY
+            // FIXME ALWAYS THE COLLISION ERRORS MAN
             // IF THE PLAYER HITS A TILE, PLAYER GOES OUT OF KNOCKBACK
             if(handleCollisions() && state.equals("KNOCKBACK")) {
 
@@ -323,7 +325,7 @@ public class Player extends Entity {
         if(invincibilityFrames == 0) {
             for(Enemy enemy : enemies) {
                 // CHECKS FOR A DIRECT COLLISION WITH THE ENEMY
-                if (checkCollisionWith(enemy) && enemy.getDamage() > 0) {
+                if (checkCollisionWith(enemy) && enemy.getDamage() > 0 && !state.equals("KNOCKBACK")) {
 
                     health -= enemy.getDamage();
                     state = "KNOCKBACK";
@@ -558,7 +560,6 @@ public class Player extends Entity {
         }
 
         drawDebug(g2);
-        drawAttackDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {

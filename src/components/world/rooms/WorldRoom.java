@@ -9,6 +9,8 @@ import components.objects.WorldObject;
 import components.objects.misc.AnimationObject;
 import components.world.World;
 import core.GamePanel;
+import utilities.Animation;
+import utilities.Images;
 import utilities.MapHandler;
 import utilities.Tile;
 
@@ -121,7 +123,16 @@ public class WorldRoom implements Room {
                 if(enemy.getStunTimer() == 0) enemy.update();
                 else enemy.updateHealth();
 
-                if(enemy.getDestroyFlag()) enemyIterator.remove();
+                if(enemy.getDestroyFlag()) {
+                    enemyIterator.remove();
+
+                    // PLAY THE DEATH ANIMATION
+                    assert Images.Enemies.DEATH != null;
+                    worldObjects.add(new AnimationObject(
+                            enemy.getX(), enemy.getY(),
+                            new Animation(3, false, Images.Enemies.DEATH,
+                                    48, 48), this));
+                }
             }
 
             // UPDATE WORLD OBJECTS
@@ -163,10 +174,12 @@ public class WorldRoom implements Room {
         }
 
         for(WorldObject object : worldObjects) { object.draw(g2); }
-        for(Entity npc : worldNPCS) { npc.draw(g2); }
         for(Enemy enemy : worldEnemies) { enemy.draw(g2); }
+        for(Entity npc : worldNPCS) { npc.draw(g2); }
 
         g2.setTransform(transform);
+
+        //drawTileDebug(g2);
     }
 
     // UPDATES DRAW POSITION OF ROOM

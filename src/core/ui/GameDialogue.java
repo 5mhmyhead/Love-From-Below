@@ -52,23 +52,30 @@ public class GameDialogue {
         int topY = 100;
         int bottomY = GamePanel.SCREEN_HEIGHT / 2 + 100;
 
-        g2.setColor(new Color(224, 248, 207));
-        g2.setFont(FontHandler.maruMonica);
+        int tileSize = GamePanel.TILE_SIZE;
+        int dialogueWidth = tileSize * 14;
+        int dialogueHeight = tileSize * 4;
 
         // SPLITS BETWEEN THE PORTRAIT NUMBER AND THE TEXT ITSELF
         String[] parts = text[index].split(":");
 
-        // GETS THE CORRESPONDING PORTRAIT WITH THE NUMBER GIVE
+        // GETS THE CORRESPONDING PORTRAIT WITH THE NUMBER GIVEN
         String numberOnly = parts[0].replaceAll("[^0-9]", "");
         int portraitNum = Integer.parseInt(numberOnly);
+
+        // SET THE COLOR FOR THE BACKGROUND OF THE DIALOGUE BOX AND FONT
+        g2.setColor(new Color(0, 0, 0, 200));
+        g2.setFont(FontHandler.maruMonica);
 
         // CHECKS THE Y POSITION OF THE ENTITY
         // IF THE ENTITY IS AT THE TOP HALF OF THE SCREEN, DRAW THE DIALOGUE AT THE BOTTOM AND VICE VERSA
         if(entity.getY() <= GamePanel.SCREEN_HEIGHT / 2) {
 
+            g2.fillRect(tileSize, tileSize * 7, dialogueWidth, dialogueHeight);
             g2.drawImage(Images.UI.DIALOGUE_BOX_BOTTOM, 0, 0, null);
             portrait.drawSpecific(g2, portraitNum, 72, 360, portraitWidth, portraitHeight);
 
+            g2.setColor(new Color(224, 248, 207));
             for(String line : parts[1].split("\\|")) {
                 g2.drawString(line, 240, bottomY);
                 bottomY += 30;
@@ -76,9 +83,11 @@ public class GameDialogue {
         }
         else {
 
+            g2.fillRect(tileSize, tileSize, dialogueWidth, dialogueHeight);
             g2.drawImage(Images.UI.DIALOGUE_BOX_TOP, 0, 0, null);
             portrait.drawSpecific(g2, portraitNum, 72, 72, portraitWidth, portraitHeight);
 
+            g2.setColor(new Color(224, 248, 207));
             for(String line : parts[1].split("\\|")) {
                 g2.drawString(line, 240, topY);
                 topY += 30;

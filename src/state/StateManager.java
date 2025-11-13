@@ -13,6 +13,7 @@ public class StateManager {
 
     public static final int TITLE_STATE = 0;
     public static final int GAME_STATE = 1;
+    public static final int LOAD_STATE = 2;
 
     private final State[] states;           // ARRAY HOLDING THE STATES
     private int currentState;               // ID REPRESENTING THE CURRENT STATE
@@ -20,7 +21,7 @@ public class StateManager {
     public StateManager() {
 
         states = new State[NUMBER_OF_STATES];
-        currentState = GAME_STATE;          // FIXME CURRENT STATE SHOULD BE TITLE STATE AFTER TESTING
+        currentState = TITLE_STATE;          // FIXME CURRENT STATE SHOULD BE TITLE STATE AFTER TESTING
         loadState(currentState);
     }
 
@@ -56,6 +57,7 @@ public class StateManager {
 
         if(state == TITLE_STATE) states[state] = new TitleState(this);
         if(state == GAME_STATE) states[state] = new GameState(this);
+        if(state == LOAD_STATE) states[state] = new GameState(this); //FIXME SHOULD MAKE NEW LOAD STATE CLASS
     }
 
     // SENDS THE KEY PRESS TO THE CURRENT STATE

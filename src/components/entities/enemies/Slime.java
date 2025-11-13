@@ -20,7 +20,7 @@ public class Slime extends Enemy {
 
     public Slime(int x, int y, Direction direction, Room room) {
 
-        super(x, y, room, 10, 1, false, "MOVING", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+        super(x, y, room, 5, 1, false, "MOVING", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
 
         this.direction = direction;
         setBounds(x + width / 4, y + height / 3, width / 2, height / 2);

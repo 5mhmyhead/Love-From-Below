@@ -25,7 +25,21 @@ public class Images {
 
     // ALL ASSETS FOR TITLE SCREEN
     public static class TitleScreenAssets {
+
         public static final BufferedImage TITLE_SCREEN = loadSingleImage("/assets/titleScreen/titleScreen.png");
+        public static final BufferedImage TITLE_CURSOR = loadSingleImage("/assets/titleScreen/titleCursor.png");
+
+        public static final BufferedImage START_ENTERED = loadSingleImage("/assets/titleScreen/startEntered.png");
+        public static final BufferedImage START_PICKED = loadSingleImage("/assets/titleScreen/startPicked.png");
+        public static final BufferedImage START_UNPICKED = loadSingleImage("/assets/titleScreen/startUnpicked.png");
+
+        public static final BufferedImage LOAD_ENTERED = loadSingleImage("/assets/titleScreen/loadEntered.png");
+        public static final BufferedImage LOAD_PICKED = loadSingleImage("/assets/titleScreen/loadPicked.png");
+        public static final BufferedImage LOAD_UNPICKED = loadSingleImage("/assets/titleScreen/loadUnpicked.png");
+
+        public static final BufferedImage QUIT_ENTERED = loadSingleImage("/assets/titleScreen/quitEntered.png");
+        public static final BufferedImage QUIT_PICKED = loadSingleImage("/assets/titleScreen/quitPicked.png");
+        public static final BufferedImage QUIT_UNPICKED = loadSingleImage("/assets/titleScreen/quitUnpicked.png");
     }
 
     public static class Effects {
@@ -199,6 +213,7 @@ public class Images {
     public static class Enemies {
 
         private static final BufferedImage CLOUD = loadSingleImage("/assets/entities/enemies/cloud.png");
+        public static final BufferedImage DEATH = loadSingleImage("/assets/entities/enemies/death.png");
 
         public static final BufferedImage CLOUD_1 = CLOUD != null ?
                 CLOUD.getSubimage(0, 0, TILE_WIDTH, TILE_HEIGHT) :
