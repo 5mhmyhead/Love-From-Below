@@ -77,6 +77,7 @@ public class GameDialogue {
 
             g2.setColor(new Color(224, 248, 207));
             for(String line : parts[1].split("\\|")) {
+
                 g2.drawString(line, 240, bottomY);
                 bottomY += 30;
             }
@@ -89,6 +90,7 @@ public class GameDialogue {
 
             g2.setColor(new Color(224, 248, 207));
             for(String line : parts[1].split("\\|")) {
+
                 g2.drawString(line, 240, topY);
                 topY += 30;
             }

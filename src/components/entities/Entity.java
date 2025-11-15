@@ -57,29 +57,8 @@ public abstract class Entity {
         if(checkTileCollisions(velX, 0) || checkEntityCollisions()) collisionX = true;
 
         // PUSH BACK THE ENTITY IF THERE IS A COLLISION HAPPENING
-        if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) {
-
-            if(velX > 0) {
-
-                x -= moveSpeed;
-
-            }
-            else if(velX < 0) {
-                x += moveSpeed;
-            }
-        }
-
-        if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) {
-
-            if(velY > 0) {
-
-                y -= moveSpeed;
-
-            }
-            else if(velY < 0) {
-                y += moveSpeed;
-            }
-        }
+        if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) x -= velX;
+        if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) y -= velY;
 
         return collisionX || collisionY;
     }

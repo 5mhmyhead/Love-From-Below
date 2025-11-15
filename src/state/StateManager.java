@@ -1,6 +1,7 @@
 package state;
 
 import state.states.GameState;
+import state.states.SceneState;
 import state.states.TitleState;
 
 import java.awt.*;
@@ -12,8 +13,9 @@ public class StateManager {
     private static final int NUMBER_OF_STATES = 3;
 
     public static final int TITLE_STATE = 0;
-    public static final int GAME_STATE = 1;
-    public static final int LOAD_STATE = 2;
+    public static final int SCENE_STATE = 1;
+    public static final int GAME_STATE = 2;
+    public static final int LOAD_STATE = 3;
 
     private final State[] states;           // ARRAY HOLDING THE STATES
     private int currentState;               // ID REPRESENTING THE CURRENT STATE
@@ -56,6 +58,7 @@ public class StateManager {
     private void loadState(int state) {
 
         if(state == TITLE_STATE) states[state] = new TitleState(this);
+        if(state == SCENE_STATE) states[state] = new SceneState(this);
         if(state == GAME_STATE) states[state] = new GameState(this);
         if(state == LOAD_STATE) states[state] = new GameState(this); //FIXME SHOULD MAKE NEW LOAD STATE CLASS
     }
