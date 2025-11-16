@@ -103,7 +103,7 @@ public class WorldRoom implements Room {
         this.worldNPCS.addAll(roomMetadata.getWorldNPCS());
 
         for(Enemy enemy : roomMetadata.getWorldEnemies())
-            this.worldObjects.add(new Cloud(enemy.getX(), enemy.getY(),this, enemy));
+            this.worldObjects.add(new Cloud((int) enemy.getX(), (int) enemy.getY(),this, enemy));
     }
 
     // UPDATE OBJECTS IN THE ROOM
@@ -129,7 +129,8 @@ public class WorldRoom implements Room {
                     // PLAY THE DEATH ANIMATION
                     assert Images.Enemies.DEATH != null;
                     worldObjects.add(new AnimationObject(
-                            enemy.getX(), enemy.getY(),
+                            (int) Math.round(enemy.getX()),
+                            (int) Math.round(enemy.getY()),
                             new Animation(3, false, Images.Enemies.DEATH,
                                     48, 48), this));
                 }

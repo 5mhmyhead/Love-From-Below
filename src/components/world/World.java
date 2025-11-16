@@ -91,8 +91,8 @@ public class World {
         if(!player.getState().equals("TRANSITION") && loadingRoom == null) {
             // PLAYER X AND Y IS IN THE TOP RIGHT CORNER
             // SO WE MOVE IT TO THE CENTER OF THE PLAYER SPRITE
-            int centeredX = player.getX() + player.getWidth() / 2;
-            int centeredY = player.getY() + player.getHeight() / 2;
+            int centeredX = (int) player.getX() + player.getWidth() / 2;
+            int centeredY = (int) player.getY() + player.getHeight() / 2;
 
             // IF PLAYER IS LEAVING THROUGH THE LEFT
             if(centeredX <= 0 && player.getDirection() == Direction.LEFT) {

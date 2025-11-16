@@ -56,8 +56,7 @@ public abstract class Entity {
         if(checkTileCollisions(0, velY) || checkEntityCollisions()) collisionY = true;
         if(checkTileCollisions(velX, 0) || checkEntityCollisions()) collisionX = true;
 
-        // PUSH BACK THE ENTITY IF THERE IS A COLLISION HAPPENING
-        if(collisionX && (direction == Direction.RIGHT || direction == Direction.LEFT)) x -= velX;
+        if(collisionX && (direction == Direction.LEFT || direction == Direction.RIGHT)) x -= velX;
         if(collisionY && (direction == Direction.UP || direction == Direction.DOWN)) y -= velY;
 
         return collisionX || collisionY;
@@ -106,7 +105,6 @@ public abstract class Entity {
         // CHECKS OBJECT AND ENTITY COLLISIONS
         ArrayList<WorldObject> worldObjects = room.getWorldObjects();
         ArrayList<NPC> worldNPCS = room.getWorldNPCS();
-        ArrayList<Enemy> worldEnemies = room.getWorldEnemies();
 
         for(WorldObject object : worldObjects)
             if(object.isCollidable() && checkCollisionWith(object))
@@ -114,10 +112,6 @@ public abstract class Entity {
 
         for(NPC npc : worldNPCS)
             if(!(this instanceof NPC) && checkCollisionWith(npc))
-                collisionFlag = true;
-
-        for(Enemy enemy : worldEnemies)
-            if(!(this instanceof Enemy) && checkCollisionWith(enemy))
                 collisionFlag = true;
 
         return collisionFlag;

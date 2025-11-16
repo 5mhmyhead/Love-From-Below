@@ -14,9 +14,9 @@ public class Slime extends Enemy {
 
     private int movementRefreshTimer;
 
-    private Animation walkUp, walkDown, walkLeft, walkRight,
-            attackUp, attackDown, attackLeft, attackRight,
-            damagedUp, damagedDown, damagedLeft, damagedRight;
+    private final Animation walkUp, walkDown, walkLeft, walkRight,
+                            attackUp, attackDown, attackLeft, attackRight,
+                            damagedUp, damagedDown, damagedLeft, damagedRight;
 
     public Slime(int x, int y, Direction direction, Room room) {
 

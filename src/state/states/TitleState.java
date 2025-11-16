@@ -18,6 +18,9 @@ public class TitleState extends State {
     private int timer;  // AMOUNT OF TIME BEFORE SCREEN GOES BLACK
     private int fade;   // ALPHA LEVEL
 
+    private int fadeTimer;
+    private int fadeDelay;
+
     private Animation titleScreenAnimation;
     private Animation cursor;
 
@@ -37,6 +40,9 @@ public class TitleState extends State {
         cursorIndex = 0;
         timer = 0;
         fade = 0;
+
+        fadeTimer = 20;
+        fadeDelay = 20;
 
         // CREATE ANIMATION FOR TITLE SCREEN
         assert Images.TitleScreenAssets.TITLE_SCREEN != null;
@@ -69,11 +75,16 @@ public class TitleState extends State {
         // IF THE PLAYER PRESSED ENTER, THEN FADE INTO NEXT STATE
         if(pressedEnter) {
 
+            fadeTimer++;
             timer++;
 
-            if(fade < 255) fade += 4;
+            if(fadeTimer > fadeDelay) {
+                if(fade < 255) fade += 51;
+                fadeTimer = 0;
+            }
+
             // IF THE PLAYER PRESSED ENTER AFTER 80 FRAMES, SWITCH STATE
-            else if(timer >= 80) {
+            else if(timer >= 120) {
 
                 switch(cursorIndex) {
 

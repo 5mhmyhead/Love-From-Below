@@ -288,8 +288,6 @@ public class Player extends Entity {
             // UPDATE THE COLLISION BOX FOR THE PLAYER
             setBounds(x + 8, y + 16, width - 16, height - 16);
 
-            // FIXME WHEN PLAYER IS IN ENEMY, IT IS CONSIDERED A TRUE COLLISION, SO IT STOPS THE KNOCKBACK ERRONEOUSLY
-            // FIXME ALWAYS THE COLLISION ERRORS MAN
             // IF THE PLAYER HITS A TILE, PLAYER GOES OUT OF KNOCKBACK
             if(handleCollisions() && state.equals("KNOCKBACK")) {
 
