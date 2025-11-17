@@ -156,7 +156,7 @@ public class TitleState extends State {
         }
 
         // DRAW FADE INTO GAME WHEN ENTER IS PRESSED
-        g2.setColor(new Color(0, 0, 0, fade));
+        g2.setColor(new Color(7, 22, 33, fade));
         g2.fillRect(0, 0, GamePanel.SCREEN_WIDTH, GamePanel.SCREEN_HEIGHT);
     }
 

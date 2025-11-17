@@ -45,6 +45,40 @@
                 <COL>6</COL>
                 <ROW>7</ROW>
             </OBJECT>
+            <OBJECT>
+                <TYPE>CANDLE</TYPE>
+                <COL>1</COL>
+                <ROW>7</ROW>
+            </OBJECT>
+            <OBJECT>
+                <TYPE>BUSH</TYPE>
+                <COL>7</COL>
+                <ROW>6</ROW>
+
+                <TEXT>
+                    :It seems that you can cut the bush down with a sharp|enough object...
+                </TEXT>
+                <TEXT>
+                    :A simple sword swing will do the trick...
+                </TEXT>
+            </OBJECT>
+            <OBJECT>
+                <TYPE>BUSH</TYPE>
+                <COL>7</COL>
+                <ROW>5</ROW>
+
+                <TEXT>
+                    :It seems that you can cut the bush down with a sharp|enough object...
+                </TEXT>
+                <TEXT>
+                    :A simple sword swing will do the trick...
+                </TEXT>
+            </OBJECT>
+            <OBJECT>
+                <TYPE>CANDLE_BUSH</TYPE>
+                <COL>10</COL>
+                <ROW>5</ROW>
+            </OBJECT>
         </OBJECTS>
 
         <NPCS>
@@ -72,8 +106,8 @@
         <ENEMIES>
             <ENEMY>
                 <NAME>SLIME</NAME>
-                <COL>5</COL>
-                <ROW>5</ROW>
+                <COL>10</COL>
+                <ROW>9</ROW>
             </ENEMY>
         </ENEMIES>
 

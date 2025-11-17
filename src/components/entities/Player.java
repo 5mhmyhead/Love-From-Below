@@ -4,6 +4,7 @@ import components.objects.Collectible;
 import components.objects.Interactable;
 import components.objects.Weapon;
 import components.objects.WorldObject;
+import components.objects.interactables.Bush;
 import components.world.World;
 import core.GamePanel;
 import utilities.Animation;
@@ -346,9 +347,17 @@ public class Player extends Entity {
         worldObjects = room.getWorldObjects();
         worldNPCS = room.getWorldNPCS();
 
-        for (WorldObject object : worldObjects)
+        for (WorldObject object : worldObjects) {
+
             if (object instanceof Interactable interactable && this.getItemRange().intersects(object.getBounds()))
-                interactable.action(this);
+                if(interactable.hasTextDialogue) {
+
+                    interactable.action(this);
+                    if(interactable.inTextDialogue) state = "DIALOGUE";
+                    if(!interactable.inTextDialogue) state = "IDLE";
+                } else
+                    interactable.action(this);
+        }
 
         for(NPC npc : worldNPCS) {
 
@@ -385,6 +394,15 @@ public class Player extends Entity {
                 if (checkCollisionWith(weapon.getBounds()))
                     if(weapon.playerAction(this))
                         iterator.remove();
+            }
+
+            // CHECK IF IT IS A INTERACTABLE
+            if(object instanceof Interactable interactable) {
+                // IF INTERACTABLE IS BUSH, CHECK FOR PLAYER ATTACK RANGE
+                if(interactable instanceof Bush)
+                    if(state.equals("ATTACK") && weaponActive)
+                        if(this.getAttackRange().intersects(interactable.getBounds()))
+                            interactable.action(this);
             }
         }
     }
@@ -556,8 +574,6 @@ public class Player extends Entity {
                     break;
             }
         }
-
-        drawDebug(g2);
     }
 
     public void setTransitionVector(int transitionVelX, int transitionVelY) {

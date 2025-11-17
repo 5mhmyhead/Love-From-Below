@@ -62,7 +62,7 @@ public class GameState extends State {
         g2.getTransform();
         world.draw(g2);
 
-        if(!world.getPlayer().getState().equals("DIALOGUE")) ui.draw(g2);
+        if(!world.getPlayer().getState().equals("DIALOGUE") && !state.equals("MENU")) ui.draw(g2);
         if(state.equals("MENU")) menu.draw(g2);
     }
 

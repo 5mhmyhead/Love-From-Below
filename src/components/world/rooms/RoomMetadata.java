@@ -69,10 +69,25 @@ public class RoomMetadata {
                 Element object = (Element) objectsList.item(objectIndex);
                 String type = object.getElementsByTagName("TYPE").item(0).getTextContent();
 
+                // CREATE AN ARRAY LIST OF DIALOGUES
+                ArrayList<String[]> text = new ArrayList<>();
+                NodeList textList = object.getElementsByTagName("TEXT");
+
+                for(int textIndex = 0; textIndex < textList.getLength(); textIndex++) {
+                    // ADD EACH TEXT PART TO THE ARRAY OF TEXT
+                    Element textElement = (Element) textList.item(textIndex);
+                    String temp = textElement.getTextContent();
+
+                    // SPLIT THE TEXT DIVIDED BY A SEMICOLON
+                    String[] parts = temp.split(";");
+                    // THEN ADD IT TO THE ARRAY OF TEXT
+                    text.add(parts);
+                }
+
                 int col = Integer.parseInt(object.getElementsByTagName("COL").item(0).getTextContent());
                 int row = Integer.parseInt(object.getElementsByTagName("ROW").item(0).getTextContent());
 
-                worldObjects.add(world.getMapHandler().buildObject(type, col, row));
+                worldObjects.add(world.getMapHandler().buildObject(type, text, col, row));
             }
 
             // GOES THROUGH ALL NPCS

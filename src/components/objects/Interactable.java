@@ -9,6 +9,9 @@ import java.awt.*;
 // A SOLID WORLD OBJECT THAT PERFORMS AN ACTION WHEN INTERACTED WITH
 public abstract class Interactable extends WorldObject {
 
+    public boolean hasTextDialogue;
+    public boolean inTextDialogue;
+
     // THE ACTION TO BE TAKEN WHEN THE PLAYER COLLIDES WITH THE ITEM
     // RETURNS WHETHER THE ITEM SHOULD BE REMOVED
     public abstract boolean action(Player player);

@@ -174,8 +174,8 @@ public class WorldRoom implements Room {
             }
         }
 
-        for(WorldObject object : worldObjects) { object.draw(g2); }
         for(Enemy enemy : worldEnemies) { enemy.draw(g2); }
+        for(WorldObject object : worldObjects) { object.draw(g2); }
         for(Entity npc : worldNPCS) { npc.draw(g2); }
 
         g2.setTransform(transform);

@@ -3,7 +3,6 @@ package components.objects.interactables;
 import components.entities.Player;
 import components.objects.Interactable;
 import components.world.rooms.Room;
-import core.ui.GameData;
 import utilities.Images;
 
 import java.awt.*;
@@ -19,6 +18,7 @@ public class NormalChest extends Interactable {
 
         this.state = "CLOSED";
         this.hasCollision = true;
+        this.hasTextDialogue = false;
 
         this.image = Images.WorldObjects.NORMAL_CHEST_CLOSED;
         this.room = room;

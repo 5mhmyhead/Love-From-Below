@@ -6,6 +6,9 @@ import components.entities.NPC;
 import components.entities.enemies.Slime;
 import components.entities.npcs.Flerp;
 import components.objects.collectibles.Boots;
+import components.objects.collectibles.Candle;
+import components.objects.interactables.Bush;
+import components.objects.interactables.CandleBush;
 import components.objects.interactables.NormalChest;
 import components.objects.WorldObject;
 import components.objects.weapons.Sword;
@@ -71,7 +74,7 @@ public class MapHandler {
     }
 
     // BUILDS AND PUTS EVERY OBJECT IN THE WORLD
-    public WorldObject buildObject(String id, int col, int row) {
+    public WorldObject buildObject(String id, ArrayList<String[]> text, int col, int row) {
         // FIND THE COORDINATES OF THE OBJECT
         int x = col * GamePanel.TILE_SIZE;
         int y = row * GamePanel.TILE_SIZE;
@@ -83,8 +86,13 @@ public class MapHandler {
         return switch(id) {
 
             case "NORMAL_CHEST" -> new NormalChest(x, y, room);
+
+            case "CANDLE" -> new Candle(x, y, room);
             case "BOOTS" -> new Boots(x, y, room);
             case "SWORD" -> new Sword(x, y, room);
+
+            case "CANDLE_BUSH" -> new CandleBush(x, y, room);
+            case "BUSH" -> new Bush(x, y, text, room);
 
             default -> null;
         };

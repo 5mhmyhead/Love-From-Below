@@ -73,6 +73,13 @@ public class Images {
         public static final BufferedImage DIALOGUE_BOX_TOP = loadSingleImage("/assets/ui/dialogueUI/dialogueBoxTop.png");
         public static final BufferedImage DIALOGUE_BOX_BOTTOM = loadSingleImage("/assets/ui/dialogueUI/dialogueBoxBottom.png");
 
+        // TEXT
+        public static final BufferedImage TEXT_BOX_TOP = loadSingleImage("/assets/ui/dialogueUI/textBoxTop.png");
+        public static final BufferedImage TEXT_BOX_BOTTOM = loadSingleImage("/assets/ui/dialogueUI/textBoxBottom.png");
+
+        // MENU
+        public static final BufferedImage MENU_BOX = loadSingleImage("/assets/ui/menuUI/menuBox.png");
+
         // GAME UI
         public static final BufferedImage HEALTH_BAR_PLAYER = loadSingleImage("/assets/ui/gameplayUI/healthBarPlayer.png");
         public static final BufferedImage HEART = loadSingleImage("/assets/ui/gameplayUI/heart.png");
@@ -96,6 +103,10 @@ public class Images {
         public static final BufferedImage NORMAL_CHEST_CLOSED = loadSingleImage("/assets/objects/nChestClosed.png");
         public static final BufferedImage NORMAL_CHEST_OPENED = loadSingleImage("/assets/objects/nChestOpened.png");
 
+        public static final BufferedImage BUSH = loadSingleImage("/assets/objects/bush.png");
+        public static final BufferedImage CANDLE_BUSH = loadSingleImage("/assets/objects/candleBush.png");
+
+        public static final BufferedImage CANDLE = loadSingleImage("/assets/objects/candle.png");
         public static final BufferedImage BOOTS = loadSingleImage("/assets/objects/boots.png");
         public static final BufferedImage SWORD = loadSingleImage("/assets/objects/sword.png");
     }

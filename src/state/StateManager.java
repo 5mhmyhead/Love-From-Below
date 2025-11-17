@@ -1,5 +1,6 @@
 package state;
 
+import core.GamePanel;
 import state.states.GameState;
 import state.states.SceneState;
 import state.states.TitleState;
@@ -23,7 +24,7 @@ public class StateManager {
     public StateManager() {
 
         states = new State[NUMBER_OF_STATES];
-        currentState = TITLE_STATE;          // FIXME CURRENT STATE SHOULD BE TITLE STATE AFTER TESTING
+        currentState = GAME_STATE;          // FIXME CURRENT STATE SHOULD BE TITLE STATE AFTER TESTING
         loadState(currentState);
     }
 

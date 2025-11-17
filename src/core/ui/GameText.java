@@ -1,6 +1,7 @@
 package core.ui;
 
 import components.entities.Entity;
+import components.objects.WorldObject;
 import core.GamePanel;
 import utilities.Animation;
 import utilities.FontHandler;
@@ -9,23 +10,17 @@ import utilities.Images;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class GameDialogue {
+public class GameText {
 
-    private final int portraitWidth = 144;
-    private final int portraitHeight = 144;
-
-    private final Entity entity;
-    private final Animation portrait;
+    private final WorldObject object;
 
     private int index;                  // INDEX OF THE CURRENT DIALOGUE
     private final String[] text;        // ARRAY OF STRING OF TEXT FROM THE ENTITY
     private final boolean repeat;       // IF THE DIALOGUE SHOULD REPEAT OR NOT
 
-    public GameDialogue(Entity entity, BufferedImage image, String[] text, int startingIndex, boolean repeat) {
+    public GameText(WorldObject object, String[] text, int startingIndex, boolean repeat) {
 
-        this.entity = entity;
-        this.portrait = new Animation(0, false, image, portraitWidth, portraitHeight);
-
+        this.object = object;
         this.text = text;
         this.repeat = repeat;
         this.index  = startingIndex;
@@ -56,42 +51,36 @@ public class GameDialogue {
         int dialogueWidth = tileSize * 14;
         int dialogueHeight = tileSize * 4;
 
-        // SPLITS BETWEEN THE PORTRAIT NUMBER AND THE TEXT ITSELF
+        // SPLITS THE TEXT APART FROM THE WHITE SPACE
         String[] parts = text[index].split(":");
 
-        // GETS THE CORRESPONDING PORTRAIT WITH THE NUMBER GIVEN
-        String numberOnly = parts[0].replaceAll("[^0-9]", "");
-        int portraitNum = Integer.parseInt(numberOnly);
-
-        // SET THE COLOR FOR THE BACKGROUND OF THE DIALOGUE BOX AND FONT
+        // SET THE COLOR FOR THE BACKGROUND OF THE TEXT BOX AND FONT
         g2.setColor(new Color(7, 22, 33, 220));
         g2.setFont(FontHandler.maruMonica);
 
-        // CHECKS THE Y POSITION OF THE ENTITY
-        // IF THE ENTITY IS AT THE TOP HALF OF THE SCREEN, DRAW THE DIALOGUE AT THE BOTTOM AND VICE VERSA
-        if(entity.getY() <= GamePanel.SCREEN_HEIGHT / 2) {
+        // CHECKS THE Y POSITION OF THE OBJECT
+        // IF THE OBJECT IS AT THE TOP HALF OF THE SCREEN, DRAW THE TEXT AT THE BOTTOM AND VICE VERSA
+        if(object.getY() <= GamePanel.SCREEN_HEIGHT / 2) {
 
             g2.fillRect(tileSize, tileSize * 7, dialogueWidth, dialogueHeight);
-            g2.drawImage(Images.UI.DIALOGUE_BOX_BOTTOM, 0, 0, null);
-            portrait.drawSpecific(g2, portraitNum, 72, 360, portraitWidth, portraitHeight);
+            g2.drawImage(Images.UI.TEXT_BOX_BOTTOM, 0, 0, null);
 
             g2.setColor(new Color(224, 248, 207));
             for(String line : parts[1].split("\\|")) {
 
-                g2.drawString(line, 240, bottomY);
+                g2.drawString(line, 100, bottomY);
                 bottomY += 30;
             }
         }
         else {
 
             g2.fillRect(tileSize, tileSize, dialogueWidth, dialogueHeight);
-            g2.drawImage(Images.UI.DIALOGUE_BOX_TOP, 0, 0, null);
-            portrait.drawSpecific(g2, portraitNum, 72, 72, portraitWidth, portraitHeight);
+            g2.drawImage(Images.UI.TEXT_BOX_TOP, 0, 0, null);
 
             g2.setColor(new Color(224, 248, 207));
             for(String line : parts[1].split("\\|")) {
 
-                g2.drawString(line, 240, topY);
+                g2.drawString(line, 100, topY);
                 topY += 30;
             }
         }
