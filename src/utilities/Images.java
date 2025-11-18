@@ -82,6 +82,31 @@ public class Images {
         // MENU
         public static final BufferedImage MENU_BOX = loadSingleImage("/assets/ui/menuUI/menuBox.png");
 
+        public static final BufferedImage CONTROLS_PICKED = loadSingleImage("/assets/ui/menuUI/controlsPicked.png");
+        public static final BufferedImage CONTROLS_UNPICKED = loadSingleImage("/assets/ui/menuUI/controlsUnpicked.png");
+
+        public static final BufferedImage EXIT_GAME_ENTERED = loadSingleImage("/assets/ui/menuUI/exitGameEntered.png");
+        public static final BufferedImage EXIT_GAME_PICKED = loadSingleImage("/assets/ui/menuUI/exitGamePicked.png");
+        public static final BufferedImage EXIT_GAME_UNPICKED = loadSingleImage("/assets/ui/menuUI/exitGameUnpicked.png");
+
+        public static final BufferedImage QUIT_MENU_ENTERED = loadSingleImage("/assets/ui/menuUI/quitToMenuEntered.png");
+        public static final BufferedImage QUIT_MENU_PICKED = loadSingleImage("/assets/ui/menuUI/quitToMenuPicked.png");
+        public static final BufferedImage QUIT_MENU_UNPICKED = loadSingleImage("/assets/ui/menuUI/quitToMenuUnpicked.png");
+
+        public static final BufferedImage FULLSCREEN_ON_PICKED = loadSingleImage("/assets/ui/menuUI/fullscreenOnPicked.png");
+        public static final BufferedImage FULLSCREEN_ON_UNPICKED = loadSingleImage("/assets/ui/menuUI/fullscreenOnUnpicked.png");
+
+        public static final BufferedImage FULLSCREEN_OFF_PICKED = loadSingleImage("/assets/ui/menuUI/fullscreenOffPicked.png");
+        public static final BufferedImage FULLSCREEN_OFF_UNPICKED = loadSingleImage("/assets/ui/menuUI/fullscreenOffUnpicked.png");
+
+        public static final BufferedImage MUSIC_PICKED = loadSingleImage("/assets/ui/menuUI/musicPicked.png");
+        public static final BufferedImage MUSIC_UNPICKED = loadSingleImage("/assets/ui/menuUI/musicUnpicked.png");
+
+        public static final BufferedImage SOUND_PICKED = loadSingleImage("/assets/ui/menuUI/soundPicked.png");
+        public static final BufferedImage SOUND_UNPICKED = loadSingleImage("/assets/ui/menuUI/soundUnpicked.png");
+
+        public static final BufferedImage SOUND_BAR = loadSingleImage("/assets/ui/menuUI/soundBar.png");
+
         // GAME UI
         public static final BufferedImage HEALTH_BAR_PLAYER = loadSingleImage("/assets/ui/gameplayUI/healthBarPlayer.png");
         public static final BufferedImage HEART = loadSingleImage("/assets/ui/gameplayUI/heart.png");
