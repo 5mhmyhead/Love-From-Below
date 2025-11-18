@@ -6,13 +6,15 @@ import components.world.rooms.Room;
 
 import core.ui.GameData;
 import core.ui.GameText;
+import utilities.Animation;
 import utilities.Images;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-// TODO ADD PARTICLES WHEN BUSH IS DESTROYED
 public class Bush extends Interactable {
+
+    private final Animation bushBreak;
 
     private final GameText textWithoutSword;
     private final GameText textWithSword;
@@ -26,6 +28,9 @@ public class Bush extends Interactable {
         this.hasTextDialogue = true;
         this.inTextDialogue = false;
 
+        assert Images.Effects.BUSH_BREAK != null;
+        bushBreak = new Animation(4, false, Images.Effects.BUSH_BREAK, width, height);
+
         textWithoutSword = new GameText(this, text.get(0), 0, false);
         textWithSword = new GameText(this, text.get(1), 0, false);
 
@@ -34,7 +39,10 @@ public class Bush extends Interactable {
     }
 
     @Override
-    public void update() {}
+    public void update() {
+        // BUSH BREAK EFFECT AFTER IT HAS BEEN ATTACKED
+        if(!this.hasCollision) bushBreak.update();
+    }
 
     @Override
     public boolean action(Player player) {
@@ -45,7 +53,7 @@ public class Bush extends Interactable {
             this.image = null;
         }
 
-        // IF THE BUSH WAS INTERACTED BY THE PLAYER
+        // IF THE BUSH WAS INTERACTED BY THE PLAYER, AND WAS NOT DESTROYED
         if(this.hasCollision) {
             inTextDialogue = !inTextDialogue;
         }
@@ -56,7 +64,8 @@ public class Bush extends Interactable {
     @Override
     public void draw(Graphics2D g2) {
 
-        g2.drawImage(image, x, y, width, height, null);
+        if(this.hasCollision) g2.drawImage(image, x, y, width, height, null);
+        else bushBreak.draw(g2, x, y, width, height);
 
         if(inTextDialogue) {
 

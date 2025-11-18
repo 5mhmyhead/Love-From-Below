@@ -91,7 +91,7 @@ public class MapHandler {
             case "BOOTS" -> new Boots(x, y, room);
             case "SWORD" -> new Sword(x, y, room);
 
-            case "CANDLE_BUSH" -> new CandleBush(x, y, room);
+            case "CANDLE_BUSH" -> new CandleBush(x, y, text, room);
             case "BUSH" -> new Bush(x, y, text, room);
 
             default -> null;

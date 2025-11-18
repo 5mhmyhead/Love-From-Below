@@ -52,7 +52,7 @@
             </OBJECT>
             <OBJECT>
                 <TYPE>BUSH</TYPE>
-                <COL>7</COL>
+                <COL>9</COL>
                 <ROW>6</ROW>
 
                 <TEXT>
@@ -78,6 +78,11 @@
                 <TYPE>CANDLE_BUSH</TYPE>
                 <COL>10</COL>
                 <ROW>5</ROW>
+
+                <TEXT>
+                    :It looks like even a sword won't be able to cut this down.;
+                    :But maybe something that could burn it down could work...
+                </TEXT>
             </OBJECT>
         </OBJECTS>
 

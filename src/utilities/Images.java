@@ -43,7 +43,9 @@ public class Images {
     }
 
     public static class Effects {
+
         public static final BufferedImage SPARKLE = loadSingleImage("/effects/sparkle.png");
+        public static final BufferedImage BUSH_BREAK = loadSingleImage("/effects/break.png");
     }
 
     // ALL SPRITES FOR THE PLAYER
